@@ -1,50 +1,47 @@
-import bs4
-from bs4 import BeautifulSoup as soup  # HTML data structure
 from urllib.request import urlopen # Web client
 from urllib.request import Request
+import json
 
-# URl to web scrap from.
-page_url = "https://promedmail.org/coronavirus/"
 
-req = Request(page_url, headers={'User-Agent': 'Mozilla/5.0'})
+def search_by_keyword (keyword):
+    # URl to web scrap from.
+    page_url="http://search-promed-en-fxxmsfyg24tcbr2vohkeahm3f4.us-east-1.cloudsearch.amazonaws.com/2013-01-01/search?q="+keyword+"&q.options={fields:%20[%27title%27]}&return=archive_id,date,title&sort=date%20desc,archive_id%20desc&size=500"
 
-# opens the connection and downloads html page from url
-uClient = urlopen(req)
+    req = Request(page_url, headers={'User-Agent': 'Mozilla/5.0'})
 
-my_html = uClient.read().decode('utf-8')
+    # opens the connection and downloads html page from url
+    uClient = urlopen(req)
 
-# parses html into a soup data structure to traverse html
-# as if it were a json data type.
-page_soup = soup(my_html, "html.parser")
-uClient.close()
+    my_html = uClient.read().decode('utf-8')
 
-covid_lists = page_soup.findAll("div", {"class": "corona-virus-list"})
+    response_json =json.loads(my_html) 
 
-# finds each product from the store page
-# old_containers = page_soup.findAll("a", {"class": "lcl"})
+    uClient.close()
+    return response_json
 
-# name the output file to write to local disk
-out_filename = "covid_cases.csv"
-# header of csv file to be written
-headers = "date, title \n"
 
-# opens file, and writes headers
-f = open(out_filename, "w")
-f.write(headers)
+def put_into_csv (response_json):
+    out_filename = "covid_cases.csv"
+    # header of csv file to be written
+    headers = "archive_id, title, date \n"
 
-for covid_list in covid_lists:
-    containers = covid_list.ul.findAll("li")
-    # loops over each product and grabs attributes about
-    # each product
-    for container in containers:
-        all_text = container.text
+    # opens file, and writes headers
+    f = open(out_filename, "w")
+    f.write(headers)
 
-        title = container.a.text.strip()
+    for entry in response_json["hits"]["hit"]:
+        archive_id = entry["fields"]["archive_id"]
 
-        date = all_text.replace(title, '').strip()
+        title = entry["fields"]["title"].strip()
+
+        date = entry["fields"]["date"]
 
 
         # writes the dataset to file
-        f.write(date + ", " + title.replace(",", "|") + "\n")
+        f.write(date + ", " + archive_id + ", " + title.replace(",", "|") + "\n")
 
-f.close()  # Close the file
+    f.close()  # Close the file
+
+if __name__ == "__main__":
+    json = search_by_keyword("measles")
+    put_into_csv(json)
