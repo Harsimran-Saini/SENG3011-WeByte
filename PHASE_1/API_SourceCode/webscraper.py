@@ -21,7 +21,7 @@ def search_by_keyword (keyword):
 
 
 def put_into_csv (response_json):
-    out_filename = "covid_cases.csv"
+    out_filename = "cases.csv"
     # header of csv file to be written
     headers = "archive_id, title, date \n"
 
