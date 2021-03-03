@@ -1,0 +1,250 @@
+{
+  "openapi": "3.0.0",
+  "tags": [
+    {
+      "name": "epidemic"
+    },
+    {
+      "name": "student"
+    }
+  ],
+  "info": {
+    "title": "test",
+    "description": "This is a test API document",
+    "version": "1.0",
+    "contact": {
+      "name": "We Byte!",
+      "email": "z5208912@ad.unsw.edu.au"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://seng3011-weByteAPI.com"
+    }
+  ],
+  "paths": {
+    "/search_keywords": {
+      "parameters": [],
+      "get": {
+        "summary": "Get Search results from keyword",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/article"
+                  }
+                },
+                "examples": {
+                  "No results": {
+                    "value": []
+                  },
+                  "example-2": {
+                    "value": [
+                      {
+                        "url": "string",
+                        "date_of_publication": "string",
+                        "headline": "string",
+                        "main_text": "string",
+                        "reports": [
+                          {
+                            "diseases": [
+                              "string"
+                            ],
+                            "syndromes": [
+                              "string"
+                            ],
+                            "event_date": [
+                              "string"
+                            ],
+                            "locations": [
+                              {
+                                "country": "string",
+                                "location": "string"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User error - please ensure you have the required headers"
+          }
+        },
+        "operationId": "get-search-results",
+        "description": "Getting the top 500 search results for a keyword.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "keywords",
+            "description": "Comma seperated list of keywords"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "date-range"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "location"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "starting_no"
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "article": {
+        "title": "article",
+        "type": "object",
+        "description": "",
+        "x-examples": {
+          "covid in sydney": {
+            "url": "promedmail.example.com",
+            "date_of_publication": "string",
+            "headline": "string",
+            "main_text": "string",
+            "reports": [
+              {
+                "diseases": [
+                  "string"
+                ],
+                "syndromes": [
+                  "string"
+                ],
+                "event_date": [
+                  "string"
+                ],
+                "locations": [
+                  {
+                    "country": "string",
+                    "location": "string"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "date_of_publication": {
+            "type": "string"
+          },
+          "headline": {
+            "type": "string"
+          },
+          "main_text": {
+            "type": "string"
+          },
+          "reports": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/report"
+            }
+          }
+        }
+      },
+      "report": {
+        "title": "report",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "diseases": [
+              "string"
+            ],
+            "syndromes": [
+              "string"
+            ],
+            "event_date": [
+              "string"
+            ],
+            "locations": [
+              {
+                "country": "australia",
+                "location": "sydney"
+              }
+            ]
+          }
+        },
+        "properties": {
+          "diseases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "syndromes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "event_date": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "locations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/location"
+            }
+          }
+        }
+      },
+      "location": {
+        "title": "location",
+        "type": "object",
+        "properties": {
+          "country": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          }
+        },
+        "x-examples": {
+          "sydney": {
+            "country": "australia",
+            "location": "sydney"
+          }
+        }
+      },
+      "date-exact": {
+        "type": "string",
+        "title": "date-exact",
+        "pattern": "^(\\d{4})-(\\d\\d|xx)-(\\d\\d|xx) (\\d\\d|xx):(\\d\\d|xx):(\\d\\d|xx)$"
+      }
+    },
+    "parameters": {},
+    "securitySchemes": {}
+  }
+}
