@@ -9,9 +9,9 @@
     }
   ],
   "info": {
-    "title": "test",
-    "description": "This is a test API document",
-    "version": "1.0",
+    "title": "WeByte API - ProMedMail",
+    "description": "RESTful API for the retrieval of data from promedmail.org",
+    "version": "0.1",
     "contact": {
       "name": "We Byte!",
       "email": "z5208912@ad.unsw.edu.au"
@@ -19,7 +19,12 @@
   },
   "servers": [
     {
-      "url": "https://seng3011-weByteAPI.com"
+      "url": "WeByte.com",
+      "description": "Fictional Server Addr"
+    },
+    {
+      "url": "",
+      "description": ""
     }
   ],
   "paths": {
@@ -82,7 +87,7 @@
           }
         },
         "operationId": "get-search-results",
-        "description": "Getting the top 500 search results for a keyword.",
+        "description": "Getting a list of articles matching the keyword(s)",
         "parameters": [
           {
             "schema": {
@@ -155,7 +160,7 @@
             "type": "string"
           },
           "date_of_publication": {
-            "type": "string"
+            "$ref": "#/components/schemas/date-exact"
           },
           "headline": {
             "type": "string"
