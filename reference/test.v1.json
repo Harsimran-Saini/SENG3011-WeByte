@@ -23,18 +23,8 @@
     }
   ],
   "paths": {
-    "/search_keywords/{Keyword}": {
-      "parameters": [
-        {
-          "schema": {
-            "type": "string"
-          },
-          "name": "Keyword",
-          "in": "path",
-          "required": true,
-          "description": "Keyword you wish to search for"
-        }
-      ],
+    "/search_keywords": {
+      "parameters": [],
       "get": {
         "summary": "Get Search results from keyword",
         "tags": [],
@@ -96,12 +86,97 @@
         },
         "operationId": "get-search-results",
         "description": "Getting the top 500 search results for a keyword.",
-        "parameters": []
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "keywords",
+            "description": "Comma seperated list of keywords"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "date-range"
+          }
+        ]
       }
     }
   },
   "components": {
-    "schemas": {},
+    "schemas": {
+      "article": {
+        "title": "article",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        }
+      },
+      "report": {
+        "title": "report",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "diseases": [
+              "<string::disease>"
+            ],
+            "syndromes": [
+              "<string::syndrome>"
+            ],
+            "event_date": "<string::date>",
+            "locations": [
+              "<object::location>"
+            ]
+          }
+        },
+        "properties": {
+          "diseases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "syndromes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "event_date": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "locations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/location"
+            }
+          }
+        }
+      },
+      "location": {
+        "title": "location",
+        "type": "object",
+        "properties": {
+          "country": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "parameters": {},
     "securitySchemes": {}
   }
