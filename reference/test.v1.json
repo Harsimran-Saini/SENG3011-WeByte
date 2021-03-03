@@ -1,0 +1,108 @@
+{
+  "openapi": "3.0.0",
+  "tags": [
+    {
+      "name": "epidemic"
+    },
+    {
+      "name": "student"
+    }
+  ],
+  "info": {
+    "title": "test",
+    "description": "This is a test API document",
+    "version": "1.0",
+    "contact": {
+      "name": "We Byte!",
+      "email": "z5208912@ad.unsw.edu.au"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://seng3011-weByteAPI.com"
+    }
+  ],
+  "paths": {
+    "/search_keywords/{Keyword}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "Keyword",
+          "in": "path",
+          "required": true,
+          "description": "Keyword you wish to search for"
+        }
+      ],
+      "get": {
+        "summary": "Get Search results from keyword",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "Date": {
+                        "type": "string"
+                      },
+                      "Title": {
+                        "type": "string"
+                      },
+                      "Article_ID": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Covid": {
+                    "value": [
+                      {
+                        "Date": "23/02/2021",
+                        "Title": "New Covid-19 case",
+                        "Article_ID": 3
+                      },
+                      {
+                        "Date": "22/02/2021",
+                        "Title": "Covid symptoms",
+                        "Article_ID": 2
+                      },
+                      {
+                        "Date": "21/02/2021",
+                        "Title": "Covid hotspot",
+                        "Article_ID": 1
+                      },
+                      {
+                        "Date": "20/02/2021",
+                        "Title": "Masks for Covid",
+                        "Article_ID": 0
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User error - please ensure you have the required headers"
+          }
+        },
+        "operationId": "get-search-results",
+        "description": "Getting the top 500 search results for a keyword.",
+        "parameters": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "parameters": {},
+    "securitySchemes": {}
+  }
+}
