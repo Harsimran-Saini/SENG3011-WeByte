@@ -37,42 +37,39 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "Date": {
-                        "type": "string"
-                      },
-                      "Title": {
-                        "type": "string"
-                      },
-                      "Article_ID": {
-                        "type": "integer"
-                      }
-                    }
+                    "$ref": "#/components/schemas/article"
                   }
                 },
                 "examples": {
-                  "Covid": {
+                  "No results": {
+                    "value": []
+                  },
+                  "example-2": {
                     "value": [
                       {
-                        "Date": "23/02/2021",
-                        "Title": "New Covid-19 case",
-                        "Article_ID": 3
-                      },
-                      {
-                        "Date": "22/02/2021",
-                        "Title": "Covid symptoms",
-                        "Article_ID": 2
-                      },
-                      {
-                        "Date": "21/02/2021",
-                        "Title": "Covid hotspot",
-                        "Article_ID": 1
-                      },
-                      {
-                        "Date": "20/02/2021",
-                        "Title": "Masks for Covid",
-                        "Article_ID": 0
+                        "url": "string",
+                        "date_of_publication": "string",
+                        "headline": "string",
+                        "main_text": "string",
+                        "reports": [
+                          {
+                            "diseases": [
+                              "string"
+                            ],
+                            "syndromes": [
+                              "string"
+                            ],
+                            "event_date": [
+                              "string"
+                            ],
+                            "locations": [
+                              {
+                                "country": "string",
+                                "location": "string"
+                              }
+                            ]
+                          }
+                        ]
                       }
                     ]
                   }
@@ -101,6 +98,20 @@
             },
             "in": "query",
             "name": "date-range"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "location"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "starting_no"
           }
         ]
       }
@@ -111,12 +122,52 @@
       "article": {
         "title": "article",
         "type": "object",
+        "description": "",
+        "x-examples": {
+          "covid in sydney": {
+            "url": "promedmail.example.com",
+            "date_of_publication": "string",
+            "headline": "string",
+            "main_text": "string",
+            "reports": [
+              {
+                "diseases": [
+                  "string"
+                ],
+                "syndromes": [
+                  "string"
+                ],
+                "event_date": [
+                  "string"
+                ],
+                "locations": [
+                  {
+                    "country": "string",
+                    "location": "string"
+                  }
+                ]
+              }
+            ]
+          }
+        },
         "properties": {
-          "name": {
-            "type": "string"
-          },
           "url": {
             "type": "string"
+          },
+          "date_of_publication": {
+            "type": "string"
+          },
+          "headline": {
+            "type": "string"
+          },
+          "main_text": {
+            "type": "string"
+          },
+          "reports": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/report"
+            }
           }
         }
       },
@@ -126,14 +177,19 @@
         "x-examples": {
           "example-1": {
             "diseases": [
-              "<string::disease>"
+              "string"
             ],
             "syndromes": [
-              "<string::syndrome>"
+              "string"
             ],
-            "event_date": "<string::date>",
+            "event_date": [
+              "string"
+            ],
             "locations": [
-              "<object::location>"
+              {
+                "country": "australia",
+                "location": "sydney"
+              }
             ]
           }
         },
@@ -174,7 +230,18 @@
           "location": {
             "type": "string"
           }
+        },
+        "x-examples": {
+          "sydney": {
+            "country": "australia",
+            "location": "sydney"
+          }
         }
+      },
+      "date-exact": {
+        "type": "string",
+        "title": "date-exact",
+        "pattern": "^(\\d{4})-(\\d\\d|xx)-(\\d\\d|xx) (\\d\\d|xx):(\\d\\d|xx):(\\d\\d|xx)$"
       }
     },
     "parameters": {},
