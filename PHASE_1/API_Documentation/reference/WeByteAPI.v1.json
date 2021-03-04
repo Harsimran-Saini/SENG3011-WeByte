@@ -1,13 +1,5 @@
 {
   "openapi": "3.0.0",
-  "tags": [
-    {
-      "name": "epidemic"
-    },
-    {
-      "name": "student"
-    }
-  ],
   "info": {
     "title": "WeByte API - ProMedMail",
     "description": "RESTful API for the retrieval of data from promedmail.org",
@@ -330,8 +322,7 @@
           "influenza a/h3n5",
           "influenza a/h3n2",
           "influenza a/h2n2",
-          "hand",
-          "foot and mouth disease",
+          "hand,foot and mouth disease",
           "hantavirus",
           "hepatitis a",
           "hepatitis b",
@@ -372,8 +363,7 @@
           "yersiniosis",
           "zika",
           "legionares",
-          "Analytics Platform Specification Content",
-          "Fethi Rabhi 2021 Public/Confidential listeriosis",
+          "listeriosis",
           "monkeypox",
           "COVID-19"
         ],
@@ -401,5 +391,10 @@
     },
     "parameters": {},
     "securitySchemes": {}
-  }
+  },
+  "tags": [
+    {
+      "name": "Promedmail.org"
+    }
+  ]
 }
