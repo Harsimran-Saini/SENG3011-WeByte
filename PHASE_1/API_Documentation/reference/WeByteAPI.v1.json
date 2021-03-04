@@ -49,17 +49,17 @@
                   "No results": {
                     "value": []
                   },
-                  "example-2": {
+                  "covid": {
                     "value": [
                       {
-                        "url": "string",
-                        "date_of_publication": "string",
-                        "headline": "string",
-                        "main_text": "string",
+                        "url": "https://promedmail.org/promed-post/?id=8224463",
+                        "date_of_publication": "2021-03-03 14:04:20",
+                        "headline": "CORONAVIRUS DISEASE 2019 UPDATE (85): USA CHALLENGES IN DISEASE CONTROL, BRAZIL REINFECTION, WHO, GLOBAL",
+                        "main_text": "Over the weekend both the Food and Drug Administration (FDA) and the Centers for Disease Control and Prevention (CDC) gave the green light to Johnson & Johnson's COVID-19 vaccine etc...",
                         "reports": [
                           {
                             "diseases": [
-                              "string"
+                              "covid-19"
                             ],
                             "syndromes": [
                               "string"
