@@ -49,7 +49,7 @@
                   "No results": {
                     "value": []
                   },
-                  "covid": {
+                  "Covid": {
                     "value": [
                       {
                         "url": "https://promedmail.org/promed-post/?id=8224463",
@@ -59,18 +59,29 @@
                         "reports": [
                           {
                             "diseases": [
-                              "covid-19"
-                            ],
-                            "syndromes": [
-                              "string"
+                              "COVID-19"
                             ],
                             "event_date": [
-                              "string"
+                              "2021-03-01 xx-xx-xx"
                             ],
                             "locations": [
                               {
-                                "country": "string",
-                                "location": "string"
+                                "country": "USA",
+                                "location": "USA"
+                              }
+                            ]
+                          },
+                          {
+                            "diseases": [
+                              "COVID-19"
+                            ],
+                            "event_date": [
+                              "2021-01-21 xx-xx-xx"
+                            ],
+                            "locations": [
+                              {
+                                "country": "Brazil",
+                                "location": "Salvador"
                               }
                             ]
                           }
@@ -87,7 +98,7 @@
           }
         },
         "operationId": "get-search-results",
-        "description": "Getting a list of articles matching the keyword(s)",
+        "description": "Note: This endpoint is not final, and serves demonstration purposes only\n\nGetting a list of articles matching the keyword(s)\n\nExample usage:\nGET: www.webyte.com/search_keywords?keywords=COVID-19&date-range=2021-03-03&location=USA",
         "parameters": [
           {
             "schema": {
@@ -95,28 +106,24 @@
             },
             "in": "query",
             "name": "keywords",
-            "description": "Comma seperated list of keywords"
+            "description": "Comma seperated list of keywords",
+            "required": true
           },
           {
             "schema": {
               "type": "string"
             },
             "in": "query",
-            "name": "date-range"
+            "name": "date-range",
+            "description": "Date range"
           },
           {
             "schema": {
               "type": "string"
             },
             "in": "query",
-            "name": "location"
-          },
-          {
-            "schema": {
-              "type": "string"
-            },
-            "in": "query",
-            "name": "starting_no"
+            "name": "location",
+            "description": "Location in"
           }
         ]
       }
