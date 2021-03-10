@@ -53,7 +53,6 @@ def search_by_keyword (keyword):
                 outfile.write(str(page_soup))
                 outfile.close()
 
-
             publish_date_spans= publish_date_paragraph[0].findAll("span", {"class": "blue"})
             main_text_html = page_soup.findAll("div", {"class": "text1"})[0]
 
