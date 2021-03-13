@@ -19,7 +19,7 @@
     "/search_keywords": {
       "parameters": [],
       "get": {
-        "summary": "Get Search results from keyword",
+        "summary": "Get Search results from keywords",
         "tags": [],
         "responses": {
           "200": {
@@ -40,6 +40,7 @@
                   "covid": {
                     "value": [
                       {
+                        "article-id": 0,
                         "url": "https://promedmail.org/promed-post/?id=8224463",
                         "date_of_publication": "2021-03-03 14:04:20",
                         "headline": "CORONAVIRUS DISEASE 2019 UPDATE (85): USA CHALLENGES IN DISEASE CONTROL, BRAZIL REINFECTION, WHO, GLOBAL",
@@ -73,6 +74,9 @@
           },
           "400": {
             "description": "User error - please ensure you have the required headers"
+          },
+          "404": {
+            "description": "No Articles Found"
           }
         },
         "operationId": "get-search-results",
@@ -122,6 +126,378 @@
           }
         ]
       }
+    },
+    "/articles": {
+      "get": {
+        "summary": "GET all Articles",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/article"
+                },
+                "examples": {
+                  "No Results": {
+                    "value": []
+                  },
+                  "example-1": {
+                    "value": [
+                      {
+                        "url": "string",
+                        "date_of_publication": "string",
+                        "headline": "string",
+                        "main_text": "string",
+                        "reports": [
+                          {
+                            "diseases": [
+                              "unknown"
+                            ],
+                            "syndromes": [
+                              "Haemorrhagic Fever"
+                            ],
+                            "event_date": [
+                              "string"
+                            ],
+                            "locations": [
+                              {
+                                "country": "string",
+                                "location": "string"
+                              }
+                            ]
+                          }
+                        ],
+                        "article_id": 1
+                      },
+                      {
+                        "url": "string",
+                        "date_of_publication": "string",
+                        "headline": "string",
+                        "main_text": "string",
+                        "reports": [
+                          {
+                            "diseases": [
+                              "unknown"
+                            ],
+                            "syndromes": [
+                              "Haemorrhagic Fever"
+                            ],
+                            "event_date": [
+                              "string"
+                            ],
+                            "locations": [
+                              {
+                                "country": "string",
+                                "location": "string"
+                              }
+                            ]
+                          }
+                        ],
+                        "article_id": 2
+                      },
+                      {
+                        "url": "string",
+                        "date_of_publication": "string",
+                        "headline": "string",
+                        "main_text": "string",
+                        "reports": [
+                          {
+                            "diseases": [
+                              "unknown"
+                            ],
+                            "syndromes": [
+                              "Haemorrhagic Fever"
+                            ],
+                            "event_date": [
+                              "string"
+                            ],
+                            "locations": [
+                              {
+                                "country": "string",
+                                "location": "string"
+                              }
+                            ]
+                          }
+                        ],
+                        "article_id": 3
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No Results Found"
+          }
+        },
+        "operationId": "get-articles",
+        "description": "Retrieve a list of all articles",
+        "parameters": []
+      },
+      "parameters": []
+    },
+    "/latest_articles": {
+      "get": {
+        "summary": "GET Trending Articles",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/article"
+                },
+                "examples": {
+                  "example-1": {
+                    "value": [
+                      {
+                        "url": "string",
+                        "date_of_publication": "string",
+                        "headline": "string",
+                        "main_text": "string",
+                        "reports": [
+                          {
+                            "diseases": [
+                              "unknown"
+                            ],
+                            "syndromes": [
+                              "Haemorrhagic Fever"
+                            ],
+                            "event_date": [
+                              "string"
+                            ],
+                            "locations": [
+                              {
+                                "country": "string",
+                                "location": "string"
+                              }
+                            ]
+                          }
+                        ],
+                        "article_id": 1
+                      },
+                      {
+                        "url": "string",
+                        "date_of_publication": "string",
+                        "headline": "string",
+                        "main_text": "string",
+                        "reports": [
+                          {
+                            "diseases": [
+                              "unknown"
+                            ],
+                            "syndromes": [
+                              "Haemorrhagic Fever"
+                            ],
+                            "event_date": [
+                              "string"
+                            ],
+                            "locations": [
+                              {
+                                "country": "string",
+                                "location": "string"
+                              }
+                            ]
+                          }
+                        ],
+                        "article_id": 2
+                      },
+                      {
+                        "url": "string",
+                        "date_of_publication": "string",
+                        "headline": "string",
+                        "main_text": "string",
+                        "reports": [
+                          {
+                            "diseases": [
+                              "unknown"
+                            ],
+                            "syndromes": [
+                              "Haemorrhagic Fever"
+                            ],
+                            "event_date": [
+                              "string"
+                            ],
+                            "locations": [
+                              {
+                                "country": "string",
+                                "location": "string"
+                              }
+                            ]
+                          }
+                        ],
+                        "article_id": 50
+                      }
+                    ]
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "minProperties": 0,
+                  "maxProperties": 50,
+                  "type": "object",
+                  "properties": {
+                    "": {
+                      "$ref": "#/components/schemas/article"
+                    }
+                  }
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "": {
+                        "url": "string",
+                        "date_of_publication": "2021-03-03 14:04:20",
+                        "headline": "string",
+                        "main_text": "string",
+                        "reports": [
+                          {
+                            "diseases": [
+                              "unknown"
+                            ],
+                            "syndromes": [
+                              "Haemorrhagic Fever"
+                            ],
+                            "event_date": [
+                              "string"
+                            ],
+                            "locations": [
+                              {
+                                "country": "string",
+                                "location": "string"
+                              }
+                            ]
+                          }
+                        ],
+                        "article_id": 0
+                      }
+                    }
+                  },
+                  "example-2": {
+                    "value": {
+                      "": {
+                        "url": "string",
+                        "date_of_publication": "2021-03-03 14:04:20",
+                        "headline": "string",
+                        "main_text": "string",
+                        "reports": [
+                          {
+                            "diseases": [
+                              "unknown"
+                            ],
+                            "syndromes": [
+                              "Haemorrhagic Fever"
+                            ],
+                            "event_date": [
+                              "string"
+                            ],
+                            "locations": [
+                              {
+                                "country": "string",
+                                "location": "string"
+                              }
+                            ]
+                          }
+                        ],
+                        "article_id": 0
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          },
+          "404": {
+            "description": "No Articles Found"
+          }
+        },
+        "operationId": "get-trending",
+        "description": "Retrieve a list of all the latest articles"
+      },
+      "parameters": []
+    },
+    "/keyword": {
+      "get": {
+        "summary": "Get Search Results from Keyword",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/article"
+                  }
+                },
+                "examples": {
+                  "Example": {
+                    "value": [
+                      {
+                        "url": "string",
+                        "date_of_publication": "2021-03-03 14:04:20",
+                        "headline": "string",
+                        "main_text": "string",
+                        "reports": [
+                          {
+                            "diseases": [
+                              "unknown"
+                            ],
+                            "syndromes": [
+                              "Haemorrhagic Fever"
+                            ],
+                            "event_date": [
+                              "string"
+                            ],
+                            "locations": [
+                              {
+                                "country": "string",
+                                "location": "string"
+                              }
+                            ]
+                          }
+                        ],
+                        "article_id": 0
+                      }
+                    ]
+                  },
+                  "No Results": {
+                    "value": []
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Parameters"
+          },
+          "404": {
+            "description": "No Articles Found"
+          }
+        },
+        "operationId": "get-specific_keyword",
+        "description": "Gets a list of articles filtered by a specific keyword (not listed in the spec)",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "key_term",
+            "description": "keyword to search for",
+            "required": true
+          }
+        ]
+      },
+      "parameters": []
     }
   },
   "components": {
@@ -155,7 +531,8 @@
                   }
                 ]
               }
-            ]
+            ],
+            "article_id": 0
           }
         },
         "properties": {
@@ -176,6 +553,11 @@
             "items": {
               "$ref": "#/components/schemas/report"
             }
+          },
+          "article_id": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "ID of article"
           }
         }
       },
@@ -185,17 +567,17 @@
         "x-examples": {
           "example-1": {
             "diseases": [
-              "unknown"
+              "Ebola"
             ],
             "syndromes": [
               "Haemorrhagic Fever"
             ],
             "event_date": [
-              "string"
+              "2020-02-17 00:00:00"
             ],
             "locations": [
               {
-                "country": "string",
+                "country": "Democratic Republic of the Congo",
                 "location": "string"
               }
             ]
@@ -288,13 +670,14 @@
           "Date-exact": "2018-xx-xx xx:xx:xx",
           "Date-range": "2018-xx-xx xx:xx:xx to 2019-xx-xx xx:xx:xx"
         },
-        "title": "",
+        "title": "date",
         "description": "Either date-range or date-exact"
       },
       "disease": {
         "type": "string",
         "x-examples": {
-          "Unknown": "unknown"
+          "Anthrax Cutaneous": "Anthrax Cutaneous",
+          "Ebola": "Ebola"
         },
         "enum": [
           "unknown",
@@ -367,7 +750,8 @@
           "monkeypox",
           "COVID-19"
         ],
-        "description": "One of the give disease types"
+        "description": "One of the give disease types",
+        "title": "disease"
       },
       "syndromes": {
         "type": "string",
