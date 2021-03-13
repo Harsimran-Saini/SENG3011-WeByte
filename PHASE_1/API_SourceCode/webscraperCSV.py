@@ -23,12 +23,9 @@ def search_by_keyword (keywords=[]):
         response_json =json.loads(my_html) 
         uClient.close()
         
-        # number_of_articles_database = #database_rows
         #how many articles were found
         number_of_articles = response_json["hits"]["found"]
         
-        # number_of_articles = number_of_articles_site - number_of_articles_database
-
         if number_of_articles != 0:
             # open connection again but this time to get ALL the articles
             page_url= "http://search-promed-en-fxxmsfyg24tcbr2vohkeahm3f4.us-east-1.cloudsearch.amazonaws.com/2013-01-01/search?q="+str(keyword)+"&q.options={fields:%20[%27title%27]}&return=archive_id,date,title&sort=date%20desc,archive_id%20desc&size="+str(number_of_articles)
@@ -91,6 +88,8 @@ def search_by_keyword (keywords=[]):
             # there were no responses to return
             response_json[str(keyword)] = "no articles found"
         
+        # number of articles in the keyword
+        response_json[str(keyword)+"_num"] = number_of_articles
     return response_json
 
 
@@ -226,9 +225,7 @@ def run_on_all ():
     )
 
 if __name__ == "__main__":
-    data = search_by_keyword(
-        ["unknown",
-        "other"])
+    data = get_latest()
 
     # write to a file --> need to change to write to the database
     with open('data.txt', 'w') as outfile:
