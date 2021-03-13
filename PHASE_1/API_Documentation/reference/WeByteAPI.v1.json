@@ -19,7 +19,7 @@
     "/search_keywords": {
       "parameters": [],
       "get": {
-        "summary": "Get Search results from keywords",
+        "summary": "Get Search Results From Keywords",
         "tags": [],
         "responses": {
           "200": {
@@ -80,7 +80,7 @@
           }
         },
         "operationId": "get-search-results",
-        "description": "Getting a list of articles matching the keyword(s)",
+        "description": "Retrieve a list of articles matching the keyword(s)",
         "parameters": [
           {
             "schema": {
@@ -129,7 +129,7 @@
     },
     "/articles": {
       "get": {
-        "summary": "GET all Articles",
+        "summary": "Get All Articles",
         "tags": [],
         "responses": {
           "200": {
@@ -242,7 +242,7 @@
     },
     "/latest_articles": {
       "get": {
-        "summary": "GET Trending Articles",
+        "summary": "Get Latest Articles",
         "tags": [],
         "responses": {
           "200": {
@@ -425,7 +425,7 @@
     },
     "/keyword": {
       "get": {
-        "summary": "Get Search Results from Keyword",
+        "summary": "Get Results From Other Keywords",
         "tags": [],
         "responses": {
           "200": {
