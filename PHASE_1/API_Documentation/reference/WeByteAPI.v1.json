@@ -488,7 +488,7 @@
         "parameters": [
           {
             "schema": {
-              "type": "string"
+              "type": "array"
             },
             "in": "query",
             "name": "key_term",
