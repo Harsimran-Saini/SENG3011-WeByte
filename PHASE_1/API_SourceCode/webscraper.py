@@ -8,11 +8,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import concurrent.futures
 
-articles = []
 from reports import reports
 
-ARTICLES_PER_KEYWORD = 5 # Maximum articles to scrape, set to -1 to disable max
-
+articles = []
 def search_by_keyword (keywords=[]):
     response_json={}
     for keyword in keywords:
@@ -55,13 +53,8 @@ def search_by_keyword (keywords=[]):
                 data = {
                     "archive_id": archive_id,
                     "headline": str(entry["fields"]["title"]).strip(),
-                    "main_text": str(main_text.text),
-                    "reports": reports(str(main_text.text))
                 }
                 articles.append(data)
-                # Cap articles scraped
-                if (len(articles)) == ARTICLES_PER_KEYWORD:
-                    break
             
             with concurrent.futures.ThreadPoolExecutor() as executor:
                 executor.map(queryArticles, articles)
@@ -129,7 +122,7 @@ def queryArticles(article):
     article["url"] = page_url
     article["date"] = str(date_match.groups()[0]).strip()
     article["main_text"] = str(main_text.text)
-    article["reports"] = []
+    article["reports"] = reports(str(main_text.text))
         
     for article in articles:
         page_url = "https://promedmail.org/promed-post/?id="+article["archive_id"]
@@ -251,10 +244,10 @@ if __name__ == "__main__":
         # response_json = {}
         # response_json["latest"] = articles
     
-    response_json = search_by_keyword(["COVID-19"])
-    data = search_by_keyword(
-        ["unknown",
-        "other"])
+    response_json = search_by_keyword(["unknown"])
+    # data = search_by_keyword(
+    #     ["unknown",
+    #     "other"])
 
     # write to a file --> need to change to write to the database
     with open('data.txt', 'w') as outfile:
