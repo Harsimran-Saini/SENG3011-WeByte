@@ -9,6 +9,9 @@ from selenium.webdriver.support import expected_conditions as EC
 import concurrent.futures
 
 articles = []
+from reports import reports
+
+ARTICLES_PER_KEYWORD = 5 # Maximum articles to scrape, set to -1 to disable max
 
 def search_by_keyword (keywords=[]):
     response_json={}
@@ -26,9 +29,13 @@ def search_by_keyword (keywords=[]):
         response_json =json.loads(my_html) 
         uClient.close()
         
+        # number_of_articles_database = #database_rows
         #how many articles were found
         number_of_articles = response_json["hits"]["found"]
         articles = []
+        print(f"Found {number_of_articles} articles for '{keyword}'")
+        
+        # number_of_articles = number_of_articles_site - number_of_articles_database
 
         if number_of_articles != 0:
             # open connection again but this time to get ALL the articles
@@ -48,9 +55,13 @@ def search_by_keyword (keywords=[]):
                 data = {
                     "archive_id": archive_id,
                     "headline": str(entry["fields"]["title"]).strip(),
+                    "main_text": str(main_text.text),
+                    "reports": reports(str(main_text.text))
                 }
                 articles.append(data)
-                
+                # Cap articles scraped
+                if (len(articles)) == ARTICLES_PER_KEYWORD:
+                    break
             
             with concurrent.futures.ThreadPoolExecutor() as executor:
                 executor.map(queryArticles, articles)
@@ -85,6 +96,7 @@ def get_latest ():
             "headline": str(elem.text).strip()
         }
         articles.append(data)
+        
 
     driver.quit()
     
@@ -118,6 +130,25 @@ def queryArticles(article):
     article["date"] = str(date_match.groups()[0]).strip()
     article["main_text"] = str(main_text.text)
     article["reports"] = []
+        
+    for article in articles:
+        page_url = "https://promedmail.org/promed-post/?id="+article["archive_id"]
+        driver.get(page_url)
+        print(page_url)
+        # get the date
+        publish_date_paragraph = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "publish_date_html")))
+        # using regex to extract the date
+        date_pattern = re.compile(r'^Published Date: (\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})')
+        date_match = date_pattern.search(publish_date_paragraph.text)
+
+        # get the main text
+        main_text = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "text1")))
+        # main_text = driver.find_element_by_class_name('text1')
+
+        article["url"] = page_url
+        article["date"] = str(date_match.groups()[0]).strip()
+        article["main_text"] = str(main_text.text)
+        article["reports"] = reports(str(main_text.text))
         
     # close selenium webdriver
     driver.quit()
@@ -221,6 +252,9 @@ if __name__ == "__main__":
         # response_json["latest"] = articles
     
     response_json = search_by_keyword(["COVID-19"])
+    data = search_by_keyword(
+        ["unknown",
+        "other"])
 
     # write to a file --> need to change to write to the database
     with open('data.txt', 'w') as outfile:
