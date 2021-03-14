@@ -6,6 +6,9 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from reports import reports
+
+ARTICLES_PER_KEYWORD = 5 # Maximum articles to scrape, set to -1 to disable max
 
 def search_by_keyword (keywords=[]):
     response_json={}
@@ -26,6 +29,7 @@ def search_by_keyword (keywords=[]):
         # number_of_articles_database = #database_rows
         #how many articles were found
         number_of_articles = response_json["hits"]["found"]
+        print(f"Found {number_of_articles} articles for '{keyword}'")
         
         # number_of_articles = number_of_articles_site - number_of_articles_database
 
@@ -76,10 +80,13 @@ def search_by_keyword (keywords=[]):
                     "date": str(date_match.groups()[0]).strip(),
                     "headline": str(entry["fields"]["title"]).strip(),
                     "main_text": str(main_text.text),
-                    "reports": []
+                    "reports": reports(str(main_text.text))
                 }
                
                 articles.append(data)
+                # Cap articles scraped
+                if (len(articles)) == ARTICLES_PER_KEYWORD:
+                    break
             
             # close selenium webdriver
             driver.quit()
@@ -134,7 +141,7 @@ def get_latest ():
         article["url"] = page_url
         article["date"] = str(date_match.groups()[0]).strip()
         article["main_text"] = str(main_text.text)
-        article["reports"] = []
+        article["reports"] = reports(str(main_text.text))
         
     # close selenium webdriver
     driver.quit()
