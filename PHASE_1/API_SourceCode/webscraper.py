@@ -6,7 +6,11 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import concurrent.futures
 
+from reports import reports
+
+articles = []
 def search_by_keyword (keywords=[]):
     response_json={}
     for keyword in keywords:
@@ -26,6 +30,8 @@ def search_by_keyword (keywords=[]):
         # number_of_articles_database = #database_rows
         #how many articles were found
         number_of_articles = response_json["hits"]["found"]
+        articles = []
+        print(f"Found {number_of_articles} articles for '{keyword}'")
         
         # number_of_articles = number_of_articles_site - number_of_articles_database
 
@@ -41,49 +47,17 @@ def search_by_keyword (keywords=[]):
             page_json =json.loads(my_html) 
             uClient.close()
 
-            articles=[]
-
-            # open selenium this time so that javascript can load on the individual pages (headless option 
-            # so it doesn't actually open the browser)
-            options = webdriver.ChromeOptions()
-            options.add_argument("headless")
-
-            driver = webdriver.Chrome(options = options)
-
             for entry in page_json["hits"]["hit"]:
                 archive_id = str(entry["id"])
-                page_url = "https://promedmail.org/promed-post/?id="+archive_id
-                
-                # connect to the url
-                driver.get(page_url)
-
-                # get the date 
-                print(page_url)
-                publish_date_paragraph = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "publish_date_html")))
-                # publish_date_paragraph = driver.find_element_by_xpath('//p[@class="publish_date_html"]')
-                # using regex to extract the date
-                date_pattern = re.compile(r'^Published Date: (\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})')
-                date_match = date_pattern.search(publish_date_paragraph.text)
-
-                # get the main text
-                main_text = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "text1")))
-                # main_text = driver.find_element_by_class_name('text1')
-
                 # create the data for this particular article and add it to the articles array
                 data = {
-                    "url": str(page_url),
-                    "archive_id": str(entry["id"]),
-                    "date": str(date_match.groups()[0]).strip(),
+                    "archive_id": archive_id,
                     "headline": str(entry["fields"]["title"]).strip(),
-                    "main_text": str(main_text.text),
-                    "reports": []
                 }
-               
                 articles.append(data)
             
-            # close selenium webdriver
-            driver.quit()
-
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                executor.map(queryArticles, articles)
             # put the response into the response_json array
             response_json[str(keyword)] = articles
                 
@@ -91,15 +65,14 @@ def search_by_keyword (keywords=[]):
             # there were no responses to return
             response_json[str(keyword)] = "no articles found"
         
+        # number of articles in the keyword
+        response_json[str(keyword)+"_num"] = number_of_articles
+    
     return response_json
 
 
-
 def get_latest ():
-    response_json={}
     
-    articles=[]
-
     # open selenium so that javascript can load on the individual pages (headless option 
     # so it doesn't actually open the browser)
     options = webdriver.ChromeOptions()
@@ -116,6 +89,40 @@ def get_latest ():
             "headline": str(elem.text).strip()
         }
         articles.append(data)
+        
+
+    driver.quit()
+    
+    
+    return articles
+    
+
+def queryArticles(article):
+    
+    # open selenium so that javascript can load on the individual pages (headless option 
+    # so it doesn't actually open the browser)
+    options = webdriver.ChromeOptions()
+    options.add_argument("headless")
+
+    driver = webdriver.Chrome(options = options) 
+    
+    page_url = "https://promedmail.org/promed-post/?id="+article["archive_id"]
+    driver.get(page_url)
+    print(page_url)
+    # get the date
+    publish_date_paragraph = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "publish_date_html")))
+    # using regex to extract the date
+    date_pattern = re.compile(r'^Published Date: (\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})')
+    date_match = date_pattern.search(publish_date_paragraph.text)
+
+    # get the main text
+    main_text = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "text1")))
+    # main_text = driver.find_element_by_class_name('text1')
+
+    article["url"] = page_url
+    article["date"] = str(date_match.groups()[0]).strip()
+    article["main_text"] = str(main_text.text)
+    article["reports"] = reports(str(main_text.text))
         
     for article in articles:
         page_url = "https://promedmail.org/promed-post/?id="+article["archive_id"]
@@ -134,14 +141,17 @@ def get_latest ():
         article["url"] = page_url
         article["date"] = str(date_match.groups()[0]).strip()
         article["main_text"] = str(main_text.text)
-        article["reports"] = []
+        article["reports"] = reports(str(main_text.text))
         
     # close selenium webdriver
     driver.quit()
 
     # put the response into the response_json array
-    response_json["latest"] = articles
-    return response_json
+    #articles.append(article)
+    #response_json["latest"] = article
+    
+
+
 
 def run_on_all ():
     search_by_keyword(
@@ -226,11 +236,20 @@ def run_on_all ():
     )
 
 if __name__ == "__main__":
-    data = search_by_keyword(
-        ["unknown",
-        "other"])
+    # THIS IS FOR LATEST FN
+        # articles = get_latest()
+        # with concurrent.futures.ThreadPoolExecutor() as executor:
+        #     executor.map(queryArticles, articles)
+
+        # response_json = {}
+        # response_json["latest"] = articles
+    
+    response_json = search_by_keyword(["unknown"])
+    # data = search_by_keyword(
+    #     ["unknown",
+    #     "other"])
 
     # write to a file --> need to change to write to the database
     with open('data.txt', 'w') as outfile:
-        json.dump(data, outfile)
+            json.dump(response_json, outfile)
 
