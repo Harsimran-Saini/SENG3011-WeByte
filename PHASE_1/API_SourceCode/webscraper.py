@@ -7,16 +7,18 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import concurrent.futures
-
 from reports import reports
 
 articles = []
-def search_by_keyword (keywords=[]):
+def search_by_keyword (keywords=[], start=None, end=None):
     response_json={}
     for keyword in keywords:
         # URl to web scrap from. Originally do the smallest size in order to get the total number of articles
-        page_url="http://search-promed-en-fxxmsfyg24tcbr2vohkeahm3f4.us-east-1.cloudsearch.amazonaws.com/2013-01-01/search?q="+str(keyword)+"&q.options={fields:%20[%27title%27]}&return=archive_id,date,title&sort=date%20desc,archive_id%20desc"
-
+        if start == None or end == None:
+            page_url="http://search-promed-en-fxxmsfyg24tcbr2vohkeahm3f4.us-east-1.cloudsearch.amazonaws.com/2013-01-01/search?q="+str(keyword)+"&q.options={fields:%20[%27title%27]}&return=archive_id,date,title&sort=date%20desc,archive_id%20desc"
+        else:
+            page_url="http://search-promed-en-fxxmsfyg24tcbr2vohkeahm3f4.us-east-1.cloudsearch.amazonaws.com/2013-01-01/search?q.parser=structured&q=(and%20date:["+str(start)+","+str(end)+"]%20%27"+str(keyword)+"%27)&q.options={fields:%20[%27title%27]}&return=archive_id,date,title&sort=date%20desc,archive_id%20desc"
+        
         req = Request(page_url, headers={'User-Agent': 'Mozilla/5.0'})
 
         # opens the connection and downloads html page from url
@@ -31,13 +33,12 @@ def search_by_keyword (keywords=[]):
         #how many articles were found
         number_of_articles = response_json["hits"]["found"]
         articles = []
-        print(f"Found {number_of_articles} articles for '{keyword}'")
         
         # number_of_articles = number_of_articles_site - number_of_articles_database
 
         if number_of_articles != 0:
             # open connection again but this time to get ALL the articles
-            page_url= "http://search-promed-en-fxxmsfyg24tcbr2vohkeahm3f4.us-east-1.cloudsearch.amazonaws.com/2013-01-01/search?q="+str(keyword)+"&q.options={fields:%20[%27title%27]}&return=archive_id,date,title&sort=date%20desc,archive_id%20desc&size="+str(number_of_articles)
+            page_url= page_url+"&size="+str(number_of_articles)
             
             req = Request(page_url, headers={'User-Agent': 'Mozilla/5.0'})
             uClient = urlopen(req)
@@ -65,38 +66,11 @@ def search_by_keyword (keywords=[]):
             # there were no responses to return
             response_json[str(keyword)] = "no articles found"
         
-        # number of articles in the keyword
-        response_json[str(keyword)+"_num"] = number_of_articles
     
     return response_json
 
 
-def get_latest ():
     
-    # open selenium so that javascript can load on the individual pages (headless option 
-    # so it doesn't actually open the browser)
-    options = webdriver.ChromeOptions()
-    options.add_argument("headless")
-
-    driver = webdriver.Chrome(options = options)
-    page_url = "https://promedmail.org"
-    driver.get(page_url)
-    
-    for i in range(1, 51):
-        elem = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//div[@class='latest_list']/ul/li["+str(i)+"]/a")))
-        data = {
-            "archive_id": str(elem.get_attribute("id")).replace('id', ''),
-            "headline": str(elem.text).strip()
-        }
-        articles.append(data)
-        
-
-    driver.quit()
-    
-    
-    return articles
-    
-
 def queryArticles(article):
     
     # open selenium so that javascript can load on the individual pages (headless option 
@@ -236,18 +210,8 @@ def run_on_all ():
     )
 
 if __name__ == "__main__":
-    # THIS IS FOR LATEST FN
-        # articles = get_latest()
-        # with concurrent.futures.ThreadPoolExecutor() as executor:
-        #     executor.map(queryArticles, articles)
-
-        # response_json = {}
-        # response_json["latest"] = articles
     
     response_json = search_by_keyword(["unknown"])
-    # data = search_by_keyword(
-    #     ["unknown",
-    #     "other"])
 
     # write to a file --> need to change to write to the database
     with open('data.txt', 'w') as outfile:
