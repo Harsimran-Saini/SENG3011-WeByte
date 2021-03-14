@@ -115,14 +115,6 @@
             "name": "end_date",
             "description": "End date for filtering search results",
             "required": true
-          },
-          {
-            "schema": {
-              "type": "string"
-            },
-            "in": "query",
-            "name": "timezone",
-            "description": "Timezone to search with"
           }
         ]
       }
