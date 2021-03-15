@@ -18,7 +18,7 @@ def load_disease(diseases, dynamodb=None):
 
 if __name__ == '__main__':
     disease_name = sys.argv[1]
-    with open("data.json", 'r') as json_file:
+    with open("../API_SourceCode/data.txt", 'r') as json_file:
         disease_list = json.load(json_file, parse_float=Decimal)
 
         print(disease_list.keys())

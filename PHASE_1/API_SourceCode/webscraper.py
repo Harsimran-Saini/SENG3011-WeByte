@@ -244,7 +244,7 @@ if __name__ == "__main__":
         # response_json = {}
         # response_json["latest"] = articles
     
-    response_json = search_by_keyword(["unknown"])
+    response_json = search_by_keyword(["other"])
     # data = search_by_keyword(
     #     ["unknown",
     #     "other"])
