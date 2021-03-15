@@ -12,8 +12,6 @@ def load_disease(diseases, num, dynamodb=None):
     if not dynamodb:
         dynamodb = boto3.resource('dynamodb', endpoint_url="https://dynamodb.ap-southeast-2.amazonaws.com")
 
-    table = dynamodb.Table('Data2')
-    table2 = dynamodb.Table('Keyword-frequencies')
 
     client = boto3.client('dynamodb')
 
@@ -29,22 +27,41 @@ def load_disease(diseases, num, dynamodb=None):
     )
 
     for d in diseases:
+        table = dynamodb.Table('Data2')
         response = table.query(KeyConditionExpression=Key('archive_id').eq(int(d['archive_id'])))
-        
         # if the id does not exist in the table
-        if response['Items'] == []:
-            d={
-                archive_id: d['archive_id'],
-                date: d['date'],
-                disease: my_name,
-                reports: d['reports'],
-                main_text: d['main_text'],
-                headline: d['headline'],
-                url: d['url'],
-                keywords: [my_name]
-            }
-            print("Adding disease:", id, disease)
-            table.put_item(Item=d)
+        if not response['Items']:
+            response = client.put_item(
+                TableName = 'Data2',
+                Item={
+                    "archive_id": {'N': d['archive_id']},
+                    'date': {'S': d['date']},
+                    'disease': {'S': my_name},
+                    'reports': {'L': d['reports']},
+                    'main_text': {'S': d['main_text']},
+                    'headline': {'S': d['headline']},
+                    "url": {'S': d['url']},
+                    'keywords': {'SS': [my_name]}
+                }
+            )
+
+            response = client.update_item(
+                TableName = 'Data2',
+                Key={
+                    "archive_id": {'N': d['archive_id']},
+                    'date': {'S': d['date']}
+                },
+                UpdateExpression="set ",
+                ExpressionAttributeValues={
+                    'disease': {'S': my_name},
+                    'reports': {'L': d['reports']},
+                    'main_text': {'S': d['main_text']},
+                    'headline': {'S': d['headline']},
+                    "url": {'S': d['url']},
+                    'keywords': {'SS': [my_name]}
+                }
+            )
+
         # if the article id already exists
         else:
             # if there is already an attibute keywords
@@ -62,7 +79,7 @@ def load_disease(diseases, num, dynamodb=None):
                         UpdateExpression="add keywords = list_append(keywords, :i)",
                         ExpressionAttributeValues={
                             ':i': {'SS': [my_name]}
-                        },
+                        }
                     )
             # if there is no attribute keyword
             else:
@@ -75,7 +92,7 @@ def load_disease(diseases, num, dynamodb=None):
                     UpdateExpression="set keywords =:i",
                     ExpressionAttributeValues={
                         ':i': {'SS': [my_name]}
-                    },
+                    }
                 )
 
 if __name__ == '__main__':
