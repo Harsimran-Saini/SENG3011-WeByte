@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://5dncwlmb93.execute-api.ap-southeast-2.amazonaws.com/test/we-byte/",
+      "url": "https://5dncwlmb93.execute-api.ap-southeast-2.amazonaws.com/test/we-byte",
       "description": "We-Byte API"
     }
   ],
@@ -119,119 +119,6 @@
         ]
       }
     },
-    "/articles": {
-      "get": {
-        "summary": "Get All Articles",
-        "tags": [],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {},
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/article"
-                },
-                "examples": {
-                  "No Results": {
-                    "value": []
-                  },
-                  "example-1": {
-                    "value": [
-                      {
-                        "url": "string",
-                        "date_of_publication": "string",
-                        "headline": "string",
-                        "main_text": "string",
-                        "reports": [
-                          {
-                            "diseases": [
-                              "unknown"
-                            ],
-                            "syndromes": [
-                              "Haemorrhagic Fever"
-                            ],
-                            "event_date": [
-                              "string"
-                            ],
-                            "locations": [
-                              {
-                                "country": "string",
-                                "location": "string"
-                              }
-                            ]
-                          }
-                        ],
-                        "article_id": 1
-                      },
-                      {
-                        "url": "string",
-                        "date_of_publication": "string",
-                        "headline": "string",
-                        "main_text": "string",
-                        "reports": [
-                          {
-                            "diseases": [
-                              "unknown"
-                            ],
-                            "syndromes": [
-                              "Haemorrhagic Fever"
-                            ],
-                            "event_date": [
-                              "string"
-                            ],
-                            "locations": [
-                              {
-                                "country": "string",
-                                "location": "string"
-                              }
-                            ]
-                          }
-                        ],
-                        "article_id": 2
-                      },
-                      {
-                        "url": "string",
-                        "date_of_publication": "string",
-                        "headline": "string",
-                        "main_text": "string",
-                        "reports": [
-                          {
-                            "diseases": [
-                              "unknown"
-                            ],
-                            "syndromes": [
-                              "Haemorrhagic Fever"
-                            ],
-                            "event_date": [
-                              "string"
-                            ],
-                            "locations": [
-                              {
-                                "country": "string",
-                                "location": "string"
-                              }
-                            ]
-                          }
-                        ],
-                        "article_id": 3
-                      }
-                    ]
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No Results Found"
-          }
-        },
-        "operationId": "get-articles",
-        "description": "Retrieve a list of all articles",
-        "parameters": []
-      },
-      "parameters": []
-    },
     "/latest_articles": {
       "get": {
         "summary": "Get Latest Articles",
@@ -242,14 +129,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/article"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/article"
+                  }
                 },
                 "examples": {
                   "example-1": {
                     "value": [
                       {
                         "url": "string",
-                        "date_of_publication": "string",
+                        "date_of_publication": "2021-03-03 14:04:20",
                         "headline": "string",
                         "main_text": "string",
                         "reports": [
@@ -270,12 +160,11 @@
                               }
                             ]
                           }
-                        ],
-                        "article_id": 1
+                        ]
                       },
                       {
                         "url": "string",
-                        "date_of_publication": "string",
+                        "date_of_publication": "2021-03-03 14:04:20",
                         "headline": "string",
                         "main_text": "string",
                         "reports": [
@@ -296,34 +185,7 @@
                               }
                             ]
                           }
-                        ],
-                        "article_id": 2
-                      },
-                      {
-                        "url": "string",
-                        "date_of_publication": "string",
-                        "headline": "string",
-                        "main_text": "string",
-                        "reports": [
-                          {
-                            "diseases": [
-                              "unknown"
-                            ],
-                            "syndromes": [
-                              "Haemorrhagic Fever"
-                            ],
-                            "event_date": [
-                              "string"
-                            ],
-                            "locations": [
-                              {
-                                "country": "string",
-                                "location": "string"
-                              }
-                            ]
-                          }
-                        ],
-                        "article_id": 50
+                        ]
                       }
                     ]
                   }
@@ -508,6 +370,25 @@
                 }
               }
             }
+          },
+          "502": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "default": "{\"Error\": \"Missing Parameters\"}"
+                },
+                "examples": {
+                  "example-1": {
+                    "value": "Error"
+                  },
+                  "example-2": {
+                    "value": "{\"Error\": \"Missing Parameters\"}"
+                  }
+                }
+              }
+            }
           }
         },
         "operationId": "get-article",
@@ -517,9 +398,12 @@
               "type": "string"
             },
             "in": "query",
-            "name": "id"
+            "name": "id",
+            "description": "id of article",
+            "required": true
           }
-        ]
+        ],
+        "description": "Retrieves a single article with given id"
       }
     }
   },
