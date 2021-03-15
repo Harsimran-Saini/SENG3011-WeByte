@@ -6,6 +6,7 @@ from boto3.dynamodb.conditions import Key
 import boto3.dynamodb.types
 
 my_name = "unknown"
+name_of_file = '../unknown.txt'
 
 def load_disease(diseases, num, dynamodb=None):
     if not dynamodb:
@@ -79,6 +80,6 @@ def load_disease(diseases, num, dynamodb=None):
 
 if __name__ == '__main__':
     disease_name = sys.argv[1]
-    with open('txtfiles/unknown.txt', 'r') as json_file:
+    with open(name_of_file', 'r') as json_file:
         disease_list = json.load(json_file, parse_float=Decimal)
         load_disease(disease_list[disease_name], disease_list[disease_name+"num_articles"])
