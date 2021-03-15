@@ -1,0 +1,1 @@
+{"influenza a/h2n2num_articles": "3", "influenza a/h2n2": [{"archive_id": "672968", "headline": "PRO> Influenza (20): H2N2 pandemic potential"}, {"archive_id": "988", "headline": "PRO/EDR> Influenza A (H2N2) virus, laboratory distribution (02)"}, {"archive_id": "972", "headline": "PRO/AH/EDR> Influenza A (H2N2) virus: laboratory distribution, alert"}]}

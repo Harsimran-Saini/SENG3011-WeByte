@@ -1,0 +1,1 @@
+{"ehec (e.coli)num_articles": "1", "ehec (e.coli)": [{"archive_id": "2194586", "headline": "PRO/AH/EDR> E.coli (EHEC) - South Korea (Seoul)"}]}

@@ -1,0 +1,1 @@
+{"cryptococcosisnum_articles": "3", "cryptococcosis": [{"archive_id": "6273782", "headline": "PRO/AH/EDR> Cryptococcosis - UK: (Scotland) fatal, nosocomial, 2018"}, {"archive_id": "708704", "headline": "PRO/AH/EDR> Cryptococcosis - Canada: (NB)"}, {"archive_id": "2206922", "headline": "PRO/AH/EDR> Cryptococcosis, human, animal - Canada (BC)"}]}
