@@ -5,7 +5,7 @@ from boto3.dynamodb.conditions import Key
 import boto3.dynamodb.types
 
 
-name_of_file = '../unknown.txt'
+name_of_file = 'txtfiles/unknown.txt'
 
 def load_disease(diseases, num, dynamodb=None):
     if not dynamodb:
