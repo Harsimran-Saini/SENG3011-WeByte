@@ -30,7 +30,6 @@ all_keywords = [
     "crimean-congo haemorrhagic fever",
     "dengue",
     "diphteria",
-    ##########################################
     "ebola haemorrhagic fever",
     "ehec (e.coli)",
     "enterovirus 71 infection",
@@ -157,6 +156,9 @@ def search_by_keyword (keywords=[], start=None, end=None):
                     "headline": str(entry["fields"]["title"]).strip(),
                 }
                 articles.append(data)
+                # Cap articles scraped
+                if (len(articles)) == ARTICLES_PER_KEYWORD:
+                    break
             
             with concurrent.futures.ThreadPoolExecutor() as executor:
                 executor.map(queryArticles, articles)
