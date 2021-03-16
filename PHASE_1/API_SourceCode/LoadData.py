@@ -1,3 +1,4 @@
+
 from decimal import Decimal
 import json
 import boto3
@@ -30,12 +31,13 @@ def load_disease(diseases, num, dynamodb=None):
             ":val": {'N': num}
         }
     )
+
     for d in diseases:
         try:
             d['reports'] = formatReport(d['reports'])
         except KeyError:
             print(d)
-            
+
 
     # for d in diseases:
     #     table = dynamodb.Table('Data2')
