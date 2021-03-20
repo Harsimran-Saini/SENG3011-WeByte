@@ -6,7 +6,7 @@ ENDPOINT="database-1.c8iucjwjdzap.ap-southeast-2.rds.amazonaws.com"
 PORT="5432"
 USR="postgres"
 REGION="ap-southeast-2"
-DBNAME="postgres"
+DBNAME="webyte"
 
 #gets the credentials from .aws/credentials
 session = boto3.Session()

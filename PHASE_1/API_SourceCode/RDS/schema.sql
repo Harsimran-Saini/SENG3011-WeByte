@@ -79,6 +79,6 @@ create table Report_locations (
     location_id             integer not null,
 
     foreign key (report_id) references Reports(id), 
-    foreign key (location_id) references Location(id),
+    foreign key (location_id) references Locations(id),
     primary key (report_id, location_id) -- Assumes each report can only contain each date once
 );
