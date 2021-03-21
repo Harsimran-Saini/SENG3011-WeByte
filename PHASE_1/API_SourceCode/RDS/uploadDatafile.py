@@ -2,10 +2,13 @@ import psycopg2
 import sys
 import json
 import constants
+import glob
+import concurrent.futures
 # psql --host=database-1.c8iucjwjdzap.ap-southeast-2.rds.amazonaws.com --port=5432 --username=postgres --password --dbname=webyte
 
 # Will not commit any changes to db
-DEBUG = True
+DEBUG = False
+LOGGING = 1 # Loggin level: 0 = none, 1 = minimal, 2 = more, 3 = all
 
 #Json keys
 HEADLINE_K = "headline"
@@ -28,19 +31,22 @@ NAME_K = "name"
 
 def uploadArticlesToDB(articles, keyword):
     # Log in to database
-    connection = getDBConnection()
-    cur = connection.cursor()
-    print(f"Found {len(articles)} articles...")
+    try:
+        cur = connection.cursor()
+    except Exception as e:
+        print(e)
+    
+    log(f"Found {len(articles)} articles...", 1)
 
     # Upload articles
-    for article in data[k]:
-        print(f"Uploading: {article[HEADLINE_K]}")
+    for article in articles:
+        log(f"Uploading: {article[HEADLINE_K]}", 2)
         # ARTICLES: id, url, date_of_publication, headline, main_text
         insertQuery = """INSERT into Articles(id, url, date_of_publication, headline, main_text) 
                          VALUES (%s, %s, %s, %s, %s) 
                          ON CONFLICT DO NOTHING"""
         articleData = (article[ID_K], article[URL_K], article[DATE_K], article[HEADLINE_K], article[MAINTEXT_K])
-        #print(cur.mogrify(insertQuery, articleData))
+        log(cur.mogrify(insertQuery, articleData), 3)
         cur.execute(insertQuery, articleData)
         
 
@@ -51,7 +57,7 @@ def uploadArticlesToDB(articles, keyword):
     diseases = []
     syndromes = []
     event_dates = []
-    for article in data[k]:
+    for article in articles:
         # Add article IDs to reports and add them to the list
         n = 0
         for report in article[REPORTS_K]:
@@ -60,15 +66,12 @@ def uploadArticlesToDB(articles, keyword):
             reports.append(report)
             n += 1
 
-    print(f"Found {len(reports)} reports...")
     for report in reports:
         # REPORTS: id, article_id
-        insertQuery = "INSERT into Reports(id, article_id) VALUES (%s, %s)"
+        insertQuery = "INSERT into Reports(id, article_id) VALUES (%s, %s) ON CONFLICT DO NOTHING"
         reportData = (report[ID_K], report[ARTICLEID_K])
-        print(cur.mogrify(insertQuery, reportData))
+        log(cur.mogrify(insertQuery, reportData), 3)
         cur.execute(insertQuery, reportData)
-
-        # Create list of locations, diseases, 
 
         # Get list of locations
         for location in report[LOCATIONS_K]:
@@ -78,7 +81,7 @@ def uploadArticlesToDB(articles, keyword):
 
         # Get list of disease relations
         if keyword not in report[DISEASES_K] and keyword in constants.DISEASE_LIST: 
-            print(f"Adding {keyword} to diseases list")
+            log(f"Adding {keyword} to diseases list", 3)
             report[DISEASES_K].append(keyword)
         for disease in report[DISEASES_K]:
             diseases.append({
@@ -87,7 +90,7 @@ def uploadArticlesToDB(articles, keyword):
             })
 
         if keyword not in report[SYNDROMES_K] and keyword in constants.SYNDROME_LIST:
-            print(f"Adding {keyword} to syndrome list")
+            log(f"Adding {keyword} to syndrome list", 3)
             report[DISEASES_K].append(keyword)
         # Get list of syndrome relations
         for syndrome in report[SYNDROMES_K]:
@@ -104,42 +107,37 @@ def uploadArticlesToDB(articles, keyword):
             })
     
     # Create location rows
-    print(f"Found {len(locations)} locations...")
+    log(f"Found {len(locations)} locations...", 2)
     for location in locations:
         # Add location to locations
-        insertQuery = "INSERT into Locations(report_id, country, location) VALUES (%s, %s, %s)"
+        insertQuery = "INSERT into Locations(report_id, country, location) VALUES (%s, %s, %s) ON CONFLICT DO NOTHING"
         locationData = (location[REPORTID_K], location[COUNTRY_K], location[LOCATION_K])
-        print(cur.mogrify(insertQuery, locationData))
+        log(cur.mogrify(insertQuery, locationData), 3)
         cur.execute(insertQuery, locationData)
 
-    print(f"Found {len(diseases)} diseases...")
+    log(f"Found {len(diseases)} diseases...", 2)
     # Create disease rows
     for disease in diseases:
-        insertQuery = "INSERT into Report_diseases(disease_id, report_id) VALUES (%s, %s)"
+        insertQuery = "INSERT into Report_diseases(disease_id, report_id) VALUES (%s, %s) ON CONFLICT DO NOTHING"
         diseaseData = (disease[NAME_K], disease[REPORTID_K])
-        print(cur.mogrify(insertQuery, diseaseData))
+        log(cur.mogrify(insertQuery, diseaseData), 3)
         cur.execute(insertQuery, diseaseData)
 
-    print(f"Found {len(syndromes)} syndromes...")
+    log(f"Found {len(syndromes)} syndromes...", 2)
     # Create syndrome rows
     for syndrome in syndromes:
-        insertQuery = "INSERT into Report_syndromes(syndrome_id, report_id) VALUES (%s, %s)"
+        insertQuery = "INSERT into Report_syndromes(syndrome_id, report_id) VALUES (%s, %s) ON CONFLICT DO NOTHING"
         syndromeData = (syndrome[NAME_K], syndrome[REPORTID_K])
-        print(cur.mogrify(insertQuery, syndromeData))
+        log(cur.mogrify(insertQuery, syndromeData), 3)
         cur.execute(insertQuery, syndromeData)
 
-    print(f"Found {len(event_dates)} event_dates...")
+    log(f"Found {len(event_dates)} event_dates...", 2)
     # Create event_date rows
     for date in event_dates:
-        insertQuery = "INSERT into Report_times(report_id, time) VALUES (%s, %s)"
+        insertQuery = "INSERT into Report_times(report_id, time) VALUES (%s, %s) ON CONFLICT DO NOTHING"
         dateData = (date[REPORTID_K], date[EVENTDATE_K])
-        print(cur.mogrify(insertQuery, dateData))
+        log(cur.mogrify(insertQuery, dateData), 3)
         cur.execute(insertQuery, dateData)
-    
-    # Commit changes and exit
-    if not DEBUG:
-        connection.commit()
-    connection.close()
 
 
 # Get a database connection
@@ -160,14 +158,10 @@ def getDBConnection():
         print("Failed to get DB connection: " + e)
         return None
 
-# Lets you specify a file containing json to be uploaded
-if __name__ == "__main__":   
-    if len(sys.argv) != 2:
-        print("Usage: python3 uploadDatafile.py [filepath]")
-        exit(1)
-
+def uploadFromFile(filename):
+    
     # Load json file
-    dataFile= open(sys.argv[1])
+    dataFile= open(filename)
     data = json.load(dataFile)
 
     # Get article key
@@ -184,8 +178,36 @@ if __name__ == "__main__":
     # If no key, exit
     if (articleKey == None):
         print("No articles found")
-        exit(1)
+        return
     
     # Upload articles
+    log(f"Uploading {len(data[articleKey])} articles from: {filename}", 0)
     uploadArticlesToDB(data[articleKey], articleKey)
+    print(f"Finished uploading {filename}")
+
+# Controls logging
+def log(string, level):
+    if (LOGGING >= level):
+        print(string)
+
+
+# Lets you specify a file containing json to be uploaded
+if __name__ == "__main__":   
+    connection = getDBConnection()
+    if len(sys.argv) != 2:
+        print("Usage: python3 uploadDatafile.py [folderPath]")
+        exit(1)
+
+    #with concurrent.futures.ThreadPoolExecutor() as executor:
+    #    executor.map(uploadFromFile, glob.glob(sys.argv[1]))
+    for filename in glob.glob(sys.argv[1]):
+        uploadFromFile(filename)
+
+    log("Finished", 0)
+    # Commit changes and exit
+    if not DEBUG:
+        connection.commit()
+    connection.close()
+        
+
     
