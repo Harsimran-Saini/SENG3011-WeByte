@@ -1,8 +1,11 @@
 import spacy
+from spacy.lang.en.stop_words import STOP_WORDS
+from string import punctuation
 import re
 import json
 import requests
 from dateutil import parser
+from heapq import nlargest
 
 GEONAMES_USR = "webyte_seng3011"
 
@@ -74,16 +77,7 @@ DISEASE_LIST = ["unknown",
         "legionares",
         "listeriosis",
         "monkeypox",
-        "COVID-19",
-        "haemorrhagic fever",
-        "acute flacid paralysis",
-        "acute gastroenteritis",
-        "acute respiratory syndrome",
-        "influenza-like illness",
-        "acute fever and rash",
-        "fever of unknown origin",
-        "encephalitis",
-        "meningitis"]
+        "COVID-19"]
 
 SYNDROME_LIST = [
     "haemorrhagic fever",
@@ -102,6 +96,7 @@ LOCATION_BLACKLIST = [
 ]
 
 def reports(text):
+    report = {}    
     # Requires: python -m spacy download en_core_web_sm
     nlp = spacy.load("en_core_web_sm")
     #print(text)
@@ -112,7 +107,7 @@ def reports(text):
     # Find named entities, phrases and concepts
     #for entity in doc.ents:
     #    print(entity.text, entity.label_)
-    
+
     # Diseases mentioned in article
     diseases = []
     for word in DISEASE_LIST:
@@ -138,21 +133,61 @@ def reports(text):
             #print(f"Could not parse {date} as a date: {e}")
             pass
 
+    stopwords = list(STOP_WORDS)
+    tokens = [token.text for token in doc]
+    word_frequencies = {}
+    for word in doc:
+        if word.text.lower() not in stopwords:
+            if word.text.lower() not in punctuation:
+                if word.text not in word_frequencies.keys():
+                    word_frequencies[word.text] = 1
+                else:
+                    word_frequencies[word.text] += 1
+
+    max_frequency = max(word_frequencies.values())
+
+    for word in word_frequencies.keys():
+        word_frequencies[word] = word_frequencies[word]/max_frequency
+
+
+    sentence_tokens = [sent for sent in doc.sents]
+
+    sentence_scores = {}
+    for sent in sentence_tokens:
+        for word in sent:
+            if word.text.lower() in word_frequencies.keys():
+                if sent not in sentence_scores.keys():
+                    sentence_scores[sent] = word_frequencies[word.text.lower()]
+                else:
+                    sentence_scores[sent] += word_frequencies[word.text.lower()]
+
+    select_length = int(len(sentence_tokens)*0.3)
+
+    summary = nlargest(select_length, sentence_scores, key=sentence_scores.get)
+
+    final_summary = [ word.text for word in summary]
+    final_summary = ' '.join(final_summary)
+
+
     # Unique locations mentioned in article
     location_set = {entity.lemma_ for entity in doc.ents if entity.label_ == "GPE" and entity.lemma_.lower() not in LOCATION_BLACKLIST}
     locations = [{"location": l, "country": getCountry(l)} for l in location_set]
     #print(locations)
 
     report = {
-        "diseases": diseases,
-        "syndromes": syndromes,
-        "event_date": dates,
-        "locations": locations
+        "summary": final_summary,
+        "report": [{
+            "diseases": diseases,
+            "syndromes": syndromes,
+            "event_date": dates,
+            "locations": locations
+        }]
     } 
     #print(report)
 
     # Returns one report for now
-    return [report]
+    return report    
+
 
 locationCountryLookup = {} # Local cache of location/country pairs that have already been looked up so we dont waste requests
 # Get parent country of location from geonames
