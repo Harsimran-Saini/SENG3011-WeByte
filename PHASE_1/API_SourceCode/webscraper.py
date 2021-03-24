@@ -1,6 +1,5 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-import os
 from selenium.webdriver.common.by import By
 from urllib.request import urlopen
 from urllib.request import Request
@@ -155,21 +154,33 @@ def search_by_keyword (keyword, start=None, end=None):
             driver.get(page_url)
 
             # get the date
-            publish_date_paragraph = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "publish_date_html")))
+            publish_date_paragraph = WebDriverWait(driver, 90).until(EC.presence_of_element_located((By.CLASS_NAME, "publish_date_html")))
             # using regex to extract the date
             date_match = re.search(r"^Published Date: (\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})", publish_date_paragraph.text)
 
             # get the main text
-            main_text = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "text1")))
+            main_text = WebDriverWait(driver, 90).until(EC.presence_of_element_located((By.CLASS_NAME, "text1")))
             # main_text = driver.find_element_by_class_name('text1')
+            
+            main_text = main_text.text
+            
+            see_Also = re.search(r"\nSee Also\n(.*\n.*)*", main_text)
+            
+            if see_Also != None:
+                main_text = main_text.replace(see_Also[0], "")
+            
             main_text_formated = str(main_text.text).replace("\"", "\'")
+            
+            reports_response = reports(main_text_formated)
+            
             data = {
                 "archive_id": archive_id,
                 "headline": str(entry["fields"]["title"]).strip(),
                 "url": page_url,
                 "date": str(date_match.groups()[0]).strip(),
                 "main_text": main_text_formated,
-                "reports": reports(main_text_formated)
+                "summary": reports_response['summary'],
+                "reports": reports_response['report']
             }
             articles.append(data)
 
@@ -186,7 +197,7 @@ if __name__ == "__main__":
         name = key.replace("/", " ").replace("("," ").replace(")", " ").replace(".", " ").replace(",", " ").replace(" ", "+")
         name = "txtfiles/"+name+".txt"
         print(name)
-        my_response_json = search_by_keyword([key])
+        my_response_json = search_by_keyword(key)
         # write to a file --> need to change to write to the database
         with open(name, 'w') as outfile:
             json.dump(my_response_json, outfile)
