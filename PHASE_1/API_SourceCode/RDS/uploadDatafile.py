@@ -1,13 +1,15 @@
 import psycopg2
+from psycopg2.extras import execute_batch
 import sys
 import json
 import constants
 import glob
 import concurrent.futures
-# psql --host=database-1.c8iucjwjdzap.ap-southeast-2.rds.amazonaws.com --port=5432 --username=postgres --password --dbname=webyte
+from dateutil import parser
+# psql --host=database-1.c8iucjwjdzap.ap-southeast-2.rds.amazonaws.com --port=5432 --username=postgres --password --dbname=webyte_v2
 
 # Will not commit any changes to db
-DEBUG = False
+DEBUG = True
 LOGGING = 1 # Loggin level: 0 = none, 1 = minimal, 2 = more, 3 = all
 
 #Json keys
@@ -19,6 +21,7 @@ URL_K = "url"
 DATE_K = "date"
 ARTICLEID_K = "article_id"
 REPORTID_K = "report_id"
+SUMMARY_K = "summary"
 
 # Reports keys
 LOCATIONS_K = "locations"
@@ -35,21 +38,25 @@ def uploadArticlesToDB(articles, keyword):
         cur = connection.cursor()
     except Exception as e:
         print(e)
+        exit(1)
     
     log(f"Found {len(articles)} articles...", 1)
 
     # Upload articles
-    for article in articles:
-        log(f"Uploading: {article[HEADLINE_K]}", 2)
-        # ARTICLES: id, url, date_of_publication, headline, main_text
-        insertQuery = """INSERT into Articles(id, url, date_of_publication, headline, main_text) 
-                         VALUES (%s, %s, %s, %s, %s) 
+    insertQuery = """INSERT into Articles(id, url, date_of_publication, headline, main_text, summary) 
+                         VALUES (%s, %s, %s, %s, %s, %s) 
                          ON CONFLICT DO NOTHING"""
-        articleData = (article[ID_K], article[URL_K], article[DATE_K], article[HEADLINE_K], article[MAINTEXT_K])
-        log(cur.mogrify(insertQuery, articleData), 3)
-        cur.execute(insertQuery, articleData)
-        
+    # ARTICLES: id, url, date_of_publication, headline, main_text
+    articlesValues = [(article[ID_K],
+        article[URL_K],
+        parser.parse(article[DATE_K]),
+        article[HEADLINE_K],
+        article[MAINTEXT_K],
+        article[SUMMARY_K]) for article in articles]
 
+    psycopg2.extras.execute_batch(cur, insertQuery, articlesValues, len(articlesValues))
+        
+    print("done with articles")
         
     # Upload reports
     reports = []
@@ -66,13 +73,12 @@ def uploadArticlesToDB(articles, keyword):
             reports.append(report)
             n += 1
 
+    
+    # Reports
+    reportQuery = "INSERT into Reports(id, article_id) VALUES (%s, %s) ON CONFLICT DO NOTHING"
+    reportValues = [(report[ID_K], report[ARTICLEID_K]) for report in reports]
+    execute_batch(cur, reportQuery, reportValues, len(reportValues))
     for report in reports:
-        # REPORTS: id, article_id
-        insertQuery = "INSERT into Reports(id, article_id) VALUES (%s, %s) ON CONFLICT DO NOTHING"
-        reportData = (report[ID_K], report[ARTICLEID_K])
-        log(cur.mogrify(insertQuery, reportData), 3)
-        cur.execute(insertQuery, reportData)
-
         # Get list of locations
         for location in report[LOCATIONS_K]:
             location[REPORTID_K] = report[ID_K]
@@ -102,26 +108,29 @@ def uploadArticlesToDB(articles, keyword):
         # Get event dates
         for event_date in report[EVENTDATE_K]:
             event_dates.append({
-                EVENTDATE_K: event_date,
+                EVENTDATE_K: parser.parse(event_date),
                 REPORTID_K: report[ID_K]
             })
     
     # Create location rows
     log(f"Found {len(locations)} locations...", 2)
-    for location in locations:
-        # Add location to locations
-        insertQuery = "INSERT into Locations(report_id, country, location) VALUES (%s, %s, %s) ON CONFLICT DO NOTHING"
-        locationData = (location[REPORTID_K], location[COUNTRY_K], location[LOCATION_K])
-        log(cur.mogrify(insertQuery, locationData), 3)
-        cur.execute(insertQuery, locationData)
+    locationQuery = "INSERT into Locations(report_id, country, location) VALUES (%s, %s, %s) ON CONFLICT DO NOTHING"
+    locationValues = [
+        (location[REPORTID_K], location[COUNTRY_K], location[LOCATION_K])
+        for location in locations
+    ]
+    execute_batch(cur, locationQuery, locationValues)
 
-    log(f"Found {len(diseases)} diseases...", 2)
+
     # Create disease rows
-    for disease in diseases:
-        insertQuery = "INSERT into Report_diseases(disease_id, report_id) VALUES (%s, %s) ON CONFLICT DO NOTHING"
-        diseaseData = (disease[NAME_K], disease[REPORTID_K])
-        log(cur.mogrify(insertQuery, diseaseData), 3)
-        cur.execute(insertQuery, diseaseData)
+    log(f"Found {len(diseases)} diseases...", 2)
+    diseasesQuery = "INSERT into Report_diseases(disease_id, report_id) VALUES (%s, %s) ON CONFLICT DO NOTHING"
+    diseasesValues = [
+        (disease[NAME_K], disease[REPORTID_K])
+        for disease in diseases
+    ]
+    execute_batch(cur, diseasesQuery, diseasesValues)
+
 
     log(f"Found {len(syndromes)} syndromes...", 2)
     # Create syndrome rows
@@ -133,11 +142,12 @@ def uploadArticlesToDB(articles, keyword):
 
     log(f"Found {len(event_dates)} event_dates...", 2)
     # Create event_date rows
-    for date in event_dates:
-        insertQuery = "INSERT into Report_times(report_id, time) VALUES (%s, %s) ON CONFLICT DO NOTHING"
-        dateData = (date[REPORTID_K], date[EVENTDATE_K])
-        log(cur.mogrify(insertQuery, dateData), 3)
-        cur.execute(insertQuery, dateData)
+    eventsQuery = "INSERT into Report_times(report_id, time) VALUES (%s, %s) ON CONFLICT DO NOTHING"
+    eventsData = [
+       (date[REPORTID_K], date[EVENTDATE_K])
+       for date in event_dates
+    ]    
+    execute_batch(cur, eventsQuery, eventsData)
 
 
 # Get a database connection
@@ -146,7 +156,7 @@ def getDBConnection():
     PORT="5432"
     USR="postgres"
     REGION="ap-southeast-2"
-    DBNAME="webyte"
+    DBNAME="webyte_v2"
     PASSWORD="postgres"
 
     try:
@@ -206,6 +216,8 @@ if __name__ == "__main__":
     log("Finished", 0)
     # Commit changes and exit
     if not DEBUG:
+        connection.commit()
+    elif input("Commit?") == "y":
         connection.commit()
     connection.close()
         
