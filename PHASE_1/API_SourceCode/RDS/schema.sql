@@ -6,6 +6,7 @@ create table Articles (
     date_of_publication     timestamp,
     headline                text not null,
     main_text               text,
+    summary                 text,
 
     primary key (id)
 );
