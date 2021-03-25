@@ -225,8 +225,8 @@ def lambda_handler(event, context):
                         assert a or b or c
             tc.assertEqual(len(responseJson["unknown"]), len(expected["unknown"]))
             # must only scrape 3 articles!
-            tc.assertEqual(len(responseJson["unknown"]), 2)
-            for i in range (0,2):
+            tc.assertEqual(len(responseJson["unknown"]), 1)
+            for i in range (0,1):
                 tc.assertEqual(responseJson["unknown"][i]["archive_id"], expected["unknown"][i]["archive_id"])
                 tc.assertEqual(responseJson["unknown"][i]["headline"], expected["unknown"][i]["headline"])
                 tc.assertEqual(responseJson["unknown"][i]["url"], expected["unknown"][i]["url"])
@@ -272,7 +272,7 @@ def lambda_handler(event, context):
     print('    Test Passed = ' + test_scrape_free_keyword_no_date_restrictions())
     print('____________________________________Test 5____________________________________')
     print('    NOTE: WITH NEW ADDITIONS TO THE Database AND PROMED THE FOLLOWING MAY FAIL!')
-    print('    NOTE: Currently there are 2 new articles to add so this will add those :)!')
+    print('    NOTE: Currently there are 3 new articles to add so this will add those :)!')
     print('    Testing scrape a free keyword with all inputs provided:')
     print('    { }')
     print('    Test Passed = ' + test_update())
