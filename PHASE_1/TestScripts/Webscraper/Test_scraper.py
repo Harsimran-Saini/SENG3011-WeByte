@@ -183,75 +183,6 @@ def lambda_handler(event, context):
             # If you are here then assert has passed
             return "True"
 
-            
-            
-    def test_update():
-    
-        input_for_invoker = {}
-        response = client.invoke(
-            FunctionName='arn:aws:lambda:ap-southeast-2:733638017875:function:testing-sim',
-            InvocationType='RequestResponse',
-            Payload=json.dumps(input_for_invoker)
-            )
-        
-        responseJson = json.load(response['Payload'])
-        
-        with open('test_update', 'r') as infile:
-            expected = json.load(infile)
-            tc.assertEqual(len(responseJson["other"]), len(expected["other"]))
-            # must only scrape 3 articles!
-            tc.assertEqual(len(responseJson["other"]), 2)
-            for i in range (0,2):
-                tc.assertEqual(responseJson["other"][i]["archive_id"], expected["other"][i]["archive_id"])
-                tc.assertEqual(responseJson["other"][i]["headline"], expected["other"][i]["headline"])
-                tc.assertEqual(responseJson["other"][i]["url"], expected["other"][i]["url"])
-                tc.assertEqual(responseJson["other"][i]["date"], expected["other"][i]["date"])
-                tc.assertEqual(responseJson["other"][i]["main_text"], expected["other"][i]["main_text"])
-                tc.assertEqual(responseJson["other"][i]["summary"], expected["other"][i]["summary"])
-                tc.assertEqual(len(responseJson["other"][i]["reports"]), len(expected["other"][i]["reports"]))
-                for j in range(0, len(responseJson["other"][i]["reports"])):
-                    tc.assertListEqual(responseJson["other"][i]["reports"][j]["diseases"], expected["other"][i]["reports"][j]["diseases"])
-                    tc.assertListEqual(responseJson["other"][i]["reports"][j]["syndromes"], expected["other"][i]["reports"][j]["syndromes"])
-                    tc.assertListEqual(responseJson["other"][i]["reports"][j]["event_date"], expected["other"][i]["reports"][j]["event_date"])
-                    reports_responseJson = sorted(responseJson["other"][i]["reports"][j]["locations"], key = lambda i: (i['location'], i['country']))
-                    reports_expected = sorted(expected["other"][i]["reports"][j]["locations"], key = lambda i: (i['location'], i['country']))
-                    tc.assertEqual(len(reports_responseJson), len(reports_expected))
-                    for k in range(0,len(reports_responseJson)):
-                        tc.assertEqual(reports_responseJson[k]["location"], reports_expected[k]["location"])
-                        # Because of limitations on API calls the below may return "unknown" sometimes
-                        a = reports_responseJson[k]["country"] == reports_expected[k]["country"]
-                        b = reports_responseJson[k]["country"] == "unknown" 
-                        c = reports_expected[k]["country"] == "unknown"
-                        assert a or b or c
-            tc.assertEqual(len(responseJson["unknown"]), len(expected["unknown"]))
-            # must only scrape 3 articles!
-            tc.assertEqual(len(responseJson["unknown"]), 1)
-            for i in range (0,1):
-                tc.assertEqual(responseJson["unknown"][i]["archive_id"], expected["unknown"][i]["archive_id"])
-                tc.assertEqual(responseJson["unknown"][i]["headline"], expected["unknown"][i]["headline"])
-                tc.assertEqual(responseJson["unknown"][i]["url"], expected["unknown"][i]["url"])
-                tc.assertEqual(responseJson["unknown"][i]["date"], expected["unknown"][i]["date"])
-                tc.assertEqual(responseJson["unknown"][i]["main_text"], expected["unknown"][i]["main_text"])
-                tc.assertEqual(responseJson["unknown"][i]["summary"], expected["unknown"][i]["summary"])
-                tc.assertEqual(len(responseJson["unknown"][i]["reports"]), len(expected["unknown"][i]["reports"]))
-                for j in range(0, len(responseJson["unknown"][i]["reports"])):
-                    tc.assertListEqual(responseJson["unknown"][i]["reports"][j]["diseases"], expected["unknown"][i]["reports"][j]["diseases"])
-                    tc.assertListEqual(responseJson["unknown"][i]["reports"][j]["syndromes"], expected["unknown"][i]["reports"][j]["syndromes"])
-                    tc.assertListEqual(responseJson["unknown"][i]["reports"][j]["event_date"], expected["unknown"][i]["reports"][j]["event_date"])
-                    reports_responseJson = sorted(responseJson["unknown"][i]["reports"][j]["locations"], key = lambda i: (i['location'], i['country']))
-                    reports_expected = sorted(expected["unknown"][i]["reports"][j]["locations"], key = lambda i: (i['location'], i['country']))
-                    tc.assertEqual(len(reports_responseJson), len(reports_expected))
-                    for k in range(0,len(reports_responseJson)):
-                        tc.assertEqual(reports_responseJson[k]["location"], reports_expected[k]["location"])
-                        # Because of limitations on API calls the below may return "unknown" sometimes
-                        a = reports_responseJson[k]["country"] == reports_expected[k]["country"]
-                        b = reports_responseJson[k]["country"] == "unknown" 
-                        c = reports_expected[k]["country"] == "unknown"
-                        assert a or b or c
-            infile.close()
-            # If you are here then assert has passed
-            return "True"
-
     
     
     print('____________________________________Test 1____________________________________')
@@ -270,9 +201,3 @@ def lambda_handler(event, context):
     print('    Testing scrape a free keyword without number_of_articles_to_scrape input provided:')
     print('    { "number_of_articles_to_scrape": 3, "start_index": 0,"keyword": "other"}')
     print('    Test Passed = ' + test_scrape_free_keyword_no_date_restrictions())
-    print('____________________________________Test 5____________________________________')
-    print('    NOTE: WITH NEW ADDITIONS TO THE Database AND PROMED THE FOLLOWING MAY FAIL!')
-    print('    NOTE: Currently there are 3 new articles to add so this will add those :)!')
-    print('    Testing scrape a free keyword with all inputs provided:')
-    print('    { }')
-    print('    Test Passed = ' + test_update())
