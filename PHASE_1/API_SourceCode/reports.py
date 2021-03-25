@@ -132,6 +132,8 @@ def reports(text):
         except Exception as e:
             #print(f"Could not parse {date} as a date: {e}")
             pass
+    # Remove duplicate dates
+    dates = list({d for d in dates})
 
     stopwords = list(STOP_WORDS)
     tokens = [token.text for token in doc]
@@ -202,7 +204,7 @@ def getCountry(location):
             locationCountryLookup[location] = country
 
         return locationCountryLookup[location]
-    except:
+    except Exception:
         return 'unknown'
 
 
