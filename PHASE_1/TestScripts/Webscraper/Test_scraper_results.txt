@@ -1,1 +1,26 @@
+Response
+null
 
+Function Logs
+START RequestId: 8d42a6bc-12cd-4aa1-a005-743fb45594aa Version: $LATEST
+____________________________________Test 1____________________________________
+    Testing scrape a free keyword with all inputs provided:
+    { "start_date": "20200329", "end_date": "20210317","number_of_articles_to_scrape": 3,"start_index": 0,"keyword": "other"}
+    Test Passed = True
+____________________________________Test 2____________________________________
+    Testing scrape a free keyword with only 1 article in the date range:
+    { "start_date": "20200329", "end_date": "20210317","number_of_articles_to_scrape": 3,"start_index": 15,"keyword": "other"}
+    Test Passed = True
+____________________________________Test 3____________________________________
+    Testing scrape a free keyword with no articles in the date range:
+    { "start_date": "20200329", "end_date": "20210317","number_of_articles_to_scrape": 3,"start_index": 16,"keyword": "other"}
+    Test Passed = True
+____________________________________Test 4____________________________________
+    Testing scrape a free keyword without number_of_articles_to_scrape input provided:
+    { "number_of_articles_to_scrape": 3, "start_index": 0,"keyword": "other"}
+    Test Passed = True
+END RequestId: 8d42a6bc-12cd-4aa1-a005-743fb45594aa
+REPORT RequestId: 8d42a6bc-12cd-4aa1-a005-743fb45594aa	Duration: 48522.16 ms	Billed Duration: 48523 ms	Memory Size: 10000 MB	Max Memory Used: 95 MB	Init Duration: 398.07 ms
+
+Request ID
+8d42a6bc-12cd-4aa1-a005-743fb45594aa
