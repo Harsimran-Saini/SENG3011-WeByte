@@ -3,8 +3,7 @@ import psycopg2
 import sys
 import boto3
 import itertools
-
-
+from datetime import datetime, timedelta
 
 #article id endpoint- returns json of single article
 def lambda_handler(event, context):
@@ -12,6 +11,19 @@ def lambda_handler(event, context):
     response_json = {}
     articles = []
     
+    #time accessed
+    now = datetime.now() + timedelta(hours=11)
+    dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+    
+    #log information
+    log = {}
+    log['time_accessed'] = dt_string
+    log['data_source'] = "promedmail.org"
+    log['team_name'] = "We-Byte"
+    
+    response_json['log_output'] = log
+    
+
     #check if parameters are provided
     if (event['queryStringParameters'] == None):
         resObject = {}
@@ -19,6 +31,17 @@ def lambda_handler(event, context):
         resObject['headers'] = {}
         resObject['headers']['Content-Type'] = 'application/json'
         resObject['body'] = json.dumps({"Error": "Please enter an id parameter", "id": "Must be a valid article id i.e. /article?id=3915783" }, indent=2)
+        
+        logOutput = {}
+        logOutput['statusCode'] = 400
+        logOutput['headers'] = {}
+        logOutput['headers']['Content-Type'] = 'application/json'
+        logOutput['time_accessed'] = dt_string
+        logOutput['data_source'] = "promedmail.org"
+        logOutput['body'] = json.dumps({"Error": "Please enter an id parameter", "id": "Must be a valid article id i.e. /article?id=3915783" }, indent=2)
+        
+        print(json.dumps(logOutput))
+        
         return resObject 
     
     keys = event['queryStringParameters'].keys()
@@ -29,6 +52,17 @@ def lambda_handler(event, context):
         resObject['headers'] = {}
         resObject['headers']['Content-Type'] = 'application/json'
         resObject['body'] = json.dumps({"Error": "Please enter an id parameter", "id": "Must be a valid article id i.e. /article?id=3915783" }, indent=2)
+        
+        logOutput = {}
+        logOutput['statusCode'] = 400
+        logOutput['headers'] = {}
+        logOutput['headers']['Content-Type'] = 'application/json'
+        logOutput['time_accessed'] = dt_string
+        logOutput['data_source'] = "promedmail.org"
+        logOutput['body'] = json.dumps({"Error": "Please enter an id parameter", "id": "Must be a valid article id i.e. /article?id=3915783" }, indent=2)
+        
+        print(json.dumps(logOutput))
+        
         return resObject 
         
     #if summary is set to true
@@ -72,7 +106,12 @@ def lambda_handler(event, context):
             articleInfo['url'] = article[1]
             articleInfo['date'] = str(article[2])
             articleInfo['headline'] = article[3]
-            articleInfo[key] = article[4]
+            if (key == "main_text"):
+                articleInfo["main_text"] = article[4]
+                articleInfo["summary"] = ""
+            else:
+                articleInfo["main_text"] = ""
+                articleInfo["summary"] = article[4]
             
             #report id
             report_id = article[5]
@@ -128,6 +167,17 @@ def lambda_handler(event, context):
         resObject['headers'] = {}
         resObject['headers']['Content-Type'] = 'application/json'
         resObject['body'] = json.dumps(response_json)
+        
+        logOutput = {}
+        logOutput['statusCode'] = 200
+        logOutput['headers'] = {}
+        logOutput['headers']['Content-Type'] = 'application/json'
+        logOutput['time_accessed'] = dt_string
+        logOutput['data_source'] = "promedmail.org"
+        logOutput['body'] = json.dumps(response_json)
+        
+        print(json.dumps(logOutput))
+        
         return resObject
     except Exception as e:
         resObject = {}
@@ -136,4 +186,14 @@ def lambda_handler(event, context):
         resObject['headers']['Content-Type'] = 'application/json'
         resObject['body'] = {"Error": "Please enter valid arguments"}
         
+        logOutput = {}
+        logOutput['statusCode'] = 200
+        logOutput['headers'] = {}
+        logOutput['headers']['Content-Type'] = 'application/json'
+        logOutput['time_accessed'] = dt_string
+        logOutput['data_source'] = "promedmail.org"
+        logOutput['body'] = json.dumps(response_json)
+        
+        print(json.dumps(logOutput))
+    
         return resObject

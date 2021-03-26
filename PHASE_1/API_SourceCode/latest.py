@@ -3,11 +3,24 @@ import psycopg2
 import sys
 import boto3
 import itertools
+from datetime import datetime, timedelta
 
-#latest endpoint- returns json of top 50 latest articles
+#latest endpoint- returns json of top 50 (or specified) latest articles
 def lambda_handler(event, context):
     #url params
     response_json = {}
+    #time accessed
+    now = datetime.now() + timedelta(hours=11)
+    dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+    
+    #log information
+    log = {}
+    log['time_accessed'] = dt_string
+    log['data_source'] = "promedmail.org"
+    log['team_name'] = "We-Byte"
+    
+    response_json['log_output'] = log
+    
     articles = []
     flatten = itertools.chain.from_iterable
     #db connection info
@@ -25,7 +38,8 @@ def lambda_handler(event, context):
     conn = psycopg2.connect(host=ENDPOINT, port=PORT, dbname=DBNAME, user=USR, password="postgres")
     cur = conn.cursor()
     
-    #if summary is set to true
+    #handle params
+    number = 50
     text = "a.main_text"
     key = 'main_text'
     if (event['queryStringParameters'] != None):
@@ -33,8 +47,16 @@ def lambda_handler(event, context):
         if "summary" in keys and event['queryStringParameters']['summary'] == 'T':
             text = "a.summary"
             key = 'summary'
-        
-    query = "SELECT distinct(a.id), a.url, a.date_of_publication, a.headline, " + text + ", r.id from articles a join reports r on a.id = r.article_id ORDER BY a.date_of_publication DESC LIMIT 50;" 
+        if "n_articles" in keys:
+            try:
+                number = int(event['queryStringParameters']['n_articles'])
+            except Exception as e:
+                return {
+                    "Error": "key 'n_articles' must be an integer"
+                }
+    
+    
+    query = "SELECT distinct(a.id), a.url, a.date_of_publication, a.headline, " + text + ", r.id from articles a join reports r on a.id = r.article_id ORDER BY a.date_of_publication DESC LIMIT " + str(number) + ";" 
     cur.execute(query)
     articleRes = cur.fetchall()
     for article in articleRes:
@@ -44,7 +66,12 @@ def lambda_handler(event, context):
         articleInfo['url'] = article[1]
         articleInfo['date'] = str(article[2])
         articleInfo['headline'] = article[3]
-        articleInfo[key] = article[4]
+        if (key == "main_text"):
+            articleInfo["main_text"] = article[4]
+            articleInfo["summary"] = ""
+        else:
+            articleInfo["main_text"] = ""
+            articleInfo["summary"] = article[4]
         
         #report id
         report_id = article[5]
@@ -94,9 +121,20 @@ def lambda_handler(event, context):
         articles.append(articleInfo)
     response_json["articles"] = articles
     
+    
     resObject = {}
     resObject['statusCode'] = 200
     resObject['headers'] = {}
     resObject['headers']['Content-Type'] = 'application/json'
     resObject['body'] = json.dumps(response_json)
+    
+    logOutput = {}
+    logOutput['statusCode'] = 200
+    logOutput['headers'] = {}
+    logOutput['headers']['Content-Type'] = 'application/json'
+    logOutput['time_accessed'] = dt_string
+    logOutput['data_source'] = "promedmail.org"
+    logOutput['body'] = json.dumps(response_json)
+    
+    print(json.dumps(logOutput))
     return resObject
