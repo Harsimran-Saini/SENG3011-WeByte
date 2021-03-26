@@ -3,6 +3,7 @@ import boto3
 import psycopg2
 from ast import literal_eval
 import itertools
+from datetime import datetime, timedelta
 
 def lambda_handler(event, context):
     #url params
@@ -12,7 +13,19 @@ def lambda_handler(event, context):
     error = "false"
     flatten = itertools.chain.from_iterable
     res_json = {}
-
+    
+    #time accessed
+    now = datetime.now() + timedelta(hours=11)
+    dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+    
+    #log information
+    log = {}
+    log['time_accessed'] = dt_string
+    log['data_source'] = "promedmail.org"
+    log['team_name'] = "We-Byte"
+    
+    response_json['log_output'] = log
+    
     #if no params are supplied
     if (event['queryStringParameters'] == None):
         resObject = {}
@@ -20,7 +33,17 @@ def lambda_handler(event, context):
         resObject['headers'] = {}
         resObject['headers']['Content-Type'] = 'application/json'
         resObject['body'] = json.dumps({"Error": "Please enter a start and end date", "start_date": "Must be in format yyyy-MM-ddTHH:mm:ss", "end_date": "Must be in format yyyy-MM-ddTHH:mm:ss" }, indent=2)
-        print
+        
+        logOutput = {}
+        logOutput['statusCode'] = 200
+        logOutput['headers'] = {}
+        logOutput['headers']['Content-Type'] = 'application/json'
+        logOutput['time_accessed'] = dt_string
+        logOutput['data_source'] = "promedmail.org"
+        logOutput['body'] = json.dumps({"Error": "Please enter a start and end date", "start_date": "Must be in format yyyy-MM-ddTHH:mm:ss", "end_date": "Must be in format yyyy-MM-ddTHH:mm:ss" }, indent=2)
+        
+        print(json.dumps(logOutput))
+        
         return resObject 
 
     keys = event['queryStringParameters'].keys()
@@ -38,6 +61,17 @@ def lambda_handler(event, context):
         resObject['headers'] = {}
         resObject['headers']['Content-Type'] = 'application/json'
         resObject['body'] = json.dumps({"Error": error + "yyyy-MM-ddTHH:mm:ss"  }, indent = 2)
+        
+        logOutput = {}
+        logOutput['statusCode'] = 200
+        logOutput['headers'] = {}
+        logOutput['headers']['Content-Type'] = 'application/json'
+        logOutput['time_accessed'] = dt_string
+        logOutput['data_source'] = "promedmail.org"
+        logOutput['body'] = json.dumps({"Error": error + "yyyy-MM-ddTHH:mm:ss"  }, indent = 2)
+        
+        print(json.dumps(logOutput))
+        
         return resObject 
     
     start_date = event['queryStringParameters']['start_date']
@@ -256,4 +290,15 @@ def lambda_handler(event, context):
     resObject['headers'] = {}
     resObject['headers']['Content-Type'] = 'application/json'
     resObject['body'] = json.dumps(res_json)
+
+    logOutput = {}
+    logOutput['statusCode'] = 200
+    logOutput['headers'] = {}
+    logOutput['headers']['Content-Type'] = 'application/json'
+    logOutput['time_accessed'] = dt_string
+    logOutput['data_source'] = "promedmail.org"
+    logOutput['body'] = json.dumps(res_json)
+    
+    print(json.dumps(logOutput))
+        
     return resObject
