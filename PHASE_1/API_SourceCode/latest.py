@@ -3,11 +3,24 @@ import psycopg2
 import sys
 import boto3
 import itertools
+from datetime import datetime, timedelta
 
 #latest endpoint- returns json of top 50 latest articles
 def lambda_handler(event, context):
     #url params
     response_json = {}
+    #time accessed
+    now = datetime.now() + timedelta(hours=11)
+    dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+    
+    #log information
+    log = {}
+    log['time_accessed'] = dt_string
+    log['data_source'] = "promedmail.org"
+    log['team_name'] = "We-Byte"
+    
+    response_json['log_output'] = log
+    
     articles = []
     flatten = itertools.chain.from_iterable
     #db connection info
@@ -44,7 +57,12 @@ def lambda_handler(event, context):
         articleInfo['url'] = article[1]
         articleInfo['date'] = str(article[2])
         articleInfo['headline'] = article[3]
-        articleInfo[key] = article[4]
+        if (key == "main_text"):
+            articleInfo["main_text"] = article[4]
+            articleInfo["summary"] = ""
+        else:
+            articleInfo["main_text"] = ""
+            articleInfo["summary"] = article[4]
         
         #report id
         report_id = article[5]
@@ -94,9 +112,20 @@ def lambda_handler(event, context):
         articles.append(articleInfo)
     response_json["articles"] = articles
     
+    
     resObject = {}
     resObject['statusCode'] = 200
     resObject['headers'] = {}
     resObject['headers']['Content-Type'] = 'application/json'
     resObject['body'] = json.dumps(response_json)
+    
+    logOutput = {}
+    logOutput['statusCode'] = 200
+    logOutput['headers'] = {}
+    logOutput['headers']['Content-Type'] = 'application/json'
+    logOutput['time_accessed'] = dt_string
+    logOutput['data_source'] = "promedmail.org"
+    logOutput['body'] = json.dumps(response_json)
+    
+    print(json.dumps(logOutput))
     return resObject
