@@ -5,7 +5,7 @@ import boto3
 import itertools
 from datetime import datetime, timedelta
 
-#latest endpoint- returns json of top 50 latest articles
+#latest endpoint- returns json of top 50 (or specified) latest articles
 def lambda_handler(event, context):
     #url params
     response_json = {}
@@ -38,7 +38,8 @@ def lambda_handler(event, context):
     conn = psycopg2.connect(host=ENDPOINT, port=PORT, dbname=DBNAME, user=USR, password="postgres")
     cur = conn.cursor()
     
-    #if summary is set to true
+    #handle params
+    number = 50
     text = "a.main_text"
     key = 'main_text'
     if (event['queryStringParameters'] != None):
@@ -46,8 +47,16 @@ def lambda_handler(event, context):
         if "summary" in keys and event['queryStringParameters']['summary'] == 'T':
             text = "a.summary"
             key = 'summary'
-        
-    query = "SELECT distinct(a.id), a.url, a.date_of_publication, a.headline, " + text + ", r.id from articles a join reports r on a.id = r.article_id ORDER BY a.date_of_publication DESC LIMIT 50;" 
+        if "n_articles" in keys:
+            try:
+                number = int(event['queryStringParameters']['n_articles'])
+            except Exception as e:
+                return {
+                    "Error": "key 'n_articles' must be an integer"
+                }
+    
+    
+    query = "SELECT distinct(a.id), a.url, a.date_of_publication, a.headline, " + text + ", r.id from articles a join reports r on a.id = r.article_id ORDER BY a.date_of_publication DESC LIMIT " + str(number) + ";" 
     cur.execute(query)
     articleRes = cur.fetchall()
     for article in articleRes:
