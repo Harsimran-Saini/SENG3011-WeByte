@@ -56,8 +56,6 @@ def uploadArticlesToDB(articles, keyword):
 
     psycopg2.extras.execute_batch(cur, insertQuery, articlesValues, len(articlesValues))
         
-    print("done with articles")
-        
     # Upload reports
     reports = []
     locations = []
