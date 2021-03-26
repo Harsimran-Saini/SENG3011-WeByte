@@ -7,10 +7,6 @@ info:
     name: We Byte!
     email: z5208912@ad.unsw.edu.au
 servers:
-  # Added by API Auto Mocking Plugin
-  # Added by API Auto Mocking Plugin
-  - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/Seng-We-Byte/We-Byte/1.0.0
   - description: We-Byte API
     url: https://nsg2nkvz9l.execute-api.ap-southeast-2.amazonaws.com/we-byte
   
@@ -63,6 +59,7 @@ paths:
             type: string
           in: query
           name: location
+          example: "Australia"
           description: Location to search for
         - schema:
             type: string
@@ -82,7 +79,7 @@ paths:
             type: string
           in: query
           name: summary
-          description: Returns summary instead of main text
+          description: "Returns summary instead of main text (other field will remain as an empty field (eg. main_text: \"\")"
           example: "T"
   /latest-articles:
     get:
@@ -175,83 +172,23 @@ paths:
         '404':
           description: No Articles Found
       operationId: get-trending
-      description: Retrieve a list of all the latest articles
+      description: Retrieve a list of the latest articles
     parameters:
+      - schema:
+          type: integer
+        in: query
+        name: n_articles
+        description: Number of articles to return
+        example: 50
       - schema:
           type: string
         in: query
         name: summary
         description: Returns summary instead of main text
         example: "T"
-  /free-keyword:
-    get:
-      summary: Get Results From Other Keywords
-      tags: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/article'
-              examples:
-                Example:
-                  value:
-                    - url: "https://www.who.int/csr/don/17-january-2020-novel-coronavirus-japan-ex-china/en/"
-                      date_of_publication: "2020-01-17 xx:xx:xx"
-                      headline: "Novel Coronavirus – Japan (ex-China)"
-                      main_text: "On 15 January 2020, the Ministry of Health, Labour and Welfare, Japan (MHLW) reported an imported case of laboratory-confirmed 2019-novel coronavirus (2019-nCoV) from Wuhan, Hubei Province, China. The case-patient is male, between the age of 30-39 years, living in Japan. The case-patient travelled to Wuhan, China in late December and developed fever on 3 January 2020 while staying in Wuhan. He did not visit the Huanan Seafood Wholesale Market or any other live animal markets in Wuhan. He has indicated that he was in close contact with a person with pneumonia. On 6 January, he traveled back to Japan and tested negative for influenza when he visited a local clinic on the same day."
-                      reports:
-                        - diseases:
-                            - "2019-nCoV"
-                          syndromes:
-                            - "Fever of unknown Origin"
-                          event_date:
-                            - "2020-01-03 xx:xx:xx to 2020-01-15"
-                          locations:
-                            - country: "China"
-                              location: "Wuhan, Hubei Province"
-                            - country: "Japan"
-                              location: ""
-                No Results:
-                  value: []
-        '400':
-          description: Invalid Parameters
-        '404':
-          description: No Articles Found
-      operationId: get-specific_keyword
-      description: Gets a list of articles filtered by a specific keyword (not listed in the spec)
-      parameters:
-        - schema:
-            type: string
-          in: query
-          name: key_term
-          description: keyword to search for (not rquired to be stated in the spec)
-          required: true
-          example: eczema
-        - schema:
-            type: string
-          in: query
-          name: start_date
-          description: Start date for filtering search results
-          example: "2020-01-01"
-        - schema:
-            type: string
-          in: query
-          name: end_date
-          description: End date for filtering search results
-          example: "2021-03-26"
-        - schema:
-            type: number
-          in: query
-          name: number_of_articles_to_scrape
-          description: Number of articles to return
-          example: 2
   /article:
     get:
-      summary: Your GET endpoint
+      summary: Get article by ID 
       tags: []
       responses:
         '200':
@@ -301,7 +238,8 @@ components:
           url: 'https://promedmail.org/promed-post/?id=8224463'
           date_of_publication: '2021-03-03 14:04:20'
           headline: 'CORONAVIRUS DISEASE 2019 UPDATE (85): USA CHALLENGES IN DISEASE CONTROL, BRAZIL REINFECTION, WHO, GLOBAL'
-          main_text: Over the weekend both the Food and Drug Administration (FDA) and the Centers for Disease Control and Prevention (CDC) gave the green light to Johnson & Johnson's COVID-19 vaccine etc...
+          main_text: "Over the weekend both the Food and Drug Administration (FDA) and the Centers for Disease Control and Prevention (CDC) gave the green light to Johnson & Johnson's COVID-19 vaccine etc..."
+          summary: ""
           reports:
             - diseases:
                 - COVID-19
@@ -321,6 +259,8 @@ components:
         headline:
           type: string
         main_text:
+          type: string
+        summary:
           type: string
         reports:
           type: array
@@ -502,5 +442,3 @@ components:
       description: One of the given syndrome types
   parameters: {}
   securitySchemes: {}
-tags:
-  - name: Promedmail.org
