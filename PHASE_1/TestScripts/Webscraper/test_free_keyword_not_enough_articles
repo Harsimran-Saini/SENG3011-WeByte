@@ -1,0 +1,46 @@
+{
+  "other": [
+    {
+      "archive_id": "7163711",
+      "headline": "PRO/AH/EDR> Japanese encephalitis & other - India: (BR)",
+      "url": "https://promedmail.org/promed-post/?id=7163711",
+      "date": "2020-03-31 05:17:52",
+      "main_text": "JAPANESE ENCEPHALITIS AND OTHER - INDIA: (BIHAR)\n************************************************\nA ProMED-mail post\nhttp://www.promedmail.org\nProMED-mail is a program of the\nInternational Society for Infectious Diseases\nhttp://www.isid.org\n\nDate: Mon 30 Mar 2020\nSource: Zee News [edited]\nhttps://zeenews.india.com/india/child-dies-of-acute-encephalitis-syndrome-in-bihar-2272616.html\n\n\nA child died due to acute encephalitis syndrome (AES) in Bihar on Sunday (29 Mar 2020). 'A child has lost his life due to acute encephalitis syndrome at Sri Krishna Medical College & Hospital (SKMCH) in Muzaffarpur,' Dr SK Shahi, SKMCH superintendent said.\n\nThis is the 1st AES related death in the district this year [2020]. Last year [2019], over 140 children died due to AES in the district. As per official data, 121 deaths were reported at the government-run SKMCH, which handled the largest number of patients in the district, while 21 deaths were confirmed at the Kejriwal Hospital.\n\nAES is a viral disease that causes flu-like symptoms such as high fever, vomiting, and, in extreme cases, brain dysfunction, seizure, and inflammation of the heart and kidney.\n\n--\ncommunicated by:\nProMED-mail\n<promed@promedmail.org>\n\n[AES is a common ailment in children in northeastern India, especially in Bihar state.\n\nThe issue of the etiology of AES has been under discussion for a long time. AES has continued to be attributed to various etiologies, including Reye syndrome-like disease, possible Japanese encephalitis, enterovirus infection from polluted water, heatstroke, intoxication from lychee fruit consumption, and scrub typhus (_Orientia tsutsugamushi_).\n\nA recent publication states that dengue virus is one of the 3 commonest agents identified in AES, but existing surveillance for AES does not include routine testing for dengue.\n\nThe above report does not indicate whether any of the above etiologies have been ruled out or confirmed. Until the etiology (or etiologies) of these AES cases is determined, effective and efficient prevention of these cases will not be possible. The season in which AES cases occur is just beginning, and additional cases can be expected over the coming 6-7 months. - Mod.TY\n\nHealthMap/ProMED map available at:\nBihar State, India: http://healthmap.org/promed/p/364]",
+      "summary": "--\ncommunicated by:\nProMED-mail\n ProMED-mail is a program of the\nInternational Society for Infectious Diseases\nhttp://www.isid.org\n\n AES is a viral disease that causes flu-like symptoms such as high fever, vomiting, and, in extreme cases, brain dysfunction, seizure, and inflammation of the heart and kidney.\n\n As per official data, 121 deaths were reported at the government-run SKMCH, which handled the largest number of patients in the district, while 21 deaths were confirmed at the Kejriwal Hospital.\n\n AES has continued to be attributed to various etiologies, including Reye syndrome-like disease, possible Japanese encephalitis, enterovirus infection from polluted water, heatstroke, intoxication from lychee fruit consumption, and scrub typhus ( A ProMED-mail post\nhttp://www.promedmail.org\n A recent publication states that dengue virus is one of the 3 commonest agents identified in AES, but existing surveillance for AES does not include routine testing for dengue.\n\n A child has lost his life due to acute encephalitis syndrome at Sri Krishna Medical College & Hospital (SKMCH) in Muzaffarpur,' Dr SK Shahi, SKMCH superintendent said.\n\n Until the etiology (or etiologies) of these AES cases is determined, effective and efficient prevention of these cases will not be possible. The season in which AES cases occur is just beginning, and additional cases can be expected over the coming 6-7 months. Mon 30 Mar 2020\n A child died due to acute encephalitis syndrome (AES) in Bihar on Sunday (29 Mar 2020). ' [AES is a common ailment in children in northeastern India, especially in Bihar state.\n\n Zee News [edited]\nhttps://zeenews.india.com/india/child-dies-of-acute-encephalitis-syndrome-in-bihar-2272616.html\n\n\n HealthMap/ProMED map available at:\n (BIHAR)\n *\n Last year [2019], over 140 children died due to AES in the district. _Orientia tsutsugamushi_).\n\n AES related death in the district this year [2020]. >\n\n TY\n\n The above report does not indicate whether any of the above etiologies have been ruled out or confirmed.",
+      "reports": [
+        {
+          "diseases": [
+            "other",
+            "dengue"
+          ],
+          "syndromes": [
+            "encephalitis"
+          ],
+          "event_date": [
+            "2021-03-28 00:00:00",
+            "2020-03-25 00:00:00",
+            "2019-03-25 00:00:00"
+          ],
+          "locations": [
+            {
+              "location": "India",
+              "country": "India"
+            },
+            {
+              "location": "Muzaffarpur",
+              "country": "India"
+            },
+            {
+              "location": "AES",
+              "country": "Norway"
+            },
+            {
+              "location": "Bihar",
+              "country": "Hungary"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
