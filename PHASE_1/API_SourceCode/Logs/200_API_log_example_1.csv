@@ -1,5 +1,5 @@
 ﻿START ,RequestId: 49de2a60-3636-4a96-bd88-2291bdfbe239 Version: $LATEST
-"""statusCode""",200
+statusCode,200
 headers:Content-Type,application/json
 time_accessed,44281.6595
 data_source,promedmail.org
