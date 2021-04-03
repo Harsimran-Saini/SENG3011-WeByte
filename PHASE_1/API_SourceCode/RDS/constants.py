@@ -1,6 +1,3 @@
-from uploadDatafile import getDBConnection
-
-DEBUG = False
 DISEASE_LIST = ["unknown",
         "other",
         "anthrax cutaneous",
@@ -92,23 +89,25 @@ SYNDROME_LIST = [
     "meningitis",
 ]
 
-if __name__ == "__main__":
-    conn = getDBConnection()
-    cur = conn.cursor()
+# Code for uploading these disease and syndrome lists into the database
+# from uploadDatafile import getDBConnection
+# if __name__ == "__main__":
+#     conn = getDBConnection()
+#     cur = conn.cursor()
 
-    # Upload diseases
-    for disease in DISEASE_LIST:
-        insertQuery = "INSERT into Diseases(name) VALUES (%s)"
-        disease = (disease,)
-        print(cur.mogrify(insertQuery, disease))
-        cur.execute(insertQuery, disease)
+#     # Upload diseases
+#     for disease in DISEASE_LIST:
+#         insertQuery = "INSERT into Diseases(name) VALUES (%s)"
+#         disease = (disease,)
+#         print(cur.mogrify(insertQuery, disease))
+#         cur.execute(insertQuery, disease)
     
-    for syndrome in SYNDROME_LIST:
-        insertQuery = "INSERT into Syndromes(name) VALUES (%s)"
-        syndrome = (syndrome,)
-        print(cur.mogrify(insertQuery, syndrome))
-        cur.execute(insertQuery, syndrome)
+#     for syndrome in SYNDROME_LIST:
+#         insertQuery = "INSERT into Syndromes(name) VALUES (%s)"
+#         syndrome = (syndrome,)
+#         print(cur.mogrify(insertQuery, syndrome))
+#         cur.execute(insertQuery, syndrome)
     
-    if not DEBUG:
-        conn.commit()
-    conn.close()
+#     if not DEBUG:
+#         conn.commit()
+#     conn.close()

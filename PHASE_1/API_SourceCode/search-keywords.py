@@ -3,6 +3,8 @@ import boto3
 import psycopg2
 from ast import literal_eval
 import itertools
+from datetime import datetime, timedelta
+from dateutil.parser import parse
 
 def lambda_handler(event, context):
     #url params
@@ -12,7 +14,19 @@ def lambda_handler(event, context):
     error = "false"
     flatten = itertools.chain.from_iterable
     res_json = {}
-
+    
+    #time accessed
+    now = datetime.now() + timedelta(hours=11)
+    dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+    
+    #log information
+    log = {}
+    log['time_accessed'] = dt_string
+    log['data_source'] = "promedmail.org"
+    log['team_name'] = "We-Byte"
+    
+    res_json['log_output'] = log
+    
     #if no params are supplied
     if (event['queryStringParameters'] == None):
         resObject = {}
@@ -20,7 +34,17 @@ def lambda_handler(event, context):
         resObject['headers'] = {}
         resObject['headers']['Content-Type'] = 'application/json'
         resObject['body'] = json.dumps({"Error": "Please enter a start and end date", "start_date": "Must be in format yyyy-MM-ddTHH:mm:ss", "end_date": "Must be in format yyyy-MM-ddTHH:mm:ss" }, indent=2)
-        print
+        
+        logOutput = {}
+        logOutput['statusCode'] = 200
+        logOutput['headers'] = {}
+        logOutput['headers']['Content-Type'] = 'application/json'
+        logOutput['time_accessed'] = dt_string
+        logOutput['data_source'] = "promedmail.org"
+        logOutput['body'] = json.dumps({"Error": "Please enter a start and end date", "start_date": "Must be in format yyyy-MM-ddTHH:mm:ss", "end_date": "Must be in format yyyy-MM-ddTHH:mm:ss" }, indent=2)
+        
+        print(json.dumps(logOutput))
+        
         return resObject 
 
     keys = event['queryStringParameters'].keys()
@@ -30,7 +54,13 @@ def lambda_handler(event, context):
         error = "Please enter a start date in the format: start_date="
     elif "end_date" not in keys: 
         error = "Please enter an end date in the format: end_date="
+    else:
+        if not validDateString(event['queryStringParameters']['start_date']) or not validDateString(event['queryStringParameters']['end_date']):
+            error = "start_date and end_date must be in the format "
+        if not checkEnd(event['queryStringParameters']['start_date'], event['queryStringParameters']['end_date']):
+            error = "end_date must be greater or equal to start date in the format "
 
+    
     #throw error
     if error != "false":
         resObject = {}
@@ -38,6 +68,17 @@ def lambda_handler(event, context):
         resObject['headers'] = {}
         resObject['headers']['Content-Type'] = 'application/json'
         resObject['body'] = json.dumps({"Error": error + "yyyy-MM-ddTHH:mm:ss"  }, indent = 2)
+        
+        logOutput = {}
+        logOutput['statusCode'] = 200
+        logOutput['headers'] = {}
+        logOutput['headers']['Content-Type'] = 'application/json'
+        logOutput['time_accessed'] = dt_string
+        logOutput['data_source'] = "promedmail.org"
+        logOutput['body'] = json.dumps({"Error": error + "yyyy-MM-ddTHH:mm:ss"  }, indent = 2)
+        
+        print(json.dumps(logOutput))
+        
         return resObject 
     
     start_date = event['queryStringParameters']['start_date']
@@ -107,7 +148,12 @@ def lambda_handler(event, context):
                 articleInfo['url'] = article[1]
                 articleInfo['date'] = str(article[2])
                 articleInfo['headline'] = article[3]
-                articleInfo[key] = article[4]
+                if (key == "main_text"):
+                    articleInfo["main_text"] = article[4]
+                    articleInfo["summary"] = ""
+                else:
+                    articleInfo["main_text"] = ""
+                    articleInfo["summary"] = article[4]
                 
                 #report id
                 report_id = article[5]
@@ -197,7 +243,12 @@ def lambda_handler(event, context):
             articleInfo['url'] = article[1]
             articleInfo['date'] = str(article[2])
             articleInfo['headline'] = article[3]
-            articleInfo[key] = article[4]
+            if (key == "main_text"):
+                articleInfo["main_text"] = article[4]
+                articleInfo["summary"] = ""
+            else:
+                articleInfo["main_text"] = ""
+                articleInfo["summary"] = article[4]
             
             #report id
             report_id = article[5]
@@ -256,4 +307,28 @@ def lambda_handler(event, context):
     resObject['headers'] = {}
     resObject['headers']['Content-Type'] = 'application/json'
     resObject['body'] = json.dumps(res_json)
+
+    logOutput = {}
+    logOutput['statusCode'] = 200
+    logOutput['headers'] = {}
+    logOutput['headers']['Content-Type'] = 'application/json'
+    logOutput['time_accessed'] = dt_string
+    logOutput['data_source'] = "promedmail.org"
+    logOutput['body'] = json.dumps(res_json)
+    
+    print(json.dumps(logOutput))
+        
     return resObject
+    
+def validDateString(date_string):
+    try:
+        parse(date_string)
+        return True
+    except Exception:
+        return False
+        
+def checkEnd(start, end):
+    if (end < start):
+        return False
+    else:
+        return True
