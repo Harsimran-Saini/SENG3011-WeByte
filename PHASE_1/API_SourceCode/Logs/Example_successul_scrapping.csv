@@ -1,0 +1,201 @@
+timestamp,message
+1616737554726,"LOG: Scraping: https://promedmail.org/promed-post/?id=2506059
+"
+1616737585276,"LOG: Timeout Exception while scraping: https://promedmail.org/promed-post/?id=2506059 article skipped
+"
+1616737585276,"LOG: Scraping: https://promedmail.org/promed-post/?id=2201197
+"
+1616737589910,"LOG: Adding new articles to Database
+"
+1616737589952,"LOG: Function Exiting
+"
+1616737590035,"END RequestId: 93119608-8382-444f-8323-4c5a516e4aa1
+"
+1616737590035,"REPORT RequestId: 93119608-8382-444f-8323-4c5a516e4aa1	Duration: 187805.01 ms	Billed Duration: 187806 ms	Memory Size: 10240 MB	Max Memory Used: 329 MB	Init Duration: 475.25 ms	
+"
+1616737729746,"START RequestId: 26f01cfc-6c33-4de9-875d-2886ca149e98 Version: $LATEST
+"
+1616737731033,"LOG: UPDATING ALL KEYWORDS onto Database!
+"
+1616737731033,"LOG: Finding articles for the following keyword: unknown
+"
+1616737731453,"LOG: Articles on promed about unknown = 78
+"
+1616737731871,"LOG: UPDATING ALL KEYWORDS onto Database!
+"
+1616737731871,"LOG: Finding articles for the following keyword: other
+"
+1616737732273,"LOG: Articles on promed about other = 319
+"
+1616737733197,"LOG: UPDATING ALL KEYWORDS onto Database!
+"
+1616737733197,"LOG: Finding articles for the following keyword: anthrax cutaneous
+"
+1616737733601,"LOG: Articles on promed about anthrax cutaneous = 3
+"
+1616737734007,"LOG: UPDATING ALL KEYWORDS onto Database!
+"
+1616737734007,"LOG: Finding articles for the following keyword: anthrax gastrointestinous
+"
+1616737734411,"LOG: Articles on promed about anthrax gastrointestinous = 0
+"
+1616737734411,"anthrax gastrointestinous: no articles!
+"
+1616737734411,"LOG: UPDATING ALL KEYWORDS onto Database!
+"
+1616737734411,"LOG: Finding articles for the following keyword: anthrax inhalation
+"
+1616737734812,"LOG: Articles on promed about anthrax inhalation = 6
+"
+1616737735212,"LOG: UPDATING ALL KEYWORDS onto Database!
+"
+1616737735212,"LOG: Finding articles for the following keyword: botulism
+"
+1616737735623,"LOG: Articles on promed about botulism = 692
+"
+1616737736531,"LOG: UPDATING ALL KEYWORDS onto Database!
+"
+1616737736531,"LOG: Finding articles for the following keyword: brucellosis
+"
+1616737736936,"LOG: Articles on promed about brucellosis = 382
+"
+1616737737856,"LOG: UPDATING ALL KEYWORDS onto Database!
+"
+1616737737856,"LOG: Finding articles for the following keyword: chikungunya
+"
+1616737738267,"LOG: Articles on promed about chikungunya = 639
+"
+1616737739184,"LOG: UPDATING ALL KEYWORDS onto Database!
+"
+1616737739184,"LOG: Finding articles for the following keyword: cholera
+"
+1616737739586,"LOG: Articles on promed about cholera = 1455
+"
+1616737740729,"LOG: UPDATING ALL KEYWORDS onto Database!
+"
+1616737740729,"LOG: Finding articles for the following keyword: cryptococcosis
+"
+1616737741131,"LOG: Articles on promed about cryptococcosis = 3
+"
+1616737741536,"LOG: UPDATING ALL KEYWORDS onto Database!
+"
+1616737741536,"LOG: Finding articles for the following keyword: cryptosporidiosis
+"
+1616737741945,"LOG: Articles on promed about cryptosporidiosis = 123
+"
+1616737742598,"LOG: UPDATING ALL KEYWORDS onto Database!
+"
+1616737742598,"LOG: Finding articles for the following keyword: crimean-congo haemorrhagic fever
+"
+1616737743007,"LOG: Articles on promed about crimean-congo haemorrhagic fever = 0
+"
+1616737743007,"crimean-congo haemorrhagic fever: no articles!
+"
+1616737743007,"LOG: UPDATING ALL KEYWORDS onto Database!
+"
+1616737743007,"LOG: Finding articles for the following keyword: dengue
+"
+1616737743413,"LOG: Articles on promed about dengue = 1414
+"
+1616737744557,"LOG: UPDATING ALL KEYWORDS onto Database!
+"
+1616737744557,"LOG: Finding articles for the following keyword: diphteria
+"
+1616737744961,"LOG: Articles on promed about diphteria = 0
+"
+1616737744961,"diphteria: no articles!
+"
+1616737744961,"LOG: UPDATING ALL KEYWORDS onto Database!
+"
+1616737744961,"LOG: Finding articles for the following keyword: ebola haemorrhagic fever
+"
+1616737745378,"LOG: Articles on promed about ebola haemorrhagic fever = 1
+"
+1616737745777,"LOG: UPDATING ALL KEYWORDS onto Database!
+"
+1616737745777,"LOG: Finding articles for the following keyword: ehec (e.coli)
+"
+1616737746181,"LOG: Articles on promed about ehec (e.coli) = 1
+"
+1616737746580,"LOG: UPDATING ALL KEYWORDS onto Database!
+"
+1616737746580,"LOG: Finding articles for the following keyword: enterovirus 71 infection
+"
+1616737746978,"LOG: Articles on promed about enterovirus 71 infection = 0
+"
+1616737746978,"enterovirus 71 infection: no articles!
+"
+1616737746978,"LOG: UPDATING ALL KEYWORDS onto Database!
+"
+1616737746978,"LOG: Finding articles for the following keyword: influenza a/h5n1
+"
+1616737747381,"LOG: Articles on promed about influenza a/h5n1 = 497
+"
+1616737748280,"LOG: UPDATING ALL KEYWORDS onto Database!
+"
+1616737748280,"LOG: Finding articles for the following keyword: influenza a/h7n9
+"
+1616737748685,"LOG: Articles on promed about influenza a/h7n9 = 449
+"
+1616737749636,"LOG: UPDATING ALL KEYWORDS onto Database!
+"
+1616737749636,"LOG: Finding articles for the following keyword: influenza a/h9n2
+"
+1616737750037,"LOG: Articles on promed about influenza a/h9n2 = 34
+"
+1616737750441,"LOG: UPDATING ALL KEYWORDS onto Database!
+"
+1616737750441,"LOG: Finding articles for the following keyword: influenza a/h1n1
+"
+1616737750842,"LOG: Articles on promed about influenza a/h1n1 = 459
+"
+1616737751790,"LOG: UPDATING ALL KEYWORDS onto Database!
+"
+1616737751790,"LOG: Finding articles for the following keyword: influenza a/h1n2
+"
+1616737752193,"LOG: Articles on promed about influenza a/h1n2 = 8
+"
+1616737752597,"LOG: UPDATING ALL KEYWORDS onto Database!
+"
+1616737752597,"LOG: Finding articles for the following keyword: influenza a/h3n5
+"
+1616737752997,"LOG: Articles on promed about influenza a/h3n5 = 0
+"
+1616737752997,"influenza a/h3n5: no articles!
+"
+1616737752997,"LOG: UPDATING ALL KEYWORDS onto Database!
+"
+1616737752997,"LOG: Finding articles for the following keyword: influenza a/h3n2
+"
+1616737753401,"LOG: Articles on promed about influenza a/h3n2 = 101
+"
+1616737754025,"LOG: UPDATING ALL KEYWORDS onto Database!
+"
+1616737754025,"LOG: Finding articles for the following keyword: influenza a/h2n2
+"
+1616737754428,"LOG: Articles on promed about influenza a/h2n2 = 3
+"
+1616737754829,"LOG: UPDATING ALL KEYWORDS onto Database!
+"
+1616737754829,"LOG: Finding articles for the following keyword: hand, foot and mouth disease
+"
+1616737755230,"LOG: Articles on promed about hand, foot and mouth disease = 313
+"
+1616737756127,"LOG: Comparing article IDs to the Database to check which articles are on the database already
+"
+1616737756736,"LOG: Article Ids not on Database =
+"
+1616737756736,"{'unknown': [], 'other': [], 'anthrax cutaneous': [], 'anthrax inhalation': [], 'botulism': [], 'brucellosis': [], 'chikungunya': [], 'cholera': ['2506059'], 'cryptococcosis': [], 'cryptosporidiosis': [], 'dengue': [], 'ebola haemorrhagic fever': [], 'ehec (e.coli)': [], 'influenza a/h5n1': [], 'influenza a/h7n9': [], 'influenza a/h9n2': [], 'influenza a/h1n1': [], 'influenza a/h1n2': [], 'influenza a/h3n2': [], 'influenza a/h2n2': [], 'hand, foot and mouth disease': []}
+"
+1616737756736,"LOG: Scraping: https://promedmail.org/promed-post/?id=2506059
+"
+1616737788233,"LOG: Timeout Exception while scraping: https://promedmail.org/promed-post/?id=2506059 article skipped
+"
+1616737788233,"LOG: Adding new articles to Database
+"
+1616737788254,"LOG: Function Exiting
+"
+1616737788336,"END RequestId: 26f01cfc-6c33-4de9-875d-2886ca149e98
+"
+1616737788336,"REPORT RequestId: 26f01cfc-6c33-4de9-875d-2886ca149e98	Duration: 58588.11 ms	Billed Duration: 58589 ms	Memory Size: 10240 MB	Max Memory Used: 329 MB	
+"
