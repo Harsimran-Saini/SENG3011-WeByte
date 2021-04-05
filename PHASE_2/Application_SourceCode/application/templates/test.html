@@ -1,0 +1,71 @@
+<!doctype html>
+<head>
+    <title>Hello from Flask</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+
+<main>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="padding: 0px 10px 0px 10px;">
+    <a class="navbar-brand" href="#">
+      <img src="https://user-images.githubusercontent.com/1768820/70484001-3e907c00-1a9f-11ea-94c2-f78bb4a0ff4b.png" alt="" width="30" height="30">
+        Analytica
+    </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link active" href="#">Home</a>
+          <a class="nav-item nav-link" href="#">Analyse</a>
+          <a class="nav-item nav-link" href="#">About</a>
+        </div>
+      </div>
+    </nav>
+
+    <div id="container" style="padding: 0px 10px 0px 10px; margin-top: 15px;" >
+        <div>
+            <h3>About Us</h3>
+            <p>
+                Analytica was launched in 2021 by WeByte as a scientific consulting firm dedicated to solving quantitative and qualitative problems with rigour and creativity. Since then, we have provided data and modelling science services to projects in industries from agriculture to fitness. We have produced models, strategic analyses and decision support methodologies that guide hundreds of businesses every year.
+            </p>
+            <hr/>
+        </div>
+
+        <h3>
+            COVID-19 Analyser
+        </h3>
+        <p>
+            Adjust parameters to analyse the correlation between COVID-19 and other variables. You can input the span of time you want to analyse as well as what variables to analyse.
+        </p>
+
+        <div style="display:flex;">
+            <button class="btn btn-primary" style="width:100%; margin-right: 10px;">
+                Add Data
+            </button>
+
+            <input type="datetime" class="form-control form-control-sm" placeholder="Start Date" style="margin-right: 10px;">
+            <input type="datetime" class="form-control form-control-sm" placeholder="End Date">
+        </div>
+
+        <hr/>
+
+<!--        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">-->
+<!--          <option selected>Open this select menu</option>-->
+<!--          <option value="1">One</option>-->
+<!--          <option value="2">Two</option>-->
+<!--          <option value="3">Three</option>-->
+<!--        </select>-->
+
+        <div>
+          <canvas id="stockChart"></canvas>
+        </div>
+
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="../static/graph.js"></script>
