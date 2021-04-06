@@ -1,8 +1,9 @@
 import requests
 import pandas as pd
+import numpy as np
 import json
 import re
-from extract_CSV_data import *
+# from extract_CSV_data import *
 """
 Description:
 
@@ -31,8 +32,7 @@ def getConfirmedCovidCases(country,start_date,end_date, daily=True):
         #gets the cases from the start of each specified date. So end date not inclusive
         param = {"from":f"{start_date}T00:00:00Z", "to":f"{end_date}T00:00:00Z"}
         r = requests.get(f"https://api.covid19api.com/country/{country}/status/confirmed", params=param)
-        print(r.json)
-        data= r.json()
+        data = r.json()
         time = []
         cases = []
 
@@ -46,15 +46,12 @@ def getConfirmedCovidCases(country,start_date,end_date, daily=True):
                     print("Can't get valid date from API country confimred cases response")
                     raise
 
+                date = np.datetime64(date)
                 time.append(date)
                 cases.append(i["Cases"])
 
         d = {"Date":time, "Cases":cases}
         df = pd.DataFrame(data=d)
-        df = df.groupby("Date").sum()
-        print(df)
-        #export as csv file
-        fileName=f"ConfirmedCovidCases_{country}.csv"
-        df.to_csv(fileName, index=True)
+        df = df.groupby("Date", as_index=False).sum()
 
-        extractData(fileName)
+        return df

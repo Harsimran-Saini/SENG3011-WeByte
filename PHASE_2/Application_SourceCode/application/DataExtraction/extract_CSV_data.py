@@ -35,10 +35,10 @@ Note:
     Javascript object literal which is required for Chart js. The quotes ("")
     around the key in the dumped dict might cause issues if used directly.
 """
-def extractData(dataSource):
-
+def extractData(df):
     extractedData = []
-    df = pd.read_csv(dataSource)
+
+    print(df.columns)
 
     #set coloumn headings to x , y
     df.columns = ["x","y"]
@@ -66,5 +66,4 @@ def extractData(dataSource):
         #append the point object to the extracted data list
         extractedData.append(point)
 
-    with open(f"{dataSource}_extractedData.json", "w") as file:
-        json.dump(extractedData, file)
+    return extractedData
