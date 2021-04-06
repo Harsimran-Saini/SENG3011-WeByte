@@ -4,7 +4,7 @@ import Styles from './MapStyle';
 
 const AnyReactComponent: any = ({text}: any) => <div>{text}</div>;
 
-const SimpleMap = (props: any) => {
+const Map = (props: any) => {
     const mapOptions = {
       styles: Styles.styles,
       minZoom: 2.5,
@@ -30,4 +30,4 @@ const SimpleMap = (props: any) => {
     );
 }
 
-export default SimpleMap;
+export default Map;

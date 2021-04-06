@@ -1,16 +1,16 @@
 import React from 'react';
 import logo from './logo.svg';
 import Map from "./Map";
-import Navbar from "./Navbar";
+import Navbar, { Routes } from "./Navbar";
+import { BrowserRouter as Router } from 'react-router-dom';
 
 function Main() {
   return (
     <div className="Main">
       <body>
-        <Navbar/>
-        <div id="mapContainer">
-            <Map/>
-        </div>
+        <Router>
+          <Routes/>
+        </Router>
       </body>
     </div>
   );
