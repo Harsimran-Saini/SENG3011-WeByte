@@ -8,11 +8,11 @@ import Styles from './MapStyle';
 import { Line } from "react-chartjs-2";
 
 const data = {
-  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
   datasets: [
     {
-      label: "First dataset",
-      data: [33, 53, 85, 41, 44, 65],
+      label: "Global Deaths",
+      data: [3323, 53233, 85333, 412323, 44123, 65232, 10332, 13023, 29302, 2839283, 28392833, 2839283],
       fill: true,
       backgroundColor: "rgba(75,192,192,0.2)",
       borderColor: "rgba(75,192,192,1)"
@@ -62,7 +62,7 @@ const Main = () => {
 
           <div className="card">
             <div className="card_inner">
-              <p className="text-primary-p">Number of Global Cases Recovered</p>
+              <p className="text-primary-p">Global COVID-19 Deaths</p>
               <hr></hr>
               <br></br>
               <span className="font-bold text-title">2467</span>
@@ -71,7 +71,7 @@ const Main = () => {
 
           <div className="card">
             <div className="card_inner">
-              <p className="text-primary-p">Number of Global Deaths</p>
+              <p className="text-primary-p">Global COVID-19 Vaccinations</p>
               <hr></hr>
               {/* <br></br>
               <span className="font-bold text-title">340</span> */}
@@ -87,7 +87,8 @@ const Main = () => {
           <div className="charts__left">
             <div className="charts__left__title">
               <div>
-                <h1><i class="fa fa-map-marker"></i>    Health Map</h1>
+                <h1><i class="fa fa-signal"></i>    Regression Analysis</h1>
+                {/* <h1><i class="fa fa-map-marker"></i>    Health Map</h1> */}
               </div>
 
             </div>
@@ -109,33 +110,12 @@ const Main = () => {
           <div className="charts__right">
             <div className="charts__right__title">
               <div>
-                {/* <h1>Stats Reports</h1>
-                <p>Cupertino, California, USA</p> */}
-              </div>
-              <i className="fa fa-usd" aria-hidden="true"></i>
-            </div>
-
-            <div className="charts__right__cards">
-              <div className="card1">
-                {/* <h1>Income</h1>
-                <p>$75,300</p> */}
-              </div>
-
-              <div className="card2">
-                {/* <h1>Sales</h1>
-                <p>$124,200</p> */}
-              </div>
-
-              <div className="card3">
-                {/* <h1>Users</h1>
-                <p>3900</p> */}
-              </div>
-
-              <div className="card4">
-                {/* <h1>Orders</h1>
-                <p>1881</p> */}
+                <h1><i class="fa fa-edit"></i>      Google Sheets Template</h1>
               </div>
             </div>
+            <hr></hr>
+            <iframe title="Google Sheets Template" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRlw_9hbBksRs9MfxY2J3AMZd4nwhssHxuNBBIyInRj3rRe6YV_GvXohMErj1b2YNo6ZV5a0tr7hXn4/pubhtml?widget=true&amp;headers=false">Template</iframe>
+
           </div>
         </div>
         {/* <!-- CHARTS ENDS HERE --> */}

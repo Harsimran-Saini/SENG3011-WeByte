@@ -65,6 +65,7 @@ main {
     padding: 25px;
     border-radius: 5px;
     background: #ffffff;
+    width: 120%;
     box-shadow: 5px 5px 13px #ededed, -5px -5px 13px #ffffff;
   }
   
@@ -87,11 +88,17 @@ main {
   
   .charts__right {
     padding: 25px;
+    margin-left: 25%;
     border-radius: 5px;
     background: #ffffff;
     box-shadow: 5px 5px 13px #ededed, -5px -5px 13px #ffffff;
   }
   
+  
+  .charts__right > iframe {
+    width: 100%;
+    height: 85%
+  }
   .charts__right__title {
     display: flex;
     align-items: center;
@@ -100,7 +107,7 @@ main {
   
   .charts__right__title > div > h1 {
     font-size: 24px;
-    color: #2e4a66;
+    color: #c9e7f0;
     margin-bottom: 5px;
   }
   
@@ -117,6 +124,44 @@ main {
     margin-top: 30px;
   }
   
+
+  
+  .charts__bottom__cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-top: 30px;
+  }
+
+  @media only screen and (max-width: 855px) {
+    .main__cards {
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-bottom: 0;
+    }
+  
+    .charts {
+      grid-template-columns: 1fr;
+      margin-top: 30px;
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   .card1 {
     background: #d1ecf1;
     color: #35a4ba;
@@ -151,17 +196,4 @@ main {
     padding: 25px;
     border-radius: 5px;
     font-size: 14px;
-  }
-  
-  @media only screen and (max-width: 855px) {
-    .main__cards {
-      grid-template-columns: 1fr;
-      gap: 10px;
-      margin-bottom: 0;
-    }
-  
-    .charts {
-      grid-template-columns: 1fr;
-      margin-top: 30px;
-    }
   }
