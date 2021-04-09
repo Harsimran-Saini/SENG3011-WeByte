@@ -5,12 +5,26 @@ import React from 'react';
 //import {GoogleMapReact, LocationPin} from 'google-maps-react';
 import GoogleMap from 'google-map-react';
 import Styles from './MapStyle';
+import { Line } from "react-chartjs-2";
 
-// const location = {
-//   address: '1600 Amphitheatre Parkway, Mountain View, california.',
-//   lat: 37.42216,
-//   lng: -122.08427,
-// }
+const data = {
+  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+  datasets: [
+    {
+      label: "First dataset",
+      data: [33, 53, 85, 41, 44, 65],
+      fill: true,
+      backgroundColor: "rgba(75,192,192,0.2)",
+      borderColor: "rgba(75,192,192,1)"
+    },
+    {
+      label: "Second dataset",
+      data: [33, 25, 35, 51, 54, 76],
+      fill: false,
+      borderColor: "#742774"
+    }
+  ]
+};
 
 const Main = () => {
   const mapOptions = {
@@ -33,16 +47,51 @@ const Main = () => {
 
         {/* <!-- MAIN TITLE ENDS HERE --> */}
 
+        {/* <!-- MAIN CARDS STARTS HERE --> */}
+        
+        <div className="main__cards">
+          <div className="card">
+            
+            <div className="card_inner">
+              <p className="p">Global COVID-19 Cases</p>
+              <hr></hr>
+              <br></br>
+              <span className="font-bold text-title">130,787,851</span>
+            </div>
+          </div>
+
+          <div className="card">
+            <div className="card_inner">
+              <p className="text-primary-p">Number of Global Cases Recovered</p>
+              <hr></hr>
+              <br></br>
+              <span className="font-bold text-title">2467</span>
+            </div>
+          </div>
+
+          <div className="card">
+            <div className="card_inner">
+              <p className="text-primary-p">Number of Global Deaths</p>
+              <hr></hr>
+              {/* <br></br>
+              <span className="font-bold text-title">340</span> */}
+              <Line data={data} />
+            </div>
+          </div>
+
+          
+        </div>
+        {/* <!-- MAIN CARDS ENDS HERE --> */}
         {/* <!-- CHARTS STARTS HERE --> */}
         <div className="charts">
           <div className="charts__left">
             <div className="charts__left__title">
               <div>
                 <h1><i class="fa fa-map-marker"></i>    Health Map</h1>
-                <p>COVID Cases 2020</p>
               </div>
-              
+
             </div>
+            <hr></hr>
             <div style={{ height: '50vh', width: '100%' }}>
         <GoogleMap
           bootstrapURLKeys={{ key: 'AIzaSyDEYq35gpEqFPG56D5YlUqBUlGyV8I5MBI' }}
@@ -90,47 +139,7 @@ const Main = () => {
           </div>
         </div>
         {/* <!-- CHARTS ENDS HERE --> */}
-        {/* <!-- MAIN CARDS STARTS HERE --> */}
-        <div className="main__cards">
-          <div className="card">
-            
-            <div className="card_inner">
-              <p className="text-primary-p"><b>Global COVID-19 Cases</b></p>
-              <span className="font-bold text-title">130,787,851</span>
-            </div>
-          </div>
-
-          <div className="card">
-            <i className="fa fa-calendar fa-2x text-red" aria-hidden="true"></i>
-            <div className="card_inner">
-              {/* <p className="text-primary-p">Times of Watching</p>
-              <span className="font-bold text-title">2467</span> */}
-            </div>
-          </div>
-
-          <div className="card">
-            <i
-              className="fa fa-video-camera fa-2x text-yellow"
-              aria-hidden="true"
-            ></i>
-            <div className="card_inner">
-              {/* <p className="text-primary-p">Number of Videos</p>
-              <span className="font-bold text-title">340</span> */}
-            </div>
-          </div>
-
-          <div className="card">
-            <i
-              className="fa fa-thumbs-up fa-2x text-green"
-              aria-hidden="true"
-            ></i>
-            <div className="card_inner">
-              {/* <p className="text-primary-p">Number of Likes</p>
-              <span className="font-bold text-title">645</span> */}
-            </div>
-          </div>
-        </div>
-        {/* <!-- MAIN CARDS ENDS HERE --> */}
+        
       </div>
       
     </main>
