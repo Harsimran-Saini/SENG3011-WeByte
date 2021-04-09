@@ -175,4 +175,5 @@ const styles = [
   }
 ]
 
+// eslint-disable-next-line
 export default {styles}

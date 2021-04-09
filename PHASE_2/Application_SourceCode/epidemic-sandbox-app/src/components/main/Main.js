@@ -1,16 +1,16 @@
 import "./Main.css";
-import hello from "../../images/logo.svg";
+//import hello from "../../images/logo.svg";
 //import Chart from "../charts/Chart";
-import React, { Component } from 'react';
-import {GoogleMapReact, LocationPin} from 'google-maps-react';
+import React from 'react';
+//import {GoogleMapReact, LocationPin} from 'google-maps-react';
 import GoogleMap from 'google-map-react';
 import Styles from './MapStyle';
 
-const location = {
-  address: '1600 Amphitheatre Parkway, Mountain View, california.',
-  lat: 37.42216,
-  lng: -122.08427,
-}
+// const location = {
+//   address: '1600 Amphitheatre Parkway, Mountain View, california.',
+//   lat: 37.42216,
+//   lng: -122.08427,
+// }
 
 const Main = () => {
   const mapOptions = {
@@ -18,6 +18,9 @@ const Main = () => {
     minZoom: 2.5,
   }
   return (
+    <div>
+    
+        
     <main>
       <div className="main__container">
         {/* <!-- MAIN TITLE STARTS HERE --> */}
@@ -35,57 +38,53 @@ const Main = () => {
           <div className="charts__left">
             <div className="charts__left__title">
               <div>
-                <h1>Daily Reports</h1>
-                <p>Cupertino, California, USA</p>
+                <h1><i class="fa fa-map-marker"></i>    Health Map</h1>
+                <p>COVID Cases 2020</p>
               </div>
-              <i className="fa fa-usd" aria-hidden="true"></i>
+              
             </div>
-            <div style={{ height: '100vh', width: '100%' }}>
-            <GoogleMap
-          bootstrapURLKeys={{ key: 'AIzaSyCRQt-NkjJ1aa2PqGTu6y7zetkEqtl7s8w' }}
-          defaultCenter={0}
+            <div style={{ height: '50vh', width: '100%' }}>
+        <GoogleMap
+          bootstrapURLKeys={{ key: 'AIzaSyDEYq35gpEqFPG56D5YlUqBUlGyV8I5MBI' }}
           defaultZoom={0}
+          defaultCenter={{ lat: 0, lng: 0 }}
           options={mapOptions}
           
         >
-          {/* <AnyReactComponent
-            lat={0}
-            lng={0}
-            text="My Marker"
-          /> */}
+         
         </GoogleMap>
-          </div>
+      </div>          
             {/*<Chart />*/}
           </div>
 
           <div className="charts__right">
             <div className="charts__right__title">
               <div>
-                <h1>Stats Reports</h1>
-                <p>Cupertino, California, USA</p>
+                {/* <h1>Stats Reports</h1>
+                <p>Cupertino, California, USA</p> */}
               </div>
               <i className="fa fa-usd" aria-hidden="true"></i>
             </div>
 
             <div className="charts__right__cards">
               <div className="card1">
-                <h1>Income</h1>
-                <p>$75,300</p>
+                {/* <h1>Income</h1>
+                <p>$75,300</p> */}
               </div>
 
               <div className="card2">
-                <h1>Sales</h1>
-                <p>$124,200</p>
+                {/* <h1>Sales</h1>
+                <p>$124,200</p> */}
               </div>
 
               <div className="card3">
-                <h1>Users</h1>
-                <p>3900</p>
+                {/* <h1>Users</h1>
+                <p>3900</p> */}
               </div>
 
               <div className="card4">
-                <h1>Orders</h1>
-                <p>1881</p>
+                {/* <h1>Orders</h1>
+                <p>1881</p> */}
               </div>
             </div>
           </div>
@@ -94,21 +93,18 @@ const Main = () => {
         {/* <!-- MAIN CARDS STARTS HERE --> */}
         <div className="main__cards">
           <div className="card">
-            <i
-              className="fa fa-user-o fa-2x text-lightblue"
-              aria-hidden="true"
-            ></i>
+            
             <div className="card_inner">
-              <p className="text-primary-p">Number of Subscribers</p>
-              <span className="font-bold text-title">578</span>
+              <p className="text-primary-p"><b>Global COVID-19 Cases</b></p>
+              <span className="font-bold text-title">130,787,851</span>
             </div>
           </div>
 
           <div className="card">
             <i className="fa fa-calendar fa-2x text-red" aria-hidden="true"></i>
             <div className="card_inner">
-              <p className="text-primary-p">Times of Watching</p>
-              <span className="font-bold text-title">2467</span>
+              {/* <p className="text-primary-p">Times of Watching</p>
+              <span className="font-bold text-title">2467</span> */}
             </div>
           </div>
 
@@ -118,8 +114,8 @@ const Main = () => {
               aria-hidden="true"
             ></i>
             <div className="card_inner">
-              <p className="text-primary-p">Number of Videos</p>
-              <span className="font-bold text-title">340</span>
+              {/* <p className="text-primary-p">Number of Videos</p>
+              <span className="font-bold text-title">340</span> */}
             </div>
           </div>
 
@@ -129,14 +125,16 @@ const Main = () => {
               aria-hidden="true"
             ></i>
             <div className="card_inner">
-              <p className="text-primary-p">Number of Likes</p>
-              <span className="font-bold text-title">645</span>
+              {/* <p className="text-primary-p">Number of Likes</p>
+              <span className="font-bold text-title">645</span> */}
             </div>
           </div>
         </div>
         {/* <!-- MAIN CARDS ENDS HERE --> */}
       </div>
+      
     </main>
+    </div>
   );
 };
 
