@@ -1,0 +1,75 @@
+/* individual card */
+.front1, .back1 {
+    border-radius: 5px;
+    background: #ffffff;
+    box-shadow: 5px 5px 13px #ededed, -5px -5px 13px #ffffff;
+    height: 240px;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    border: 1px solid #e3e3e3;
+
+}
+
+/*individual card title*/
+.front1 > p, .back1 > p {
+    align-items: left;
+    font-weight: 700;
+    padding-left: 10px;
+    padding-top: 10px;
+    display: flex;
+    font-size: 17px;
+}
+
+.front1 > Popup {
+    margin-right: 20px;
+}
+/*title underline*/
+.front1 > hr, .back1 > hr {
+    padding: 0;
+    width: 96%;               
+    height: 1px;
+    margin: 0.05em auto;
+}
+
+/*individual card stat*/
+.front1 > span, .back1 > span {
+    padding-top: 30px;
+    font-size: 45px;
+    align-items: center;
+    color: #c9e7f0;
+    font-weight: 700;
+}
+  
+/* line graph */
+.back1 > div{
+    padding: 10px;
+} 
+
+/* flip button */
+.front1 > button, .back1 > button {
+    background: transparent;
+    box-shadow: 0px 0px 0px transparent;
+    border: 0px solid transparent;
+    text-shadow: 0px 0px 0px transparent;
+}
+
+/* image button */
+.front1 > button > img, .back1 > button > img {
+    height: 35px;
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+    transform: rotate(-20deg);
+    
+}
+
+.popup  {
+    background-color: #c9e7f0;
+    padding: 5px;
+    border-radius: 5px;
+    margin-left: 220px;
+    
+    
+}
+
