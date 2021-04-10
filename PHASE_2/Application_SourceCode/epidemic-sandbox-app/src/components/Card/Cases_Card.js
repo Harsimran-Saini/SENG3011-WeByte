@@ -10,15 +10,8 @@ const data = {
     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
     datasets: [
       {
-        label: "Global Deaths",
-        data: [3323, 53233, 85333, 412323, 44123, 65232, 10332, 13023, 29302, 2839283, 28392833, 2839283],
-        fill: true,
-        backgroundColor: "rgba(75,192,192,0.2)",
-        borderColor: "rgba(75,192,192,1)"
-      },
-      {
-        label: "Second dataset",
-        data: [33, 25, 35, 51, 54, 76],
+        label: "Global COVID-19 Cases",
+        data: [33, 25, 35, 51, 54, 76, 79, 84, 91, 92, 99, 112],
         fill: false,
         borderColor: "#742774"
       }
@@ -41,8 +34,7 @@ const Card = () => {
                 <p>Global COVID-19 Cases</p>
                 <hr/>
                 <span>134,519,292</span>
-                
-                <Popup className="popup" content='Click to see more' trigger={<button><img src={Arrow} alt="" onClick={handleClick}/></button>} />
+                <button><img src={Arrow} alt="" onClick={handleClick}/></button>
 
                 
             </div>
