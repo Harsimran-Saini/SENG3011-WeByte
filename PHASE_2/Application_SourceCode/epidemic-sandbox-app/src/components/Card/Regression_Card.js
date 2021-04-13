@@ -147,7 +147,7 @@ const Card = () => {
             <button onClick={onClickSidebar}><i class="fa fa-bars"></i></button>
           </div>
           <hr/>
-          <div className="chart">
+          <div className="chart" id="graph123">
             <Scatter data={data} options={options} />
           </div>
           <button onClick={handleClick}>Click to view Analysis</button>
