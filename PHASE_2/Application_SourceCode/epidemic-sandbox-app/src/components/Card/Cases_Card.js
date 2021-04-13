@@ -3,7 +3,6 @@ import ReactCardFlip from "react-card-flip";
 import "./Card.css";
 import Arrow from "../../images/blue-arrow.png"
 import { Line } from "react-chartjs-2";
-import { Popup } from 'semantic-ui-react'
 
 //Line graph data
 const data = {

@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import ReactCardFlip from "react-card-flip";
 import "./Card.css";
 import { Scatter } from "react-chartjs-2";
-import SideBar from './SideBar'
 import Select from 'react-select'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
