@@ -32,7 +32,7 @@ const SideBar = () => {
     return (
         <div className="nav">
         
-          <button onClick={onClickSidebar}><i class="fa fa-times"></i></button>
+          <button onClick={onClickSidebar}><i className="fa fa-times"></i></button>
           <p>Filters</p>
           
           <DatePicker className="date" selected={startDate} onChange={date => setStartDate(date)} />

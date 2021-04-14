@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import ReactCardFlip from "react-card-flip";
 import "./Card.css";
 import { Scatter } from "react-chartjs-2";
 import Select from 'react-select'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+
+var countries = ['Australia','China', 'USA', 'Ghana', 'New Zealand', 'Russia'];
 
 // filter by date, change api, filter by location
 const countryFilter = [
@@ -63,18 +65,6 @@ for (var i in values) {
 const xAxes_title = "News Reports";
 const yAxes_title = "Cumulative Covid-19 Cases";
 
-// Graph data info
-const data = {
-  labels: ['Australia','China', 'USA', 'Ghana', 'New Zealand', 'Russia'],
-  datasets: [{
-    label: "Countries",
-    data: values,
-    pointRadius: 8,
-    pointHoverRadius: 11,
-    backgroundColor: backgroundColours
-  }],
-};
-
 //Graph options info
 const options = {
   responsive: true,
@@ -110,11 +100,101 @@ const options = {
   }
 }
 
+// Graph data info
+const baseGraphData = {
+  labels: ['Australia','China', 'USA', 'Ghana', 'New Zealand', 'Russia'],
+  datasets: [{
+    label: "Countries",
+    data: values,
+    pointRadius: 8,
+    pointHoverRadius: 11,
+    backgroundColor: backgroundColours
+  }],
+};
+
+function createGraphData(plotPoints, labels) {
+    const backgroundColours = []
+    for (var i in labels) {
+      var colour = dynamicColors();
+      backgroundColours.push(colour);
+    }
+
+    return {
+      labels: labels,
+      datasets: [{
+        label: "Countries",
+        data: plotPoints,
+        pointRadius: 8,
+        pointHoverRadius: 11,
+        backgroundColor: backgroundColours
+      }],
+    };
+}
+
+function createInitialGraphData(setGraphData) {
+    countries = countries.map(e => e.replace(/\s+/g, '-').toLowerCase());
+    var plot_points = {};
+
+    const url = "https://nsg2nkvz9l.execute-api.ap-southeast-2.amazonaws.com/we-byte/covid-report-count-by-country";
+
+    const request = new Request(url, {
+        method: 'GET',
+    })
+
+    fetch(request)
+    .then(res => {
+        if (res.ok) {
+            return res.json();
+        } else {
+            throw new Error("Invalid Response Code: "+res.status);
+        }
+    })
+    .then(data => {
+        countries.forEach(country => {
+            const countryKey = country.replace(/-/g, ' ').toUpperCase();
+            var reportsForCountry = 0;
+            if (countryKey in data) {
+                reportsForCountry = data[countryKey];
+            }
+
+            var newObject = {
+                "x" :0,
+                "y" : reportsForCountry
+            };
+
+            plot_points[country] = (newObject)
+
+    //        const url = "https://api.covid19api.com/total/country/"+country+"/status/confirmed?from=2020-03-01T00:00:00Z&to=2020-04-01T00:00:00Z"
+    //        fetch(url).then(res => res.json()).then(data => {
+    //            plot_points[country]["x"] = data[data.length-1]["Cases"];
+    //        });
+        });
+
+        var labels = []
+        var dataPoints = []
+
+        for (var key in plot_points) {
+            labels.push(key);
+            dataPoints.push(plot_points[key]);
+        }
+
+        const newGraphData = createGraphData(dataPoints, labels);
+        setGraphData(newGraphData);
+    })
+    .catch(err => {
+        console.log(err);
+    })
+
+    return baseGraphData;
+}
+
 const Card = () => {
     // flipped state
     const [isFlipped, setIsFlipped] = useState(false);
     
     const [startDate, setStartDate] = useState(new Date());
+
+    const [graphData, setGraphData] = useState(baseGraphData);
 
     //if button is clicked
     const handleClick = () => {
@@ -127,6 +207,14 @@ const Card = () => {
       setShowSidebar(!showSidebar);
     };
 
+    useEffect(() => {
+        async function fetchData() {
+            createInitialGraphData(setGraphData);
+        }
+
+        fetchData();
+    }, []);
+
     return (
       <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
 
@@ -134,7 +222,7 @@ const Card = () => {
         <div className="regression-front" >
           { showSidebar ? <div className="nav">
         
-        <button onClick={onClickSidebar}><i class="fa fa-times"></i></button>
+        <button onClick={onClickSidebar}><i className="fa fa-times"></i></button>
         <p>Filters</p>
         
         <DatePicker className="date" selected={startDate} onChange={date => setStartDate(date)} />
@@ -142,13 +230,13 @@ const Card = () => {
         <Select className="aFilter" options={apiFilter} />
         
       </div> : null }
-          <p><i class="fa fa-signal fa-fw"></i>Charts</p>
+          <p><i className="fa fa-signal fa-fw"></i>Charts</p>
           <div className="filtersButton">
-            <button onClick={onClickSidebar}><i class="fa fa-bars"></i></button>
+            <button onClick={onClickSidebar}><i className="fa fa-bars"></i></button>
           </div>
           <hr/>
           <div className="chart">
-            <Scatter data={data} options={options} />
+            <Scatter data={graphData} options={options} />
           </div>
           <button onClick={handleClick}>Click to view Analysis</button>
           
@@ -157,7 +245,7 @@ const Card = () => {
 
         {/* BACK OF CARD-- ANALYSIS TEXT */}
         <div className="regression-back">
-          <p><i class="fa fa-signal fa-fw"></i>Regression Analysis</p>
+          <p><i className="fa fa-signal fa-fw"></i>Regression Analysis</p>
           <hr/>
           <div>
             <br/>

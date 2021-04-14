@@ -4,7 +4,7 @@ import "./Card.css";
 const TemplateCard = () => {
     return (
         <div className="template_front">
-            <p><i class="fa-fw fa fa-edit"></i>      Google Sheets Template</p>
+            <p><i className="fa-fw fa fa-edit"></i>      Google Sheets Template</p>
               
             <hr/>
             <div>

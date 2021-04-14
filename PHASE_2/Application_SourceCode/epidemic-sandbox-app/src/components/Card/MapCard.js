@@ -11,7 +11,7 @@ const Card = () => {
     
     return (
         <div className="map_front" >
-            <p><i class="fa fa-map"></i>Health Map</p>
+            <p><i className="fa fa-map"></i>Health Map</p>
             <hr/>
             <div style={{ height: '50vh', width: '100%' }}>
             <GoogleMap

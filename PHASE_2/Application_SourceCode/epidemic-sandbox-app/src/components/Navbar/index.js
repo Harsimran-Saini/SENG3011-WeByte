@@ -12,7 +12,7 @@ const Navbar = () => {
                 <ReactBootStrap.Navbar.Brand>
                     <img alt="" src={Logo} width="40" height="40" className="d-inline-block align-top"/>    
                 </ReactBootStrap.Navbar.Brand>
-                <span id="textSpan" style={ {fontSize: 25} } >Epidemic Sandbox<button onClick={{}} style={{ backgroundColor: 'transparent', boxShadow: '0 0 0 transparent', border: '0 solid transparent', textShadow: '0 0 0 transparent'}}><i style={ {fontSize: 30, position: 'absolute', right: 20, top: 18} }class="fa fa-cloud-download"></i></button></span>
+                <span id="textSpan" style={ {fontSize: 25} } >Epidemic Sandbox<button style={{ backgroundColor: 'transparent', boxShadow: '0 0 0 transparent', border: '0 solid transparent', textShadow: '0 0 0 transparent'}}><i style={ {fontSize: 30, position: 'absolute', right: 20, top: 18} }className="fa fa-cloud-download"></i></button></span>
                 
             </ReactBootStrap.Navbar>
             
