@@ -1,6 +1,8 @@
 import pandas as pd
 import json
-
+import os
+from pathlib import Path
+from random import randrange
 """
 Description:
 
@@ -65,6 +67,31 @@ def extractData(dataSource):
 
         #append the point object to the extracted data list
         extractedData.append(point)
-
-    with open(f"{dataSource}_extractedData.json", "w") as file:
+    fileName =f"{dataSource}_extractedData.json"
+    with open(fileName, "w") as file:
         json.dump(extractedData, file)
+
+
+    #puts file in the above directoy, can remove this to create file in CWD
+    p = Path(fileName).absolute()
+    parent_dir = p.parents[1]
+    p.rename(parent_dir / p.name)
+
+    return fileName
+
+
+def createDataSetsByCountry(dataSource):
+
+    datasets=[]
+    df =pd.read_csv(dataSource)
+
+    for index, row in df.iterrows():
+        data=[{"x":row["Cases"], "y":row["numArticles"]}]
+        datasets.append({"label": row["Country"], "data": data,
+        "backgroundColor": f'rgb({randrange(1,255)},{randrange(1,255)},{randrange(1,255)})'})
+
+    fileName= f"{dataSource}_extractedDataByCountry.json"
+
+    with open(fileName, "w") as file:
+        json.dump(datasets, file)
+    return

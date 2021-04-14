@@ -2,6 +2,7 @@ import requests
 import pandas as pd
 import json
 import re
+import os
 from extract_CSV_data import *
 """
 Description:
@@ -32,7 +33,15 @@ def getConfirmedCovidCases(country,start_date,end_date, daily=True):
         param = {"from":f"{start_date}T00:00:00Z", "to":f"{end_date}T00:00:00Z"}
         r = requests.get(f"https://api.covid19api.com/country/{country}/status/confirmed", params=param)
         print(r.json)
-        data= r.json()
+
+        try:
+            data= r.json()
+
+        except ValueError:
+
+            print(f"Bad request for country: {country}")
+            return 0
+
         time = []
         cases = []
 
@@ -56,5 +65,6 @@ def getConfirmedCovidCases(country,start_date,end_date, daily=True):
         #export as csv file
         fileName=f"ConfirmedCovidCases_{country}.csv"
         df.to_csv(fileName, index=True)
-
-        extractData(fileName)
+        os.rename(fileName, f"ExtractedData/ConfirmedCovidCases/{fileName}")
+        extractData(f"ExtractedData/ConfirmedCovidCases/{fileName}")
+        return 1
