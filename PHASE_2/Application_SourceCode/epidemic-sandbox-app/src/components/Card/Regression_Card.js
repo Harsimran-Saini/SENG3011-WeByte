@@ -236,7 +236,7 @@ const Card = () => {
           </div>
           <hr/>
           <div className="chart" id="graph123">
-            <Scatter data={data} options={options} />
+            <Scatter data={baseGraphData} options={options} />
           </div>
           <button onClick={handleClick}>Click to view Analysis</button>
           
