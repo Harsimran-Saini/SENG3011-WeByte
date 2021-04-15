@@ -235,8 +235,8 @@ const Card = () => {
             <button onClick={onClickSidebar}><i className="fa fa-bars"></i></button>
           </div>
           <hr/>
-          <div className="chart">
-            <Scatter data={graphData} options={options} />
+          <div className="chart" id="graph123">
+            <Scatter data={data} options={options} />
           </div>
           <button onClick={handleClick}>Click to view Analysis</button>
           
@@ -245,7 +245,8 @@ const Card = () => {
 
         {/* BACK OF CARD-- ANALYSIS TEXT */}
         <div className="regression-back">
-          <p><i className="fa fa-signal fa-fw"></i>Regression Analysis</p>
+          <text id="regression-back">
+          <p><i class="fa fa-signal fa-fw"></i>Regression Analysis</p>
           <hr/>
           <div>
             <br/>
@@ -253,6 +254,7 @@ const Card = () => {
             <p>Coronaviruses constitute the subfamily Orthocoronavirinae, in the family Coronaviridae, order Nidovirales, and realm Riboviria.[5][4] They are enveloped viruses with a positive-sense single-stranded RNA genome and a nucleocapsid of helical symmetry.[6] The genome size of coronaviruses ranges from approximately 26 to 32 kilobases, one of the largest among RNA viruses.[7] They have characteristic club-shaped spikes that project from their surface, which in electron micrographs create an image reminiscent of the solar corona, from which their name derives.[8]</p>
             <p>Coronaviruses constitute the subfamily Orthocoronavirinae, in the family Coronaviridae, order Nidovirales, and realm Riboviria.</p>
           </div>
+          </text>
           <button onClick={handleClick}>Click to view Graph</button>
         </div>
       </ReactCardFlip>
