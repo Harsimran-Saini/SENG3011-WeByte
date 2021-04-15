@@ -1,0 +1,262 @@
+/**** TOP ROW CSS ****/
+
+/* individual card */
+.front1, .back1 {
+    border-radius: 5px;
+    background: #ffffff;
+    box-shadow: 5px 5px 13px #ededed, -5px -5px 13px #ffffff;
+    height: 240px;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    border: 1px solid #e3e3e3;
+
+}
+
+/*individual card title*/
+.front1 > p, .back1 > p {
+    align-items: left;
+    padding-left: 10px;
+    padding-top: 10px;
+    display: flex;
+    font-size: 17px;
+    color: #c9e7f0;
+}
+
+
+/*title underline*/
+.front1 > hr, .back1 > hr {
+    padding: 0;
+    width: 96%;               
+    height: 1px;
+    margin: 0.05em auto;
+}
+
+/*individual card stat*/
+.front1 > span, .back1 > span {
+    padding-top: 40px;
+    font-size: 35px;
+    align-items: center;
+}
+  
+/* line graph */
+.back1 > div{
+    padding: 10px;
+} 
+
+/* flip button */
+.front1 > button, .back1 > button, .nav > button {
+    background: transparent;
+    box-shadow: 0px 0px 0px transparent;
+    border: 0px solid transparent;
+    text-shadow: 0px 0px 0px transparent;
+}
+
+/* image button */
+.front1 > button > img, .back1 > button > img {
+    height: 35px;
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+    transform: rotate(-20deg);
+    
+}
+
+.popup  {
+    background-color: #c9e7f0;
+    padding: 5px;
+    border-radius: 5px;
+    margin-left: 220px; 
+}
+
+
+/**** REGRESSION CSS ****/
+
+/* individual card */
+.regression-front, .regression-back {
+    border-radius: 5px;
+    background: #ffffff;
+    box-shadow: 5px 5px 13px #ededed, -5px -5px 13px #ffffff;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    border: 1px solid #e3e3e3;
+
+}
+
+/* card title*/
+.regression-front > p, .regression-back > p, .template_front > p, .map_front > p, .social_media_front > p {
+    align-items: left;
+    padding-left: 15px;
+    padding-top: 10px;
+    display: flex;
+    font-size: 24px;
+    color: #c9e7f0;
+
+}
+
+/*icon*/
+.regression-front > p > i, .regression-back > p > i, .template_front > p > i, .map_front > p > i, .social_media_front > p > i {
+    margin-right: 5px;
+    margin-top: 6px;
+}
+
+/*title underline*/
+.regression-front > hr, .regression-back > hr, .template_front > hr, .map_front > hr, .social_media_front > hr {
+    padding: 0;
+    width: 96%;               
+    height: 1px;
+    margin: 0.10em auto;
+}
+
+/* flip button */
+.regression-front > button, .regression-back > button {
+    background: #e4f1f5;
+    border-radius: 10px;
+    width: 30%;
+    padding: 5px;
+    box-shadow: 2px 2px 13px #e4f1f5, -2px -2px 13px #e4f1f5;
+    border: 0px solid #e4f1f5;
+    position: absolute;
+    right: 30px;
+    bottom: 30px;
+}
+
+/*analysis text*/
+.regression-back > div {
+    align-items: left;
+    padding: 10px;
+    text-align: left;
+}
+
+/*regression chart*/
+.chart {
+    padding: 20px;
+    margin-top: 10px;
+}
+
+/* icon button */
+.filtersButton > button {
+    background: transparent;
+    box-shadow: 0px 0px 0px transparent;
+    border: 0px solid transparent;
+    text-shadow: 0px 0px 0px transparent;
+    display: block;
+}
+
+/* icon button */
+.filtersButton > button > i {
+    font-size: 27px;
+    position: absolute;
+    right: 25px;  
+    color: #c9e7f0;
+    top: 20px;
+}
+
+/* sidebar */
+.nav {
+    bottom: 0;
+    /* -ms-transform: translateY(-50%);
+    transform: translateY(-50%); */
+    width: 35%;
+    height: 580px;
+    background: #c9e7f0;
+    z-index: 1;
+    position: absolute;
+    padding: 15px;
+    right: 0;
+    border-radius: 5px;
+    transition: 800ms;
+    
+    
+}
+
+.nav > button > i {
+    color: white;
+    font-size: 30px;
+    top: 20px;
+    position: absolute;
+    transition: 350ms;
+}
+
+.nav > p {
+    position: absolute;
+    left: 40%;
+    top: 10%;
+    font-size: 20px;
+    
+}
+.cFilter, .aFilter {
+    width: 100%;
+    position: absolute;
+}
+
+.date {
+    margin-top: 50%;
+}
+
+/* individual card */
+.template_front {
+    border-radius: 5px;
+    background: #ffffff;
+    box-shadow: 5px 5px 13px #ededed, -5px -5px 13px #ffffff;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    border: 1px solid #e3e3e3;
+
+}
+
+.template_front > div {
+    padding: 25px;
+}
+
+.template_front > div > iframe {
+    height: 410px;
+    width: 100%
+}
+
+/*icon*/
+.template_front > p > i {
+    margin-right: 5px;
+    margin-top: 8px;
+}
+
+/* flip button */
+.template_front > div > button {
+    margin-top: 25px;
+    float: right;
+    background: #e4f1f5;
+    border-radius: 10px;
+    padding-left: 40px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    padding-right: 40px;
+    box-shadow: 2px 2px 13px #e4f1f5, -2px -2px 13px #e4f1f5;
+    border: 0px solid #e4f1f5;
+}
+
+/* individual card */
+.map_front, .social_media_front {
+    border-radius: 5px;
+    background: #ffffff;
+    box-shadow: 5px 5px 13px #ededed, -5px -5px 13px #ffffff;
+    height: 520px;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    border: 1px solid #e3e3e3;
+
+}
+
+.map_front > div {
+    padding: 20px;
+    padding-bottom: 20px;
+}
+
+.social_media_front > img {
+    padding-top: 20%;
+    width: 100%;
+}

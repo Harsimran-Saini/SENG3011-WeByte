@@ -1,9 +1,12 @@
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
 from urllib.request import urlopen
 from urllib.request import Request
 import urllib.parse
 import json
 import re
-from selenium import webdriver
+import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -116,7 +119,18 @@ def search_by_keyword (keywords=[], start=None, end=None):
         
         req = Request(page_url, headers={'User-Agent': 'Mozilla/5.0'})
 
-        # opens the connection and downloads html page from url
+    articles_response_json =json.loads(my_html) 
+    uClient.close()
+
+    #how many articles were found
+    number_of_articles_in_promed = articles_response_json["hits"]["found"]
+
+    articles = []
+    if number_of_articles_in_promed > 0:
+        # open connection again but this time to get ALL the articles
+        page_url= page_url+"&size="+str(number_of_articles_in_promed)
+
+        req = Request(page_url, headers={'User-Agent': 'Mozilla/5.0'})
         uClient = urlopen(req)
 
         my_html = uClient.read().decode('utf-8')
@@ -194,12 +208,10 @@ def queryArticles(article):
     for article in articles:
         page_url = "https://promedmail.org/promed-post/?id="+article["archive_id"]
         driver.get(page_url)
-        print(page_url)
         # get the date
-        publish_date_paragraph = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "publish_date_html")))
+        publish_date_paragraph = WebDriverWait(driver, 90).until(EC.presence_of_element_located((By.CLASS_NAME, "publish_date_html")))
         # using regex to extract the date
-        date_pattern = re.compile(r'^Published Date: (\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})')
-        date_match = date_pattern.search(publish_date_paragraph.text)
+        date_match = re.search(r"^Published Date: (\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})", publish_date_paragraph.text)
 
         # get the main text
         main_text = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "text1")))

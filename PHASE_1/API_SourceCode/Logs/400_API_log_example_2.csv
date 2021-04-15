@@ -1,0 +1,7 @@
+﻿START ,RequestId: 49de2a60-3636-4a96-bd88-2291bdfbe239 Version: $LATEST
+statusCode,400
+headers:Content-Type,application/json
+time_accessed,44281.55252
+data_source,promedmail.org
+body,"{""Error"": ""Please enter an id parameter"", ""id"": ""Must be a valid article id i.e. /article?id=3915783""}"
+END ,RequestId: 49de2a60-3636-4a96-bd88-2291bdfbe239

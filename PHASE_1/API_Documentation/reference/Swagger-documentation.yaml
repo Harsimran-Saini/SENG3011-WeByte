@@ -1,0 +1,444 @@
+openapi: 3.0.0
+info:
+  title: WeByte API - ProMedMail
+  description: RESTful API for the retrieval of data from promedmail.org
+  version: 1.0.0
+  contact:
+    name: We Byte!
+    email: z5208912@ad.unsw.edu.au
+servers:
+  - description: We-Byte API
+    url: https://nsg2nkvz9l.execute-api.ap-southeast-2.amazonaws.com/we-byte
+  
+paths:
+  /search-keywords:
+    parameters: []
+    get:
+      summary: Get Search Results From Keywords
+      tags: []
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/article'
+              examples:
+                covid:
+                  value:
+                    - url: 'https://promedmail.org/promed-post/?id=8224463'
+                      date_of_publication: '2021-03-03 14:04:20'
+                      headline: 'CORONAVIRUS DISEASE 2019 UPDATE (85): USA CHALLENGES IN DISEASE CONTROL, BRAZIL REINFECTION, WHO, GLOBAL'
+                      main_text: Over the weekend both the Food and Drug Administration (FDA) and the Centers for Disease Control and Prevention (CDC) gave the green light to Johnson & Johnson's COVID-19 vaccine etc...
+                      reports:
+                        - diseases:
+                            - COVID-19
+                          syndromes:
+                            - Fever of unknown Origin
+                            - Meningitis
+                          event_date:
+                            - '2021-xx-xx xx:xx:xx'
+                          locations:
+                            - country: Brazil
+                              location: ''
+        '400':
+          description: User error - please ensure you have the required headers
+      operationId: get-search-results
+      description: Retrieve a list of articles matching the keyword(s)
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: key_terms
+          example: "[\"covid\", \"other\"]"
+          description: Comma seperated list
+        - schema:
+            type: string
+          in: query
+          name: location
+          example: "Australia"
+          description: Location to search for
+        - schema:
+            type: string
+          in: query
+          name: start_date
+          description: Start date for filtering search results
+          required: true
+          example: "2020-01-01"
+        - schema:
+            type: string
+          in: query
+          name: end_date
+          description: End date for filtering search results
+          example: "2021-03-26"
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: summary
+          description: "Returns summary instead of main text (other field will remain as an empty field (eg. main_text: \"\")"
+          example: "T"
+  /latest-articles:
+    get:
+      summary: Get Latest Articles
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/article'
+              examples:
+                example-1:
+                  value:
+                    - url: string
+                      date_of_publication: '2021-03-03 14:04:20'
+                      headline: string
+                      main_text: string
+                      reports:
+                        - diseases:
+                            - unknown
+                          syndromes:
+                            - Haemorrhagic Fever
+                          event_date:
+                            - string
+                          locations:
+                            - country: string
+                              location: string
+                    - url: string
+                      date_of_publication: '2021-03-03 14:04:20'
+                      headline: string
+                      main_text: string
+                      reports:
+                        - diseases:
+                            - unknown
+                          syndromes:
+                            - Haemorrhagic Fever
+                          event_date:
+                            - string
+                          locations:
+                            - country: string
+                              location: string
+            application/xml:
+              schema:
+                minProperties: 0
+                maxProperties: 50
+                type: object
+                properties:
+                  '':
+                    $ref: '#/components/schemas/article'
+              examples:
+                example-1:
+                  value:
+                    '':
+                      url: string
+                      date_of_publication: '2021-03-03 14:04:20'
+                      headline: string
+                      main_text: string
+                      reports:
+                        - diseases:
+                            - unknown
+                          syndromes:
+                            - Haemorrhagic Fever
+                          event_date:
+                            - string
+                          locations:
+                            - country: string
+                              location: string
+                example-2:
+                  value:
+                    '':
+                      url: string
+                      date_of_publication: '2021-03-03 14:04:20'
+                      headline: string
+                      main_text: string
+                      reports:
+                        - diseases:
+                            - unknown
+                          syndromes:
+                            - Haemorrhagic Fever
+                          event_date:
+                            - string
+                          locations:
+                            - country: string
+                              location: string
+          headers: {}
+        '404':
+          description: No Articles Found
+      operationId: get-trending
+      description: Retrieve a list of the latest articles
+    parameters:
+      - schema:
+          type: integer
+        in: query
+        name: n_articles
+        description: Number of articles to return
+        example: 50
+      - schema:
+          type: string
+        in: query
+        name: summary
+        description: Returns summary instead of main text
+        example: "T"
+  /article:
+    get:
+      summary: Get article by ID 
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/article'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: string
+                default: '{"Error": "Missing Parameters"}'
+              examples:
+                example-1:
+                  value: Error
+                example-2:
+                  value: '{"Error": "Missing Parameters"}'
+      operationId: get-article
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: id
+          description: id of article
+          required: true
+          example: 8202225
+        - schema:
+            type: string
+          in: query
+          name: summary
+          description: Returns summary instead of main text
+          example: "T"
+      description: Retrieves a single article with given id
+components:
+  schemas:
+    article:
+      title: article
+      type: object
+      description: Article on promedmail.org
+      x-examples:
+        covid:
+          url: 'https://promedmail.org/promed-post/?id=8224463'
+          date_of_publication: '2021-03-03 14:04:20'
+          headline: 'CORONAVIRUS DISEASE 2019 UPDATE (85): USA CHALLENGES IN DISEASE CONTROL, BRAZIL REINFECTION, WHO, GLOBAL'
+          main_text: "Over the weekend both the Food and Drug Administration (FDA) and the Centers for Disease Control and Prevention (CDC) gave the green light to Johnson & Johnson's COVID-19 vaccine etc..."
+          summary: ""
+          reports:
+            - diseases:
+                - COVID-19
+              syndromes:
+                - Fever of unknown Origin
+                - Meningitis
+              event_date:
+                - '2021-xx-xx xx:xx:xx'
+              locations:
+                - country: Brazil
+                  location: ''
+      properties:
+        url:
+          type: string
+        date_of_publication:
+          $ref: '#/components/schemas/date'
+        headline:
+          type: string
+        main_text:
+          type: string
+        summary:
+          type: string
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/report'
+    report:
+      title: report
+      type: object
+      x-examples:
+        example-1:
+          diseases:
+            - Ebola
+          syndromes:
+            - Haemorrhagic Fever
+          event_date:
+            - '2020-02-17 00:00:00'
+          locations:
+            - country: Democratic Republic of the Congo
+              location: string
+      description: An object containing information about a case mentioned in the article
+      properties:
+        diseases:
+          type: array
+          description: The array of diseases
+          items:
+            $ref: '#/components/schemas/disease'
+        syndromes:
+          type: array
+          description: The array of syndromes
+          items:
+            $ref: '#/components/schemas/syndromes'
+        event_date:
+          type: array
+          description: |-
+            The date on which the case occured (not the publication date of the
+            article).
+          items:
+            type: string
+        locations:
+          type: array
+          description: |-
+            An array of all the locations mentioned in the article referring to this
+            particular case.
+          items:
+            $ref: '#/components/schemas/location'
+    location:
+      title: location
+      type: object
+      x-examples:
+        sydney:
+          country: australia
+          location: sydney
+      description: Location of the case
+      properties:
+        country:
+          type: string
+          description: country name
+        location:
+          type: string
+          description: any other details on the location
+    date-exact:
+      type: string
+      title: date-exact
+      pattern: '^(\d{4})-(\d\d|xx)-(\d\d|xx) (\d\d|xx):(\d\d|xx):(\d\d|xx)$'
+      x-examples:
+        '2018': '2018-xx-xx xx:xx:xx'
+        1 November 2018: '2018-11-01 xx:xx:xx'
+        5 o'clock November 2018: '2018-11-xx 17:00:xx'
+      description: Exact date you want to search
+    date-range:
+      type: string
+      title: date-range
+      description: Range of dates to search between (Ensure the earlier date comes first!)
+      pattern: '^(\d{4})-(\d\d|xx)-(\d\d|xx) (\d\d|xx):(\d\d|xx):(\d\d|xx) to (\d{4})-(\d\d|xx)-(\d\d|xx) (\d\d|xx):(\d\d|xx):(\d\d|xx)$'
+      x-examples:
+        2018 to 2019: '2018-xx-xx xx:xx:xx to 2019-xx-xx xx:xx:xx'
+        5'o clock 1 November 2018 to December 2018: '2018-11-01 17:xx:xx to 2018-12-xx xx:xx:xx'
+    date:
+      oneOf:
+        - $ref: '#/components/schemas/date-exact'
+        - $ref: '#/components/schemas/date-range'
+      x-examples:
+        Date-exact: '2018-xx-xx xx:xx:xx'
+        Date-range: '2018-xx-xx xx:xx:xx to 2019-xx-xx xx:xx:xx'
+      title: date
+      description: Either date-range or date-exact
+    disease:
+      type: string
+      x-examples:
+        Anthrax Cutaneous: Anthrax Cutaneous
+        Ebola: Ebola
+      enum:
+        - unknown
+        - other
+        - anthrax cutaneous
+        - anthrax gastrointestinous
+        - anthrax inhalation
+        - botulism
+        - brucellosis
+        - chikungunya
+        - cholera
+        - cryptococcosis
+        - cryptosporidiosis
+        - crimean-congo haemorrhagic fever
+        - dengue
+        - diphteria
+        - ebola haemorrhagic fever
+        - ehec (e.coli)
+        - enterovirus 71 infection
+        - influenza a/h5n1
+        - influenza a/h7n9
+        - influenza a/h9n2
+        - influenza a/h1n1
+        - influenza a/h1n2
+        - influenza a/h3n5
+        - influenza a/h3n2
+        - influenza a/h2n2
+        - 'hand,foot and mouth disease'
+        - hantavirus
+        - hepatitis a
+        - hepatitis b
+        - hepatitis c
+        - hepatitis d
+        - hepatitis e
+        - histoplasmosis
+        - hiv/aids
+        - lassa fever
+        - malaria
+        - marburg virus disease
+        - measles
+        - mers-cov
+        - mumps
+        - nipah virus
+        - norovirus infection
+        - pertussis
+        - plague
+        - pneumococcus pneumonia
+        - poliomyelitis
+        - q fever
+        - rabies
+        - rift valley fever
+        - rotavirus infection
+        - rubella
+        - salmonellosis
+        - sars
+        - shigellosis
+        - smallpox
+        - staphylococcal enterotoxin b
+        - thypoid fever
+        - tuberculosis
+        - tularemia
+        - vaccinia and cowpox
+        - varicella
+        - west nile virus
+        - yellow fever
+        - yersiniosis
+        - zika
+        - legionares
+        - listeriosis
+        - monkeypox
+        - COVID-19
+      description: One of the give disease types
+      title: disease
+    syndromes:
+      type: string
+      title: syndromes
+      enum:
+        - Haemorrhagic Fever
+        - Acute Flacid Paralysis
+        - Acute gastroenteritis
+        - Acute respiratory syndrome
+        - Influenza-like illness
+        - Acute fever and rash
+        - Fever of unknown Origin
+        - Encephalitis
+        - Meningitis
+      x-examples:
+        Haemorrhagic Fever: Haemorrhagic Fever
+      description: One of the given syndrome types
+  parameters: {}
+  securitySchemes: {}
