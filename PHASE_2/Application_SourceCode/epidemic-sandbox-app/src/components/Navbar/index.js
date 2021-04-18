@@ -31,19 +31,19 @@ const generate = () => {
       mydata['image'] = instance.canvas.toDataURL().replace(/^data:image\/(png|jpg);base64,/, "");
       scatterdata.push(mydata)
     }else if (instance.config.type === "line"){
-      var mydata = {}
-      mydata['label'] = instance.config.data.datasets[0].label;
-      mydata['coordinates'] = []
-      var i = 0;
-      while (i < instance.config.data.datasets[0].data.length){
+      var mydata2 = {}
+      mydata2['label'] = instance.config.data.datasets[0].label;
+      mydata2['coordinates'] = []
+      var j = 0;
+      while (j < instance.config.data.datasets[0].data.length){
         var myobj = {}
-        myobj['label'] = instance.config.data.labels[i];
-        myobj['value'] = instance.config.data.datasets[0].data[i];
-        mydata['coordinates'].push(myobj)
-        i++;
+        myobj['label'] = instance.config.data.labels[j];
+        myobj['value'] = instance.config.data.datasets[0].data[j];
+        mydata2['coordinates'].push(myobj)
+        j++;
       }
-      mydata['image'] = instance.canvas.toDataURL().replace(/^data:image\/(png|jpg);base64,/, "");
-      linedata.push(mydata)
+      mydata2['image'] = instance.canvas.toDataURL().replace(/^data:image\/(png|jpg);base64,/, "");
+      linedata.push(mydata2)
     }
   })
 

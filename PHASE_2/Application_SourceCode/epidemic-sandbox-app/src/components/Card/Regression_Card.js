@@ -117,23 +117,23 @@ const options = {
 }
 
 // Graph data info
-const baseGraphData = {
-  labels: ['Australia','China', 'USA', 'Ghana', 'New Zealand', 'Russia'],
-  datasets: [{
-    label: "Countries",
-    data: values,
-    pointRadius: 8,
-    pointHoverRadius: 11,
-    backgroundColor: backgroundColours
-  }],
-};
+// const baseGraphData = {
+//   labels: ['Australia','China', 'USA', 'Ghana', 'New Zealand', 'Russia'],
+//   datasets: [{
+//     label: "Countries",
+//     data: values,
+//     pointRadius: 8,
+//     pointHoverRadius: 11,
+//     backgroundColor: backgroundColours
+//   }],
+// };
 
 function createGraphData(plotPoints, labels) {
     const backgroundColours = []
-    for (var i in labels) {
-      var colour = dynamicColors();
-      backgroundColours.push(colour);
-    }
+    // for (var i in labels) {
+    //   var colour = dynamicColors();
+    //   backgroundColours.push(colour);
+    // }
 
     return {
       labels: labels,
