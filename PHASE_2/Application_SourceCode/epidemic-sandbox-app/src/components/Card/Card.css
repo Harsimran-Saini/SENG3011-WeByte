@@ -156,19 +156,15 @@
 /* sidebar */
 .nav {
     bottom: 0;
-    /* -ms-transform: translateY(-50%);
-    transform: translateY(-50%); */
     width: 35%;
     height: 580px;
-    background: #c9e7f0;
+    background: rgba(201, 231, 240, 0.8);
     z-index: 1;
     position: absolute;
     padding: 15px;
     right: 0;
     border-radius: 5px;
     transition: 800ms;
-    
-    
 }
 
 .nav > button > i {
@@ -181,9 +177,9 @@
 
 .nav > p {
     position: absolute;
-    left: 40%;
     top: 10%;
-    font-size: 20px;
+    left: 5%;
+    font-size: 17px;
     
 }
 .cFilter, .aFilter {
@@ -191,9 +187,9 @@
     position: absolute;
 }
 
-.date {
+/* .date {
     margin-top: 50%;
-}
+} */
 
 /* individual card */
 .template_front {

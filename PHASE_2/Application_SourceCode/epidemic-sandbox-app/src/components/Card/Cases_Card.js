@@ -3,7 +3,7 @@ import ReactCardFlip from "react-card-flip";
 import "./Card.css";
 import Arrow from "../../images/blue-arrow.png"
 import { Line } from "react-chartjs-2";
-
+//https://api.covid19api.com/world/total
 //Line graph data
 const data = {
     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
