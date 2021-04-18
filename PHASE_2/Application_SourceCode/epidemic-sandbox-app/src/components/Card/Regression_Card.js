@@ -245,8 +245,8 @@ const Card = () => {
 
         {/* BACK OF CARD-- ANALYSIS TEXT */}
         <div className="regression-back">
-          <text id="regression-back">
           <p><i class="fa fa-signal fa-fw"></i>Regression Analysis</p>
+          <text id="regression-back">
           <hr/>
           <div>
             <br/>
