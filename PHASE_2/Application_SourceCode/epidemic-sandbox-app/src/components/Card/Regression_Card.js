@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react'
 import ReactCardFlip from "react-card-flip";
 import "./Card.css";
 import { Scatter } from "react-chartjs-2";
+import { Spinner } from "react-bootstrap"
 import Select from 'react-select'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-var countries = ['Australia','China', 'USA', 'Ghana', 'New Zealand', 'Russia'];
+var countries = ['Australia','China', 'Japan', 'Ghana', 'New Zealand', 'Russia'];
 
 // filter by date, change api, filter by location
 const countryFilter = [
@@ -91,9 +92,24 @@ const options = {
     ], 
     xAxes: [
       {
+        type: 'logarithmic',
         scaleLabel: {
           display: true,
           labelString: yAxes_title
+        },
+        ticks: {
+         max: 10000000,
+         callback: function (value, index, values) {
+             if (value === 10000000) return "10M";
+             if (value === 1000000) return "1M";
+             if (value === 100000) return "100K";
+             if (value === 10000) return "10K";
+             if (value === 1000) return "1K";
+             if (value === 100) return "100";
+             if (value === 10) return "10";
+             if (value === 1) return "1";
+             return null;
+            }
         }
       }
     ]
@@ -131,17 +147,13 @@ function createGraphData(plotPoints, labels) {
     };
 }
 
-function createInitialGraphData(setGraphData) {
+function createInitialGraphData(setGraphData, setIsLoading) {
     countries = countries.map(e => e.replace(/\s+/g, '-').toLowerCase());
     var plot_points = {};
 
     const url = "https://nsg2nkvz9l.execute-api.ap-southeast-2.amazonaws.com/we-byte/covid-report-count-by-country";
 
-    const request = new Request(url, {
-        method: 'GET',
-    })
-
-    fetch(request)
+    fetch(url)
     .then(res => {
         if (res.ok) {
             return res.json();
@@ -150,6 +162,8 @@ function createInitialGraphData(setGraphData) {
         }
     })
     .then(data => {
+        var promise_list = [];
+
         countries.forEach(country => {
             const countryKey = country.replace(/-/g, ' ').toUpperCase();
             var reportsForCountry = 0;
@@ -158,34 +172,45 @@ function createInitialGraphData(setGraphData) {
             }
 
             var newObject = {
-                "x" :0,
+                "x" : null,
                 "y" : reportsForCountry
             };
 
             plot_points[country] = (newObject)
 
-    //        const url = "https://api.covid19api.com/total/country/"+country+"/status/confirmed?from=2020-03-01T00:00:00Z&to=2020-04-01T00:00:00Z"
-    //        fetch(url).then(res => res.json()).then(data => {
-    //            plot_points[country]["x"] = data[data.length-1]["Cases"];
-    //        });
+            const url = "https://api.covid19api.com/total/country/"+country+"/status/confirmed?from=2020-01-01T00:00:00Z&to=2021-01-01T00:00:00Z"
+
+            promise_list.push(
+                fetch(url, {
+                    headers: {
+                        "X-Access-Token" : "d503a308-19c9-45f5-a9cd-b34fb3a47adb"
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    plot_points[country]["x"] = data[data.length-1]["Cases"];
+                })
+            );
         });
 
-        var labels = []
-        var dataPoints = []
+        Promise.all(promise_list)
+        .then(data => {
+            var labels = []
+            var dataPoints = []
 
-        for (var key in plot_points) {
-            labels.push(key);
-            dataPoints.push(plot_points[key]);
-        }
+            for (var key in plot_points) {
+                labels.push(key);
+                dataPoints.push(plot_points[key]);
+            }
 
-        const newGraphData = createGraphData(dataPoints, labels);
-        setGraphData(newGraphData);
+            const newGraphData = createGraphData(dataPoints, labels);
+            setGraphData(newGraphData);
+            setIsLoading(false);
+        });
     })
     .catch(err => {
         console.log(err);
     })
-
-    return baseGraphData;
 }
 
 const Card = () => {
@@ -194,7 +219,9 @@ const Card = () => {
     
     const [startDate, setStartDate] = useState(new Date());
 
-    const [graphData, setGraphData] = useState(baseGraphData);
+    const [graphData, setGraphData] = useState(null);
+
+    const [isLoading, setIsLoading] = useState(true);
 
     //if button is clicked
     const handleClick = () => {
@@ -209,7 +236,7 @@ const Card = () => {
 
     useEffect(() => {
         async function fetchData() {
-            createInitialGraphData(setGraphData);
+            createInitialGraphData(setGraphData, setIsLoading);
         }
 
         fetchData();
@@ -236,7 +263,11 @@ const Card = () => {
           </div>
           <hr/>
           <div className="chart" id="graph123">
-            <Scatter data={baseGraphData} options={options} />
+              {isLoading ?
+                <Spinner animation="border" /> :
+                <Scatter data={graphData} options={options} />
+              }
+
           </div>
           <button onClick={handleClick}>Click to view Analysis</button>
           
