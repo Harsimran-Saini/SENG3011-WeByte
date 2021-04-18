@@ -3,7 +3,7 @@ import * as ReactBootStrap from 'react-bootstrap'
 import Logo from "../../images/logo.svg"
 import "./navbar.css";
 import { saveAs } from "file-saver";
-import { ImageRun,Document,HeadingLevel,Table,TableCell,TableRow,Packer,Paragraph,WidthType } from "docx";
+import { ImageRun,Document,HeadingLevel,Table,PageNumberFormat,TableOfContents,StyleLevel,Header,TextRun,PageNumber,Footer,AlignmentType,PageBreak,TableCell,TableRow,Packer,Paragraph,WidthType } from "docx";
 
 import { Chart } from "chart.js"
 const navbar = {backgroundColor: '#e4f1f5'};
@@ -64,20 +64,32 @@ const generate = () => {
                 children: [
                   new TableCell({
                     children: [new Paragraph({
-                      text: mytable['label'],
-                      heading: HeadingLevel.HEADING_1
+                      children: [
+                        new TextRun({
+                          text: mytable['label'],
+                          bold: true
+                        }),
+                      ]
                     })],
                   }),
                   new TableCell({
                     children: [new Paragraph({
-                      text: "x",
-                      heading: HeadingLevel.HEADING_1
+                      children: [
+                        new TextRun({
+                          text: "x",
+                          bold: true
+                        }),
+                      ]
                     })],
                   }),
                   new TableCell({
                     children: [new Paragraph({
-                      text: "y",
-                      heading: HeadingLevel.HEADING_1
+                      children: [
+                        new TextRun({
+                          text: "y",
+                          bold: true
+                        }),
+                      ]
                     })],
                   }),
                 ],
@@ -134,14 +146,22 @@ const generate = () => {
                 children: [
                   new TableCell({
                     children: [new Paragraph({
-                      text: "Months",
-                      heading: HeadingLevel.HEADING_1
+                      children: [
+                        new TextRun({
+                          text: "Months",
+                          bold: true
+                        }),
+                      ]
                     })],
                   }),
                   new TableCell({
                     children: [new Paragraph({
-                      text: mytable['label'],
-                      heading: HeadingLevel.HEADING_1
+                      children: [
+                        new TextRun({
+                          text: mytable['label'],
+                          bold: true
+                        }),
+                      ]
                     })],
                   }),
                 ],
@@ -175,63 +195,225 @@ const generate = () => {
       })
       .reduce((prev, curr) => prev.concat(curr), [])
     ]
-  
+  var date = new Date();
   const doc = new Document({
-      sections: [{
-        children: [
-          new Paragraph({
-            text: regressionHTML.innerText
-          }),
-          ...scatterdata
-            .map(mytable => {
-              const arr = [];
-              arr.push(
-                new Paragraph({
-                  children:[
-                    new ImageRun({
-                      data: Uint8Array.from(atob(mytable['image']), c =>
-                        c.charCodeAt(0)
-                      ),
-                      transformation: {
-                        width: 600,
-                        height: 500
-                      }
-                    }),
-                  ]
+    styles: {
+      paragraphStyles: [
+        {
+          id: "MySpectacularStyle",
+          name: "My Spectacular Style",
+          basedOn: "Heading1",
+          next: "Heading1",
+          quickFormat: true,
+          run: {
+              italics: true,
+              color: "990000",
+          },
+        },
+      ],
+    }, 
+    sections: [{
+      properties: {
+        page: {
+          pageNumbers: {
+              start: 1,
+              formatType: PageNumberFormat.DECIMAL,
+          },
+        },
+      },
+      headers: {
+        default: new Header({
+          children: [
+            new Paragraph({
+              children: [
+                new TextRun("Epidemic Sandbox. "),
+                new TextRun({
+                  children: ["Page Number ", PageNumber.CURRENT],
                 }),
-              )
-              return arr;
-            })
-            .reduce((prev, curr) => prev.concat(curr), []),
-          ...linedata
-            .map(mytable => {
-              const arr = [];
-              arr.push(
-                new Paragraph({
-                  children:[
-                    new ImageRun({
-                      data: Uint8Array.from(atob(mytable['image']), c =>
-                        c.charCodeAt(0)
-                      ),
-                      transformation: {
-                        width: 300,
-                        height: 200
-                      }
-                    }),
-                  ]
+                new TextRun({
+                  children: [" to ", PageNumber.TOTAL_PAGES],
                 }),
-              )
-              return arr;
-            })
-            .reduce((prev, curr) => prev.concat(curr), []),
-          ...scattertables,
-          ...linetables,
-        ],
-      }]
-    });
+              ],
+            }),
+          ],
+        }),
+      },
+      footers: {
+        default: new Footer({
+          children: [
+            new Paragraph({
+              alignment: AlignmentType.CENTER,
+              children: [
+                new TextRun("Epidemic Sandbox. "),
+                new TextRun({
+                  children: ["Page Number: ", PageNumber.CURRENT],
+                }),
+                new TextRun({
+                  children: [" to ", PageNumber.TOTAL_PAGES],
+                }),
+              ],
+            }),
+          ],
+        }),
+      },
+      children: [
+        new Paragraph({
+          text: ""
+        }),
+        new Paragraph({
+          text: ""
+        }),
+        new Paragraph({
+          text: ""
+        }),
+        new Paragraph({
+          text: "Epidemic Sandbox Report.",
+          heading: HeadingLevel.TITLE,
+          alignment: AlignmentType.CENTER
+        }),
+        new Paragraph({
+          alignment: AlignmentType.CENTER,
+          children: [
+            new TextRun({
+              text: `Created ${date}`,
+              bold: true
+            }),
+            new PageBreak(),
+          ]
+        }),
+        new Paragraph({
+          text: "Table of Contents.",
+          heading: HeadingLevel.HEADING_1,
+          alignment: AlignmentType.CENTER
+        }),
+        new TableOfContents("Summary", {
+          hyperlink: true,
+          headingStyleRange: "1-5",
+          stylesWithLevels: [new StyleLevel("MySpectacularStyle", 1)],
+        }),
+        new Paragraph({
+          children: [
+            new PageBreak(),
+          ]
+        }),
+        new Paragraph({
+          text: "Regression Analysis",
+          heading: HeadingLevel.HEADING_1,
+        }),
+        new Paragraph({
+          text: regressionHTML.innerText
+        }),
+        new Paragraph({
+          text: ""
+        }),
+        new Paragraph({
+          text: "Scatter Graphs",
+          heading: HeadingLevel.HEADING_2,
+        }),
+        ...scatterdata
+          .map(mytable => {
+            const arr = [];
+            arr.push(
+              new Paragraph({
+                children:[
+                  new ImageRun({
+                    data: Uint8Array.from(atob(mytable['image']), c =>
+                      c.charCodeAt(0)
+                    ),
+                    transformation: {
+                      width: 600,
+                      height: 500
+                    }
+                  }),
+                ]
+              }),
+            )
+            return arr;
+          })
+          .reduce((prev, curr) => prev.concat(curr), []),
+        new Paragraph({
+          text: ""
+        }),
+        new Paragraph({
+          text: "Line Graphs",
+          heading: HeadingLevel.HEADING_2,
+        }),
+        ...linedata
+          .map(mytable => {
+            const arr = [];
+            arr.push(
+              new Paragraph({
+                children:[
+                  new ImageRun({
+                    data: Uint8Array.from(atob(mytable['image']), c =>
+                      c.charCodeAt(0)
+                    ),
+                    transformation: {
+                      width: 300,
+                      height: 200
+                    }
+                  }),
+                ]
+              }),
+            )
+            return arr;
+          })
+          .reduce((prev, curr) => prev.concat(curr), []),
+        new Paragraph({
+          children: [
+            new PageBreak(),
+          ]
+        }),
+        new Paragraph({
+          text: "Bibliography",
+          heading: HeadingLevel.HEADING_1,
+        }),
+        new Paragraph({
+          text: "https://app.swaggerhub.com/apis/Seng-We-Byte/We-Byte/1.0.0#/",
+          bullet: {
+            level: 0 
+          }
+        }),
+        new Paragraph({
+          text: "https://documenter.getpostman.com/view/10808728/SzS8rjbc#7934d316-f751-4914-9909-39f1901caeb8",
+          bullet: {
+            level: 0 
+          }
+        }),
+        new Paragraph({
+          children: [
+            new PageBreak(),
+          ]
+        }),
+        new Paragraph({
+          text: "Appendix",
+          heading: HeadingLevel.HEADING_1,
+        }),
+        new Paragraph({
+          text: "Data from scatter plots:",
+          bullet: {
+            level: 0
+          }
+        }),
+        ...scattertables,
+        new Paragraph({
+          text: ""
+        }),
+        new Paragraph({
+          text: "Data from line graphs:",
+          bullet: {
+            level: 0
+          }
+        }),
+        ...linetables,
+      ],
+    }]
+});
+  
+
   Packer.toBlob(doc).then(blob => {
     console.log(blob);
-    saveAs(blob, "example.docx");
+    saveAs(blob, "Epidemic Sandbox Report.docx");
     console.log("Document created successfully");
   });
 }
