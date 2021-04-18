@@ -375,6 +375,12 @@ const generate = () => {
           }
         }),
         new Paragraph({
+          text: "https://documenter.getpostman.com/view/10808728/SzS8rjbc#7934d316-f751-4914-9909-39f1901caeb8",
+          bullet: {
+            level: 0 
+          }
+        }),
+        new Paragraph({
           children: [
             new PageBreak(),
           ]
