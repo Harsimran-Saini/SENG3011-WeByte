@@ -8,10 +8,19 @@ import matplotlib.pyplot as plt
 import os
 from extract_CSV_data import *
 
-df = pd.read_csv("ConfirmedCovidCases_India.csv")
-y=df['Cases'].to_numpy()
-x=df['days'].to_numpy()
-date=df['Date'].to_numpy()
+
+def indexDates(data):
+
+    df = pd.read_csv(data)
+    df.index.name = 'days'
+    df.to_csv(data)
+    return
+
+# indexDates("ConfirmedCovidCases_Panama.csv")
+# df = pd.read_csv("test")
+# y=df['numArticles'].to_numpy()
+# x=df['Cases'].to_numpy()
+# date=df['Date'].to_numpy()
 
 #define cost function
 def cost_function(e):
@@ -27,12 +36,6 @@ def exp_fit(x, a, b, c):
     y = a*np.exp(b*x) + c
     return y
 
-def indexDates(data):
-
-    df = pd.read_csv(data)
-    df.index.name = 'days'
-    df.to_csv(data)
-    return
 
 def exponentialFit(x,y,upTo=None, prediction=None, generateJson=False):
     if prediction !=None:
@@ -101,7 +104,7 @@ def polyfit(x,y,degree, prediction=None, generateJson=False):
         #default the line fit to size of the x axis
         myline = np.linspace(1, x[-1],x[-1])
     else:
-        myline = np.linspace(1, prediction,prediction)
+        myline = np.linspace(1, prediction,300)
 
     if generateJson == True:
 
@@ -156,6 +159,6 @@ def generateLineJson (x, y):
 
     data = {"x":x,"y":y}
     df= pd.DataFrame(data=data)
-    df.to_csv("IndiaCurveFit.csv", index=False)
-    extractData("IndiaCurveFit.csv")
+    df.to_csv("articleVScasesFit.csv", index=False)
+    extractData("articleVScasesFit.csv")
     return

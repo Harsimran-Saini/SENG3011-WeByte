@@ -68,6 +68,7 @@ def extractData(dataSource):
         #append the point object to the extracted data list
         extractedData.append(point)
     fileName =f"{dataSource}_extractedData.json"
+    print(extractedData)
     with open(fileName, "w") as file:
         json.dump(extractedData, file)
 

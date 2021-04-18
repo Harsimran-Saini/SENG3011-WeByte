@@ -1,0 +1,4 @@
+Model r^2 score: 0.5895063739828166
+Pearson's correlation and p-value: (0.7677931843815862, 1.8525830029630665e-06)
+Spearman's correlation and p-value: SpearmanrResult(correlation=0.6513409961685823, pvalue=0.00017397029304976614)
+Kendall's correlation and p-value: KendalltauResult(correlation=0.49735449735449727, pvalue=0.00012167840449705953)

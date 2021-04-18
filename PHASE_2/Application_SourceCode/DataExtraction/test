@@ -1,8 +1,5 @@
 ,Country,Cases,numArticles
 0,Ireland,93532,44
-1,China,192046,978
-2,India,10286709,381
-3,United Kingdom,2549693,97
 4,Australia,56920,130
 5,Argentina,1629594,239
 6,Egypt,139471,129
@@ -30,4 +27,3 @@
 28,Mexico,1437185,233
 29,Lebanon,183888,174
 30,Japan,239068,328
-31,Italy,2129376,583
