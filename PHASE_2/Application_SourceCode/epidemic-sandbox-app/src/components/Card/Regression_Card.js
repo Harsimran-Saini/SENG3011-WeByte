@@ -104,6 +104,11 @@ class RegressionCard extends Component {
                 <p>Spearmans correlation and p-value: SpearmanrResult(correlation=0.6513409961685823, pvalue=0.00017397029304976614)</p>
                 <p>Kendalls correlation and p-value: KendalltauResult(correlation=0.49735449735449727, pvalue=0.00012167840449705953)</p>
             </div>)
+        const values = [];
+        const backgroundColours = [];
+        var xAxes_title = "Total Covid Cases";
+        var yAxes_title = "Total Covid Reports";
+        var title = "Total Covid Cases v Total Covid Reports";
 
         var data = {"datasets": [{"label": "Ireland", "data": [{"x": 93532, "y": 44}], "backgroundColor": "rgb(54,113,138)"}, {"label": "Australia", "data": [{"x": 56920, "y": 130}], "backgroundColor": "rgb(130,57,53)"}, {"label": "Argentina", "data": [{"x": 1629594, "y": 239}], "backgroundColor": "rgb(25,134,130)"}, {"label": "Egypt", "data": [{"x": 139471, "y": 129}], "backgroundColor": "rgb(3,136,199)"}, {"label": "Jordan", "data": [{"x": 295765, "y": 101}], "backgroundColor": "rgb(40,176,213)"}, {"label": "Norway", "data": [{"x": 49803, "y": 17}], "backgroundColor": "rgb(80,241,166)"}, {"label": "Peru", "data": [{"x": 1015137, "y": 244}], "backgroundColor": "rgb(119,149,168)"}, {"label": "Saudi Arabia", "data": [{"x": 362878, "y": 125}], "backgroundColor": "rgb(13,168,212)"}, {"label": "Singapore", "data": [{"x": 58629, "y": 134}], "backgroundColor": "rgb(208,159,25)"}, {"label": "South Africa", "data": [{"x": 1073887, "y": 267}], "backgroundColor": "rgb(94,55,132)"}, {"label": "Spain", "data": [{"x": 1928265, "y": 422}], "backgroundColor": "rgb(124,144,199)"}, {"label": "France", "data": [{"x": 2697014, "y": 419}], "backgroundColor": "rgb(42,52,184)"}, {"label": "Thailand", "data": [{"x": 7379, "y": 212}], "backgroundColor": "rgb(30,237,70)"}, {"label": "Ukraine", "data": [{"x": 1096855, "y": 202}], "backgroundColor": "rgb(89,196,195)"}, {"label": "Sweden", "data": [{"x": 437379, "y": 131}], "backgroundColor": "rgb(31,49,180)"}, {"label": "Slovenia", "data": [{"x": 123950, "y": 73}], "backgroundColor": "rgb(84,204,162)"}, {"label": "Qatar", "data": [{"x": 144042, "y": 64}], "backgroundColor": "rgb(81,20,200)"}, {"label": "Portugal", "data": [{"x": 420629, "y": 57}], "backgroundColor": "rgb(159,73,94)"}, {"label": "Philippines", "data": [{"x": 475820, "y": 229}], "backgroundColor": "rgb(213,225,104)"}, {"label": "Panama", "data": [{"x": 249733, "y": 90}], "backgroundColor": "rgb(101,85,16)"}, {"label": "Nigeria", "data": [{"x": 88587, "y": 203}], "backgroundColor": "rgb(18,61,203)"}, {"label": "Netherlands", "data": [{"x": 816616, "y": 242}], "backgroundColor": "rgb(246,141,184)"}, {"label": "Nepal", "data": [{"x": 261019, "y": 141}], "backgroundColor": "rgb(34,240,115)"}, {"label": "Morocco", "data": [{"x": 440970, "y": 136}], "backgroundColor": "rgb(108,251,229)"}, {"label": "Mongolia", "data": [{"x": 1242, "y": 0}], "backgroundColor": "rgb(131,119,214)"}, {"label": "Mexico", "data": [{"x": 1437185, "y": 233}], "backgroundColor": "rgb(166,147,149)"}, {"label": "Lebanon", "data": [{"x": 183888, "y": 174}], "backgroundColor": "rgb(24,227,215)"}, {"label": "Japan", "data": [{"x": 239068, "y": 328}], "backgroundColor": "rgb(32,159,151)"}]};
 
@@ -112,39 +117,49 @@ class RegressionCard extends Component {
             data["datasets"].push(trendline)
         }
 
-         const options = {
-           responsive: true,
-           title: {
-             display: true,
-             text: "Total Covid Cases v Total Covid Reports"
-           },
-           tooltips: {
-             callbacks: {
-                label: function(tooltipItem, data) {
-                   var label = data.datasets[tooltipItem.datasetIndex].label;
-                   return label + ': (' + tooltipItem.xLabel + ', ' + tooltipItem.yLabel + ')';
+        const options = {
+          responsive: true,
+          title: {
+            display: true,
+            text: title
+          },
+          tooltips: {
+            callbacks: {
+              label: function(tooltipItem, data) {
+                  var label = data.datasets[tooltipItem.datasetIndex].label;
+                  return label + ': (' + tooltipItem.xLabel + ', ' + tooltipItem.yLabel + ')';
+              }
+            }
+          },
+          scales: {
+            yAxes: [
+              {
+                scaleLabel: {
+                  display: true,
+                  labelString: yAxes_title
                 }
-             }
-           },
-           scales: {
-             yAxes: [
-               {
-                 scaleLabel: {
-                   display: true,
-                   labelString: "Total Covid Reports"
-                 }
-               }
-             ],
-             xAxes: [
-               {
-                 scaleLabel: {
-                   display: true,
-                   labelString: "Total Covid Cases"
-                 }
-               }
-             ]
-           }
-         }
+              }
+            ],
+            xAxes: [
+              {
+                scaleLabel: {
+                  display: true,
+                  labelString: xAxes_title
+                }
+              }
+            ]
+          }
+        }
+         
+        // eslint-disable-next-line no-unused-vars
+        for (var n in values) {
+          var r = Math.floor(Math.random() * 255);
+          var g = Math.floor(Math.random() * 255);
+          var b = Math.floor(Math.random() * 255);
+          var colour= "rgb(" + r + "," + g + "," + b + ")";
+          backgroundColours.push(colour);
+        }
+        
 
         graph = <Scatter data={data} options={options} />
 
@@ -154,8 +169,8 @@ class RegressionCard extends Component {
           const values = [];
           const labels = [];
           const backgroundColours = [];
-          var xAxes_title = "News Reports";
-          var yAxes_title = "Cumulative Covid-19 Cases";
+          xAxes_title = "News Reports";
+          yAxes_title = "Cumulative Covid-19 Cases";
 
           if (this.state.keys.length === 3) {
             // eslint-disable-next-line array-callback-return
@@ -195,12 +210,13 @@ class RegressionCard extends Component {
           }
 
           // eslint-disable-next-line no-unused-vars
-          for (var n in values) {
-            var r = Math.floor(Math.random() * 255);
-            var g = Math.floor(Math.random() * 255);
-            var b = Math.floor(Math.random() * 255);
-            var colour= "rgb(" + r + "," + g + "," + b + ")";
-            backgroundColours.push(colour);
+          // eslint-disable-next-line no-redeclare
+          for (var p in values) {
+            var r1 = Math.floor(Math.random() * 255);
+            var g1 = Math.floor(Math.random() * 255);
+            var b1 = Math.floor(Math.random() * 255);
+            var colour1= "rgb(" + r1 + "," + g1 + "," + b1 + ")";
+            backgroundColours.push(colour1);
           }
 
 
