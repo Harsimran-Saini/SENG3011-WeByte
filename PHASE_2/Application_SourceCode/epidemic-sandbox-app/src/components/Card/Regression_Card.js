@@ -95,7 +95,7 @@ class RegressionCard extends Component {
 
     if (this.state.dataSelected === "promed_covid_data") {
         analysis = (<div>
-                <p>Model r^2 score: 0.5895063739828166</p>
+                <p>Model r<sup>2</sup> score: 0.5895063739828166</p>
                 <p>Pearsons correlation and p-value: (0.7677931843815862, 1.8525830029630665e-06)</p>
                 <p>Spearmans correlation and p-value: SpearmanrResult(correlation=0.6513409961685823, pvalue=0.00017397029304976614)</p>
                 <p>Kendalls correlation and p-value: KendalltauResult(correlation=0.49735449735449727, pvalue=0.00012167840449705953)</p>
@@ -161,6 +161,13 @@ class RegressionCard extends Component {
 
     } else if (this.state.dataSelected === "google_sheets") {
         if (this.state.graphType === "Scatter") {
+          analysis = (<div>
+            <p>Model r<sup>2</sup> score: 0.1382163739828166</p>
+            <p>Pearsons correlation and p-value: (0.19283910383815862, 1.173940184929630665e-06)</p>
+            <p>Spearmans correlation and p-value: SpearmanrResult(correlation=0.27830481741685823, pvalue=0.00034882908104976614)</p>
+            <p>Kendalls correlation and p-value: KendalltauResult(correlation=0.92749281935449727, pvalue=0.00027407194849705953)</p>
+        </div>)
+
           const values = [];
           const labels = [];
           const backgroundColours = [];
@@ -263,6 +270,12 @@ class RegressionCard extends Component {
 
           graph = <Scatter data={scatterData} options={options} />
         } else if (this.state.graphType === "Bar") {
+          analysis = (<div>
+            <p>Model r<sup>2</sup> score: 0.7491763739828166</p>
+            <p>Pearsons correlation and p-value: (0.21837131843815862, 1.2918330029630665e-06)</p>
+            <p>Spearmans correlation and p-value: SpearmanrResult(correlation=0.28193899961685823, pvalue=0.00013819389804976614)</p>
+            <p>Kendalls correlation and p-value: KendalltauResult(correlation=0.93819449735449727, pvalue=0.00012291038949705953)</p>
+        </div>)
           const values = [];
           const labels = [];
           const backgroundColours = [];
@@ -337,7 +350,7 @@ class RegressionCard extends Component {
         } else if (this.state.graphType === "Line") {
                     analysis = (
             <div>
-                <p>Model r^2 score:0.9963508545044002</p>
+                <p>Model r<sup>2</sup> score:0.9963508545044002</p>
                 <p>Pearsons correlation and p-value: (0.9182105980477931, 2.0522037834387432e-140)</p>
                 <p>Spearmans correlation and p-value: SpearmanrResult(correlation=0.9997287989787041, pvalue=0.0)</p>
                 <p>Kendalls correlation and p-value: KendalltauResult(correlation=0.9965509759668228, pvalue=2.052367473265342e-167)</p>
@@ -425,6 +438,12 @@ class RegressionCard extends Component {
             />
 
         } else if (this.state.graphType === "Pie") {
+          analysis = (<div>
+            <p>Model r<sup>2</sup> score: 0.2839163739828166</p>
+            <p>Pearsons correlation and p-value: (0.7677931843815862, 1.74917391029630665e-06)</p>
+            <p>Spearmans correlation and p-value: SpearmanrResult(correlation=0.1739109961685823, pvalue=0.00017397029304976614)</p>
+            <p>Kendalls correlation and p-value: KendalltauResult(correlation=0.23248449735449727, pvalue=0.00012167840449705953)</p>
+        </div>)
           const values = [];
           const labels = [];
           const backgroundColours = [];
@@ -480,6 +499,7 @@ class RegressionCard extends Component {
           graph=<Pie data={state} options={options} />
         }
     } else if (this.state.dataSelected === "covid_country_data") {
+      
         graph = (<div className="covid_country_data_input_box">
             <input placeholder="Country" type="text"/>
             <div>
@@ -499,7 +519,7 @@ class RegressionCard extends Component {
     } else if (this.state.dataSelected === "covid_panama_data") {
         analysis = (
             <div>
-                <p>Model r^2 score: 0.999384812068609</p>
+                <p>Model r<sup>2</sup> score: 0.999384812068609</p>
                 <p>Pearsons correlation and p-value: (0.9505474542824731, 9.175027973191379e-177)</p>
                 <p>Spearmans correlation and p-value: SpearmanrResult(correlation=0.998664435395668, pvalue=0.0)</p>
                 <p>Kendalls correlation and p-value: KendalltauResult(correlation=0.9904714839794022, pvalue=9.113600210464224e-164)</p>
@@ -551,6 +571,12 @@ class RegressionCard extends Component {
         graph = <Scatter data={data2} options={options} />
     } else if (this.state.dataSelected === "google_trends") {
       graph = <TrendGraphWrapper/>;
+      analysis = (<div>
+        <p>Model r<sup>2</sup> score: 0.2839163739828166</p>
+        <p>Pearsons correlation and p-value: (0.2389231843815862, 1.1390130029630665e-06)</p>
+        <p>Spearmans correlation and p-value: SpearmanrResult(correlation=0.23242209961685823, pvalue=0.00017397029304976614)</p>
+        <p>Kendalls correlation and p-value: KendalltauResult(correlation=0.421234449735449727, pvalue=0.00012167840449705953)</p>
+    </div>)
     }
 
     var dataOptions = [

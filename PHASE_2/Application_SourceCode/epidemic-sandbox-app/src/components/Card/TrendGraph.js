@@ -13,6 +13,7 @@ function parseDatasets(data, covidData) {
     // todo 
     console.log("Parsing: " + data);
     var datasets = [];
+    // eslint-disable-next-line array-callback-return
     Object.keys(data).map(k => {
         try {
             var entry = {
@@ -31,6 +32,7 @@ function parseDatasets(data, covidData) {
 }
 
 var trendGraph = function TrendGraph(props) {
+    // eslint-disable-next-line no-unused-vars
     const { keyword: [keyword, setKeyword] } = {
         keyword: useState(''),
         ...(props.state || {})
@@ -55,7 +57,7 @@ var trendGraph = function TrendGraph(props) {
 
     // Get trend data
     useEffect(() => {
-        if (keyword != "") {
+        if (keyword !== "") {
             var path = 'http://127.0.0.1:5000/trends/' + keyword;
             console.log("Request made to: " + path)
             fetch(path)
@@ -70,11 +72,12 @@ var trendGraph = function TrendGraph(props) {
         }
         
     // will update when keyword changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [keyword]);
 
     var data = {"datasets": datasets}
     var yAxes_title = "Covid Cases"
-    var xAxes_title = "Search interest for \'" + keyword + "\'"
+    var xAxes_title = "Search interest for '" + keyword + "'"
     //data and labels
     const options = {
         responsive: true,

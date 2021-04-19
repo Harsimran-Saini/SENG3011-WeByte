@@ -32,14 +32,20 @@ const generate = () => {
         var labels = [];
         var a = 0;
         while (a < instance.config.data.datasets.length) {
-          var json = {x: instance.config.data.datasets[a].data[0]["x"], y: instance.config.data.datasets[a].data[0]["y"], label: instance.config.data.datasets[a]["label"]}
-          dataPoints.push(json);
-          labels.push(instance.config.data.datasets[a]["label"])
+          if (instance.config.data.datasets[a].data[0]["x"] === undefined) {
+          } else if (instance.config.data.datasets[a].data[0]["y"] === undefined) {
+          } else {
+            var json = {x: instance.config.data.datasets[a].data[0]["x"], y: instance.config.data.datasets[a].data[0]["y"], label: instance.config.data.datasets[a]["label"]}
+            dataPoints.push(json);
+            labels.push(instance.config.data.datasets[a]["label"])
+          }
+          
           a++;
         }
         mydata['label'] = "Countries";
         mydata['coordinates'] = dataPoints;
         console.log("coord", mydata['coordinates'])
+        console.log("coord2", mydata['label'])
 
 
         mydata['image'] = instance.canvas.toDataURL().replace(/^data:image\/(png|jpg);base64,/, "");

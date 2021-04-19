@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { Component } from 'react'
 import ReactCardFlip from "react-card-flip";
 import "./Card.css";
 import Arrow from "../../images/blue-arrow.png"
@@ -12,40 +12,55 @@ const data = {
         label: "Global COVID-19 Cases",
         data: [2008, 1751, 57655, 71493, 117551, 163973, 293244, 264107, 311514, 598195, 504932, 700941],
         fill: false,
-        borderColor: "#742774"
+        borderColor: "#42bdff"
       }
     ]
 };
 
-const Card = () => {
-    // flipped state
-    const [isFlipped, setIsFlipped] = useState(false);
+class CasesCard extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {isFlipped: false, cases: "140,524,987"};
+    this.handleClick = this.handleClick.bind(this);
+    this.numberWithCommas = this.numberWithCommas.bind(this)
+  }
 
-    //if button is clicked
-    const handleClick = () => {
-        setIsFlipped(!isFlipped);
-    };
+  componentDidMount() {
+    const url = "https://api.covid19api.com/summary"
+    fetch(url).then(res => res.json()).then(data => {
+        this.setState({
+          cases: this.numberWithCommas(data["Global"]["TotalConfirmed"]),
+        });
+    });
+  }
+  
+  numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
 
-    
+  handleClick() {
+    this.setState(({ isFlipped }) => ({ isFlipped: !isFlipped }));
+  }
+
+  render() {
     return (
-        <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
-            <div className="front1" >
-                <p>Global COVID-19 Cases</p>
-                <hr/>
-                <span>134,519,292</span>
-                <button><img src={Arrow} alt="" onClick={handleClick}/></button>
-
-                
-            </div>
-
-            <div className="back1">
-              <div>
-                <Line data={data} />
-              </div>
-              <button><img src={Arrow} alt="" onClick={handleClick}/></button>
-            </div>
-        </ReactCardFlip>
-    )
+      <ReactCardFlip isFlipped={this.state.isFlipped} flipDirection="horizontal">
+        <div className="front1" >
+          <p>Global COVID-19 Cases</p>
+          <hr/>
+          <span>{this.state.cases}</span>
+          <button><img src={Arrow} alt="" onClick={this.handleClick}/></button>         
+        </div>
+        <div className="back1">
+          <div>
+            <Line data={data} />
+          </div>
+          <button><img src={Arrow} alt="" onClick={this.handleClick}/></button>
+        </div>
+      </ReactCardFlip>
+    );
+  }
 }
 
-export default Card
+export default CasesCard
+
