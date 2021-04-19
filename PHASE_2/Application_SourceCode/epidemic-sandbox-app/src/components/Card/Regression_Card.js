@@ -7,10 +7,8 @@ import casesJSON from './cases.json';
 import Arrow from "../../images/blue-arrow.png"
 
 function matchUp(country) {
-  console.log("cJ", country)
   for (var i = 0; i < casesJSON["Countries"].length; i++) {
     if (country === casesJSON["Countries"][i]["Country"]) {
-      console.log("aaa");
       return casesJSON["Countries"][i];
     }
   }
@@ -46,18 +44,15 @@ class RegressionCard extends Component {
 
         //Graph Type
         var graphType = googleData["Graph Selection"].elements[0]["Graph Type"];
-        console.log(googleData[graphType])
         
         //Graph Keys
         var keys = Object.values(googleData[graphType].elements[0]);
         keys.shift();
-        console.log("keys", keys)
 
 
         //Graph Values
         var data = googleData[graphType].elements;
         data.shift();
-        console.log("data", data)
         this.setState({
           data: data,
           keys: keys,
@@ -165,7 +160,6 @@ class RegressionCard extends Component {
 
     } else if (this.state.dataSelected === "google_sheets") {
         if (this.state.graphType === "Scatter") {
-          console.log("graphy type", this.state.graphType)
           const values = [];
           const labels = [];
           const backgroundColours = [];
@@ -181,17 +175,14 @@ class RegressionCard extends Component {
               values.push(json);
               labels.push(obj["Plot Label"])
             });
-            console.log("3");
             xAxes_title = this.state.keys[1];
             yAxes_title = this.state.keys[2];
 
           } else if (this.state.keys.length === 2) {
-            console.log("2")
             // eslint-disable-next-line array-callback-return
             this.state.data.map(obj => {
               var country = obj[this.state.keys[0]];
               var jsonAPI = matchUp(country);
-              console.log("json", jsonAPI);
               if (Object.keys(jsonAPI).length > 0) {
                 var x = jsonAPI["TotalConfirmed"].replace(/,/g, "");
                 var y = obj["Y-Axis"].replace(/,/g, "");
@@ -205,7 +196,6 @@ class RegressionCard extends Component {
             yAxes_title = this.state.keys[1];
 
           } else {
-            console.log("1");
 
           }
 
@@ -234,10 +224,6 @@ class RegressionCard extends Component {
           };
 
 
-          console.log("sc", scatterData)
-          console.log("ac", values.length)
-          console.log("scc", labels.length)
-          console.log("scc", backgroundColours.length)
 
           //Graph options info
           const options = {
@@ -438,9 +424,6 @@ class RegressionCard extends Component {
             />
 
         } else if (this.state.graphType === "Pie") {
-          console.log("a", this.state.keys)
-          console.log("b", this.state.data)
-
           const values = [];
           const labels = [];
           const backgroundColours = [];

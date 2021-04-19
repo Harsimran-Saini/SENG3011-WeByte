@@ -6,11 +6,11 @@ import { Line } from "react-chartjs-2";
 
 //Line graph data
 const data = {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr"],
     datasets: [
       {
         label: "COVID-19 Vaccines Administered",
-        data: [33, 25, 35, 51, 54, 76, 79, 84, 91, 92, 99, 112],
+        data: [0, 0, 0, 0, 0, 0, 0, 4368689, 59441205, 148862997, 341184234, 500608509],
         fill: false,
         borderColor: "#742774"
       }
