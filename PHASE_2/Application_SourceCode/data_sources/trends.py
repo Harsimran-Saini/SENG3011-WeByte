@@ -25,6 +25,7 @@ def get_trends(keyword, start_date, end_date, country=None):
 def trends_by_country(keyword, start_date, end_date):
     kw_list = [keyword]
     dateStr = str(start_date) + " " + str(end_date)
+    print(kw_list, dateStr)
     pytrends.build_payload(kw_list, timeframe=dateStr, geo='')
     df = pytrends.interest_by_region(resolution='COUNTRY', inc_low_vol=True, inc_geo_code=True)
 
