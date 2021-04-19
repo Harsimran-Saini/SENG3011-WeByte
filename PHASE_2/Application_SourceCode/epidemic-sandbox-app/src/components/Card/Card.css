@@ -124,7 +124,7 @@
 }
 
 /*analysis text*/
-.regression-back > div {
+.regression-back > text > div {
     align-items: left;
     padding: 10px;
     text-align: left;

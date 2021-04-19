@@ -492,8 +492,139 @@ class RegressionCard extends Component {
       
       graph = <Scatter data={scatterData} options={options} />
     } else if (this.state.graphType === "Bar") {
+      const values = [];
+      const labels = [];
+      const backgroundColours = [];
+      const hoverBackgroundColor = [];
+      const xAxes = this.state.keys[0];
+      const yAxes = this.state.keys[1];
+      const title = this.state.keys[2];
+      //data and labels
+      this.state.data.map(obj => {
+        var val = obj["Y-Axis"].replace(/,/g, "");
+        values.push(parseInt(val));
+        labels.push(obj["X-Axis"])
+      });
 
+      //graph colours
+      for (var k in values) {
+        var r3 = Math.floor(Math.random() * 255);
+        var g3 = Math.floor(Math.random() * 255);
+        var b3 = Math.floor(Math.random() * 255);
+        var colour3= "rgb(" + r3 + "," + g3 + "," + b3 + ")";
+        backgroundColours.push(colour3);
+        hoverBackgroundColor.push("rgb(" + r3 + "," + g3 + "," + b3 + ", 0.7)");
+      }
+
+      const state = {
+        labels: labels,
+        datasets: [
+          {
+            label: yAxes,
+            backgroundColor: backgroundColours,
+            borderColor: 'rgba(0,0,0,0.5)',
+            hoverBackgroundColor: hoverBackgroundColor,
+            borderWidth: 1,
+            data: values
+          }
+        ]
+      }
+
+      const options = {
+        title:{
+          display:true,
+          text:title,
+          fontSize:20
+        },
+        legend:{
+          display:true,
+          position:'right'
+        },
+        scales: {
+          yAxes: [
+            {
+              scaleLabel: {
+                display: true,
+                labelString: yAxes
+              }
+            }
+          ], 
+          xAxes: [
+            {
+              scaleLabel: {
+                display: true,
+                labelString: xAxes
+              }
+            }
+          ]
+        }
+      }
+      graph = <Bar data={state} options={options}/>
     } else if (this.state.graphType === "Line") {
+      const values = [];
+      const labels = [];
+      const xAxes = this.state.keys[0];
+      const yAxes = this.state.keys[1];
+      const title = this.state.keys[2];
+
+      //data and labels
+      this.state.data.map(obj => {
+        var val = obj["Y-Axis"].replace(/,/g, "");
+        values.push(parseInt(val));
+        labels.push(obj["X-Axis"])
+      });
+
+      const state = {
+        labels: labels,
+        datasets: [
+          {
+            label: yAxes,
+            fill: false,
+            lineTension: 0.,
+            backgroundColor: 'rgba(75,192,200,1)',
+            borderColor: 'rgba(75,192,200,0.3)',
+            hoverBackgroundColor: 'rgba(173, 178, 179, 1)',
+            borderWidth: 2,
+            pointRadius: 4,
+            pointHoverRadius: 10,
+            data: values
+          }
+        ]
+      }
+
+      const options = {
+        title:{
+          display:true,
+          text: title,
+          fontSize:20
+        },
+        legend:{
+          display:true,
+          position:'right'
+        },
+        scales: {
+          yAxes: [
+            {
+              scaleLabel: {
+                display: true,
+                labelString: yAxes
+              }
+            }
+          ], 
+          xAxes: [
+            {
+              scaleLabel: {
+                display: true,
+                labelString: xAxes
+              }
+            }
+          ]
+        }
+      }
+      graph = <Line
+          data={state}
+          options={options}
+        />
 
     } else if (this.state.graphType === "Pie") {
       console.log("a", this.state.keys)
@@ -528,7 +659,7 @@ class RegressionCard extends Component {
         labels: labels,
         datasets: [
           {
-            label: 'Rainfall',
+            label: xAxes,
             backgroundColor: backgroundColours,
             hoverBackgroundColor: hoverBackgroundColor,
             data: values
@@ -576,12 +707,14 @@ class RegressionCard extends Component {
         <div className="regression-back">
           <p><i class="fa fa-signal fa-fw"></i>Regression Analysis</p>
           <hr/>
+          <text id="regression-back">
           <div>
             <br/>
             <p>Some bs text from Wikipedia- DELETE!! Coronaviruses are a group of related RNA viruses that cause diseases in mammals and birds. In humans and birds, they cause respiratory tract infections that can range from mild to lethal. Mild illnesses in humans include some cases of the common cold (which is also caused by other viruses, predominantly rhinoviruses), while more lethal varieties can cause SARS, MERS, and COVID-19. In cows and pigs they cause diarrhea, while in mice they cause hepatitis and encephalomyelitis.</p>
             <p>Coronaviruses constitute the subfamily Orthocoronavirinae, in the family Coronaviridae, order Nidovirales, and realm Riboviria.[5][4] They are enveloped viruses with a positive-sense single-stranded RNA genome and a nucleocapsid of helical symmetry.[6] The genome size of coronaviruses ranges from approximately 26 to 32 kilobases, one of the largest among RNA viruses.[7] They have characteristic club-shaped spikes that project from their surface, which in electron micrographs create an image reminiscent of the solar corona, from which their name derives.[8]</p>
             <p>Coronaviruses constitute the subfamily Orthocoronavirinae, in the family Coronaviridae, order Nidovirales, and realm Riboviria.</p>
           </div>
+          </text>
           <button onClick={this.handleClick}>Click to view Graph</button>
         </div>
       </ReactCardFlip>
