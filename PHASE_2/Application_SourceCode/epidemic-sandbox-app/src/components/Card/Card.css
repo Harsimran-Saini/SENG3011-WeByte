@@ -1,5 +1,9 @@
 /**** TOP ROW CSS ****/
 
+.covid_country_data_input_box {
+    display: grid;
+}
+
 /* individual card */
 .front1, .back1 {
     border-radius: 5px;

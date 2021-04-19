@@ -17,6 +17,9 @@ const generate = () => {
   // console.log(chart)
   var scatterdata=[];
   var linedata=[];
+  var linedata2=[];
+  var bardata = [];
+  var piedata = [];
   Chart.helpers.each(Chart.instances, function(instance){
     console.log(instance)
     if (instance.config.type === "scatter"){
@@ -32,7 +35,7 @@ const generate = () => {
       scatterdata.push(mydata)
     }else if (instance.config.type === "line"){
       var mydata2 = {}
-      mydata2['label'] = instance.config.data.datasets[0].label;
+      mydata2['label'] = instance.config.data.datasets[0].label; //Covid-19 cases
       mydata2['coordinates'] = []
       var j = 0;
       while (j < instance.config.data.datasets[0].data.length){
@@ -43,7 +46,39 @@ const generate = () => {
         j++;
       }
       mydata2['image'] = instance.canvas.toDataURL().replace(/^data:image\/(png|jpg);base64,/, "");
-      linedata.push(mydata2)
+      if (instance.id > 2){
+        linedata2.push(mydata2)
+      }else{
+        linedata.push(mydata2)
+      }
+    }else if (instance.config.type === "bar"){
+      var mydata3 = {}
+      mydata3['label'] = instance.config.data.datasets[0].label; //Covid-19 cases
+      mydata3['coordinates'] = []
+      var j = 0;
+      while (j < instance.config.data.datasets[0].data.length){
+        var myobj = {}
+        myobj['label'] = instance.config.data.labels[j];
+        myobj['value'] = instance.config.data.datasets[0].data[j];
+        mydata3['coordinates'].push(myobj)
+        j++;
+      }
+      mydata3['image'] = instance.canvas.toDataURL().replace(/^data:image\/(png|jpg);base64,/, "");
+      bardata.push(mydata3)
+    }else if (instance.config.type === "pie"){
+      var mydata4 = {}
+      mydata4['label'] = instance.config.data.datasets[0].label; //Covid-19 cases
+      mydata4['coordinates'] = []
+      var j = 0;
+      while (j < instance.config.data.datasets[0].data.length){
+        var myobj = {}
+        myobj['label'] = instance.config.data.labels[j];
+        myobj['value'] = instance.config.data.datasets[0].data[j];
+        mydata4['coordinates'].push(myobj)
+        j++;
+      }
+      mydata4['image'] = instance.canvas.toDataURL().replace(/^data:image\/(png|jpg);base64,/, "");
+      piedata.push(mydata4)
     }
   })
 
@@ -195,6 +230,206 @@ const generate = () => {
       })
       .reduce((prev, curr) => prev.concat(curr), [])
     ]
+
+  var linetables2 = [];
+  linetables2 = 
+    [...linedata2
+      .map(mytable=> {
+        const arr = [];
+        arr.push(
+          new Table({
+            style: "MyCustomTableStyle",
+            width: {
+              size: 100,
+              type: WidthType.PERCENTAGE,
+            },
+            rows: [
+              new TableRow({
+                children: [
+                  new TableCell({
+                    children: [new Paragraph({
+                      children: [
+                        new TextRun({
+                          text: "Days",
+                          bold: true
+                        }),
+                      ]
+                    })],
+                  }),
+                  new TableCell({
+                    children: [new Paragraph({
+                      children: [
+                        new TextRun({
+                          text: mytable['label'],
+                          bold: true
+                        }),
+                      ]
+                    })],
+                  }),
+                ],
+              }),
+              ...mytable['coordinates']
+                .map(myval => {
+                  const arr1 = [];
+                  arr1.push(
+                    new TableRow({
+                      children: [
+                        new TableCell({
+                          children: [new Paragraph({
+                            text: myval["label"].toString()
+                          })],
+                        }),
+                        new TableCell({
+                          children: [new Paragraph({
+                            text: myval["value"].toString()
+                          })],
+                        }),
+                      ],
+                    }),
+                  )
+                  return arr1;
+                })
+                .reduce((prev, curr) => prev.concat(curr), [])
+            ],
+          })
+        )
+        return arr;
+      })
+      .reduce((prev, curr) => prev.concat(curr), [])
+    ]
+  var bartables = [];
+  bartables = 
+    [...bardata
+      .map(mytable=> {
+        const arr = [];
+        arr.push(
+          new Table({
+            style: "MyCustomTableStyle",
+            width: {
+              size: 100,
+              type: WidthType.PERCENTAGE,
+            },
+            rows: [
+              new TableRow({
+                children: [
+                  new TableCell({
+                    children: [new Paragraph({
+                      children: [
+                        new TextRun({
+                          text: "Months",
+                          bold: true
+                        }),
+                      ]
+                    })],
+                  }),
+                  new TableCell({
+                    children: [new Paragraph({
+                      children: [
+                        new TextRun({
+                          text: mytable['label'],
+                          bold: true
+                        }),
+                      ]
+                    })],
+                  }),
+                ],
+              }),
+              ...mytable['coordinates']
+                .map(myval => {
+                  const arr1 = [];
+                  arr1.push(
+                    new TableRow({
+                      children: [
+                        new TableCell({
+                          children: [new Paragraph({
+                            text: myval["label"].toString()
+                          })],
+                        }),
+                        new TableCell({
+                          children: [new Paragraph({
+                            text: myval["value"].toString()
+                          })],
+                        }),
+                      ],
+                    }),
+                  )
+                  return arr1;
+                })
+                .reduce((prev, curr) => prev.concat(curr), [])
+            ],
+          })
+        )
+        return arr;
+      })
+      .reduce((prev, curr) => prev.concat(curr), [])
+    ]
+
+var pietables = [];
+pietables = 
+  [...piedata
+    .map(mytable=> {
+      const arr = [];
+      arr.push(
+        new Table({
+          style: "MyCustomTableStyle",
+          width: {
+            size: 100,
+            type: WidthType.PERCENTAGE,
+          },
+          rows: [
+            new TableRow({
+              children: [
+                new TableCell({
+                  children: [new Paragraph({
+                    children: [
+                      new TextRun({
+                        text: "Number of Covid Cases",
+                        bold: true
+                      }),
+                    ]
+                  })],
+                }),
+                new TableCell({
+                  children: [new Paragraph({
+                    children: [
+                      new TextRun({
+                        text: mytable['label'],
+                        bold: true
+                      }),
+                    ]
+                  })],
+                }),
+              ],
+            }),
+            ...mytable['coordinates']
+              .map(myval => {
+                const arr1 = [];
+                arr1.push(
+                  new TableRow({
+                    children: [
+                      new TableCell({
+                        children: [new Paragraph({
+                          text: myval["label"].toString()
+                        })],
+                      }),
+                      new TableCell({
+                        children: [new Paragraph({
+                          text: myval["value"].toString()
+                        })],
+                      }),
+                    ],
+                  }),
+                )
+                return arr1;
+              })
+              .reduce((prev, curr) => prev.concat(curr), [])
+          ],
+        })
+      )
+      return arr;
+    })
+    .reduce((prev, curr) => prev.concat(curr), [])
+  ]
   var date = new Date();
   const doc = new Document({
     styles: {
@@ -307,7 +542,7 @@ const generate = () => {
           text: ""
         }),
         new Paragraph({
-          text: "Scatter Graphs",
+          text: "Graphs used for Analysis",
           heading: HeadingLevel.HEADING_2,
         }),
         ...scatterdata
@@ -334,8 +569,82 @@ const generate = () => {
         new Paragraph({
           text: ""
         }),
+        ...bardata
+          .map(mytable => {
+            const arr = [];
+            arr.push(
+              new Paragraph({
+                children:[
+                  new ImageRun({
+                    data: Uint8Array.from(atob(mytable['image']), c =>
+                      c.charCodeAt(0)
+                    ),
+                    transformation: {
+                      width: 600,
+                      height: 500
+                    }
+                  }),
+                ]
+              }),
+            )
+            return arr;
+          })
+          .reduce((prev, curr) => prev.concat(curr), []),
         new Paragraph({
-          text: "Line Graphs",
+          text: ""
+        }),
+        ...linedata2
+          .map(mytable => {
+            const arr = [];
+            arr.push(
+              new Paragraph({
+                children:[
+                  new ImageRun({
+                    data: Uint8Array.from(atob(mytable['image']), c =>
+                      c.charCodeAt(0)
+                    ),
+                    transformation: {
+                      width: 600,
+                      height: 500
+                    }
+                  }),
+                ]
+              }),
+            )
+            return arr;
+          })
+          .reduce((prev, curr) => prev.concat(curr), []),
+        new Paragraph({
+          text: ""
+        }),
+        ...piedata
+          .map(mytable => {
+            const arr = [];
+            arr.push(
+              new Paragraph({
+                children:[
+                  new ImageRun({
+                    data: Uint8Array.from(atob(mytable['image']), c =>
+                      c.charCodeAt(0)
+                    ),
+                    transformation: {
+                      width: 600,
+                      height: 500
+                    }
+                  }),
+                ]
+              }),
+            )
+            return arr;
+          })
+          .reduce((prev, curr) => prev.concat(curr), []),
+        new Paragraph({
+          children: [
+            new PageBreak(),
+          ]
+        }),
+        new Paragraph({
+          text: "Additional Graphs",
           heading: HeadingLevel.HEADING_2,
         }),
         ...linedata
@@ -390,17 +699,20 @@ const generate = () => {
           heading: HeadingLevel.HEADING_1,
         }),
         new Paragraph({
-          text: "Data from scatter plots:",
+          text: "Data for main analysis graph:",
           bullet: {
             level: 0
           }
         }),
         ...scattertables,
+        ...bartables,
+        ...pietables,
+        ...linetables2,
         new Paragraph({
           text: ""
         }),
         new Paragraph({
-          text: "Data from line graphs:",
+          text: "Data from additional line graphs:",
           bullet: {
             level: 0
           }
