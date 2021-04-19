@@ -23,3 +23,14 @@ def trends_country(keyword):
     df = trends_by_country(keyword, start_date, end_date)
 
     return json.dumps(json.loads(df.to_json())[keyword])
+
+@app.route('/covid-by-country')
+def covid_country():
+    df = pandas.read_csv('covid19cases.csv', usecols=['Name', 'Cases - cumulative total'])
+    data = {}
+    for t in list(df.itertuples(index=False, name=None)):
+        if t[0] != "Global":
+            data[t[0]] = t[1]
+
+    return json.dumps(data)
+

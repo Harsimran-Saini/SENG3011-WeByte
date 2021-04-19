@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from 'react';    
+import React, { useState, useEffect } from 'react';    
 import { Scatter } from "react-chartjs-2";
 
 function randomRGB() {
@@ -9,43 +9,72 @@ function randomRGB() {
     return colour;
 }
 
-function parseDatasets(data) {
+function parseDatasets(data, covidData) {
     // todo 
     console.log("Parsing: " + data);
     var datasets = [];
     Object.keys(data).map(k => {
-        var entry = {
-            "label": k,
-            "data": [{"y": data[k], "x": Math.random() * 100}],
-            "backgroundColor": randomRGB()
+        try {
+            var entry = {
+                "label": k,
+                "data": [{"y": data[k], "x": covidData[k]}],
+                "backgroundColor": randomRGB()
+            }
+            datasets.push(entry);
+        } catch {
+            // Ignore invalid entries
         }
-        datasets.push(entry);
+        
     })
     console.log(data)
     return datasets;
 }
 
 var trendGraph = function TrendGraph(props) {
-    const [keyword, setKeyword] = useState(props.props.keyword); 
-    const [datasets, setDatasets] = useState([])
-
+    const { keyword: [keyword, setKeyword] } = {
+        keyword: useState(''),
+        ...(props.state || {})
+    };
+    const [datasets, setDatasets] = useState([]);
+    const [covidData, setCovidData] = useState({});
+    
+    // Get covid data
     useEffect(() => {
-        // GET request using fetch inside useEffect React hook
-        fetch('http://127.0.0.1:5000/trends/' + keyword)
+        var path = 'http://127.0.0.1:5000/covid-by-country';
+        console.log("Request made to: " + path)
+        fetch(path)
         .then(response => response.json())
-        .then(data => setDatasets(parseDatasets(data)))
+        .then(data => {setCovidData(data); console.log(data)})
         .catch(error => {
             console.log(error.code);
             console.log(error.stack);
             console.log("Could not load trends: " + error);
             setDatasets([]);
         })
-    // empty dependency array means this effect will only run once (like componentDidMount in classes)
     }, []);
+
+    // Get trend data
+    useEffect(() => {
+        if (keyword != "") {
+            var path = 'http://127.0.0.1:5000/trends/' + keyword;
+            console.log("Request made to: " + path)
+            fetch(path)
+            .then(response => response.json())
+            .then(data => setDatasets(parseDatasets(data, covidData)))
+            .catch(error => {
+                console.log(error.code);
+                console.log(error.stack);
+                console.log("Could not load trends: " + error);
+                setDatasets([]);
+            })
+        }
+        
+    // will update when keyword changes
+    }, [keyword]);
 
     var data = {"datasets": datasets}
     var yAxes_title = "Covid Cases"
-    var xAxes_title = "Relative Search Interest: " + keyword
+    var xAxes_title = "Search interest for \'" + keyword + "\'"
     //data and labels
     const options = {
         responsive: true,
@@ -54,7 +83,7 @@ var trendGraph = function TrendGraph(props) {
         },
         title: {
             display: true,
-            text: xAxes_title + ' v ' + yAxes_title
+            text: xAxes_title + ' v ' + yAxes_title + " by country"
         },
         tooltips: {
             callbacks: {
@@ -75,6 +104,7 @@ var trendGraph = function TrendGraph(props) {
             ],
             xAxes: [
                 {
+                    type: 'logarithmic',
                     scaleLabel: {
                         display: true,
                         labelString: yAxes_title
@@ -84,7 +114,10 @@ var trendGraph = function TrendGraph(props) {
         }
     }
     
-    var graph = <Scatter data={data} options={options} />
+    var graph = 
+    <>
+        <Scatter data={data} options={options} />
+    </>
     return graph;  
 };     
         
