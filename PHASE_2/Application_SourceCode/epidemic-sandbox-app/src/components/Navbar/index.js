@@ -21,25 +21,48 @@ const generate = () => {
   var bardata = [];
   var piedata = [];
   Chart.helpers.each(Chart.instances, function(instance){
-    console.log(instance)
+    console.log("inst", instance)
+    var j = 0;
+    var myobj = {};
     if (instance.config.type === "scatter"){
       var mydata = {}
-      mydata['label'] = instance.config.data.datasets[0].label;
-      mydata['coordinates'] = instance.config.data.datasets[0].data;
-      var i = 0;
-      while (i < mydata['coordinates'].length){
-        mydata['coordinates'][i]['label'] = instance.config.data.labels[i];
-        i++;
+
+      if (instance.config.data.labels.length === 0) {
+        var dataPoints = [];
+        var labels = [];
+        var a = 0;
+        while (a < instance.config.data.datasets.length) {
+          var json = {x: instance.config.data.datasets[a].data[0]["x"], y: instance.config.data.datasets[a].data[0]["y"], label: instance.config.data.datasets[a]["label"]}
+          dataPoints.push(json);
+          labels.push(instance.config.data.datasets[a]["label"])
+          a++;
+        }
+        mydata['label'] = "Countries";
+        mydata['coordinates'] = dataPoints;
+        console.log("coord", mydata['coordinates'])
+
+
+        mydata['image'] = instance.canvas.toDataURL().replace(/^data:image\/(png|jpg);base64,/, "");
+
+      } else {
+        mydata['label'] = instance.config.data.datasets[0].label;
+        mydata['coordinates'] = instance.config.data.datasets[0].data;
+        var i = 0;
+        while (i < mydata['coordinates'].length){
+          mydata['coordinates'][i]['label'] = instance.config.data.labels[i];
+          i++;
+        }
+        mydata['image'] = instance.canvas.toDataURL().replace(/^data:image\/(png|jpg);base64,/, "");
       }
-      mydata['image'] = instance.canvas.toDataURL().replace(/^data:image\/(png|jpg);base64,/, "");
+      
       scatterdata.push(mydata)
     }else if (instance.config.type === "line"){
       var mydata2 = {}
       mydata2['label'] = instance.config.data.datasets[0].label; //Covid-19 cases
       mydata2['coordinates'] = []
-      var j = 0;
+      j = 0;
       while (j < instance.config.data.datasets[0].data.length){
-        var myobj = {}
+        myobj = {}
         myobj['label'] = instance.config.data.labels[j];
         myobj['value'] = instance.config.data.datasets[0].data[j];
         mydata2['coordinates'].push(myobj)
@@ -55,9 +78,9 @@ const generate = () => {
       var mydata3 = {}
       mydata3['label'] = instance.config.data.datasets[0].label; //Covid-19 cases
       mydata3['coordinates'] = []
-      var j = 0;
+      j = 0;
       while (j < instance.config.data.datasets[0].data.length){
-        var myobj = {}
+        myobj = {}
         myobj['label'] = instance.config.data.labels[j];
         myobj['value'] = instance.config.data.datasets[0].data[j];
         mydata3['coordinates'].push(myobj)
@@ -69,9 +92,9 @@ const generate = () => {
       var mydata4 = {}
       mydata4['label'] = instance.config.data.datasets[0].label; //Covid-19 cases
       mydata4['coordinates'] = []
-      var j = 0;
+      j = 0;
       while (j < instance.config.data.datasets[0].data.length){
-        var myobj = {}
+        myobj = {}
         myobj['label'] = instance.config.data.labels[j];
         myobj['value'] = instance.config.data.datasets[0].data[j];
         mydata4['coordinates'].push(myobj)
@@ -86,6 +109,7 @@ const generate = () => {
   scattertables = 
     [...scatterdata
       .map(mytable=> {
+        console.log("mytable", mytable)
         const arr = [];
         arr.push(
           new Table({
