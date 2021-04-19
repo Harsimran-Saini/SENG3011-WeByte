@@ -22,6 +22,8 @@ const generate = () => {
   var piedata = [];
   Chart.helpers.each(Chart.instances, function(instance){
     console.log(instance)
+    var j = 0;
+    var myobj = {};
     if (instance.config.type === "scatter"){
       var mydata = {}
       mydata['label'] = instance.config.data.datasets[0].label;
@@ -37,9 +39,9 @@ const generate = () => {
       var mydata2 = {}
       mydata2['label'] = instance.config.data.datasets[0].label; //Covid-19 cases
       mydata2['coordinates'] = []
-      var j = 0;
+      j = 0;
       while (j < instance.config.data.datasets[0].data.length){
-        var myobj = {}
+        myobj = {}
         myobj['label'] = instance.config.data.labels[j];
         myobj['value'] = instance.config.data.datasets[0].data[j];
         mydata2['coordinates'].push(myobj)
@@ -55,9 +57,9 @@ const generate = () => {
       var mydata3 = {}
       mydata3['label'] = instance.config.data.datasets[0].label; //Covid-19 cases
       mydata3['coordinates'] = []
-      var j = 0;
+      j = 0;
       while (j < instance.config.data.datasets[0].data.length){
-        var myobj = {}
+        myobj = {}
         myobj['label'] = instance.config.data.labels[j];
         myobj['value'] = instance.config.data.datasets[0].data[j];
         mydata3['coordinates'].push(myobj)
@@ -69,9 +71,9 @@ const generate = () => {
       var mydata4 = {}
       mydata4['label'] = instance.config.data.datasets[0].label; //Covid-19 cases
       mydata4['coordinates'] = []
-      var j = 0;
+      j = 0;
       while (j < instance.config.data.datasets[0].data.length){
-        var myobj = {}
+        myobj = {}
         myobj['label'] = instance.config.data.labels[j];
         myobj['value'] = instance.config.data.datasets[0].data[j];
         mydata4['coordinates'].push(myobj)
