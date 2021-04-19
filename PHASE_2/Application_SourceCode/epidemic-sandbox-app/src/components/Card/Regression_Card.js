@@ -306,11 +306,12 @@
 
 
 import React, { Component } from 'react';
- import Select from 'react-select'
+import Select from 'react-select'
 import Tabletop from 'tabletop';
 import ReactCardFlip from "react-card-flip";
 import { Scatter, Line, Pie, Bar } from "react-chartjs-2";
 import casesJSON from './cases.json';
+import TrendGraph from './TrendGraph.js';
 
 function matchUp(country) {
   console.log("cJ", country)
@@ -732,6 +733,8 @@ class RegressionCard extends Component {
           graph=<Pie data={state} options={options} />
           console.log(graph);
         }
+      } else if (this.state.dataSelected === "google_trends") {
+        graph = <TrendGraph props={{"keyword": "trump"}}/>
     }
 
     var dataOptions = [
