@@ -5,6 +5,7 @@ import ReactCardFlip from "react-card-flip";
 import { Scatter, Line, Pie, Bar } from "react-chartjs-2";
 import casesJSON from './cases.json';
 import Arrow from "../../images/blue-arrow.png"
+import TrendGraphWrapper from './TrendGraphWrapper';
 
 function matchUp(country) {
   console.log("cJ", country)
@@ -565,6 +566,8 @@ class RegressionCard extends Component {
          }
 
         graph = <Scatter data={data2} options={options} />
+    } else if (this.state.dataSelected === "google_trends") {
+      graph = <TrendGraphWrapper/>;
     }
 
     var dataOptions = [
