@@ -14,7 +14,7 @@ def hello_world():
     return 'Hello, World!'
 
 @app.route('/trends/<keyword>')
-def trends_country(keyword, keyword2):
+def trends_country(keyword):
     print("KEYWORD:" + keyword)
     if keyword == None:
         return "400 invalid keyword"
